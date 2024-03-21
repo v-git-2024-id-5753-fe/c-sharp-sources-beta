@@ -79,7 +79,7 @@ namespace DatetimeFunctionsNamespace
         {
             if (array_in.Length == 0)
             {
-                MyReportFunctions.ReportError(nameof(DatetimeArrayToDayArrays) + "\r\n" +
+                ReportFunctions.ReportError(nameof(DatetimeArrayToDayArrays) + "\r\n" +
                     "array length is 0");
                 return new DateTime[0][];
             }
@@ -116,7 +116,7 @@ namespace DatetimeFunctionsNamespace
         {
             if (array_in.Length == 0)
             {
-                MyReportFunctions.ReportError(nameof(DatetimeArrayToHourArrays) + "\r\n" +
+                ReportFunctions.ReportError(nameof(DatetimeArrayToHourArrays) + "\r\n" +
                     "array length is 0");
                 return new DateTime[0][];
             }
@@ -181,7 +181,7 @@ namespace DatetimeFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError("something wrong.\r\nused methods:\r\n" + nameof(DatetimeArrayToStringArray)
+                ReportFunctions.ReportError("something wrong.\r\nused methods:\r\n" + nameof(DatetimeArrayToStringArray)
                    + "\r\n" + nameof(FileFunctions.TextFile.StringArrayToFile));
             }
         }
@@ -189,7 +189,7 @@ namespace DatetimeFunctionsNamespace
         {
             if (array_in.Length == 0)
             {
-                MyReportFunctions.ReportError(nameof(DatetimeArrayToMinuteArrays) + "\r\n" +
+                ReportFunctions.ReportError(nameof(DatetimeArrayToMinuteArrays) + "\r\n" +
                     "array length is 0");
                 return new DateTime[0][];
             }
@@ -229,7 +229,7 @@ namespace DatetimeFunctionsNamespace
             {
                 if (DateTime.TryParse(array_in[i], out arr_out[i]) == false)
                 {
-                    MyReportFunctions.ReportError("String to datetime. Conversion failed at " + i.ToString() + "\r\n" +
+                    ReportFunctions.ReportError("String to datetime. Conversion failed at " + i.ToString() + "\r\n" +
                         "Datetime string is " + array_in[i] + "\r\n" +
                         "Conversion was not continued");
                     break;

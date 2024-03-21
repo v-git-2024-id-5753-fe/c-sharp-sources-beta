@@ -104,7 +104,7 @@ namespace DirectoryFunctionsNamespace
             string str_out = "";
             if (dir_path[dir_path.Length - 1] != '\\')
             {
-                MyReportFunctions.ReportError(dir_path + "\r\n" + "there were no \\ at the end");
+                ReportFunctions.ReportError(dir_path + "\r\n" + "there were no \\ at the end");
                 return "";
             }
             try
@@ -114,7 +114,7 @@ namespace DirectoryFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError(dir_path + "\r\n" + "the path was not splitted by \\");
+                ReportFunctions.ReportError(dir_path + "\r\n" + "the path was not splitted by \\");
                 return "";
             }
             return str_out;
@@ -130,7 +130,7 @@ namespace DirectoryFunctionsNamespace
                 {
                     if (Directory.Exists(dir_path) == false)
                     {
-                        MyReportFunctions.ReportError(dir_path + " does not exists");
+                        ReportFunctions.ReportError(dir_path + " does not exists");
                         return new string[0];
                     }
                 }
@@ -155,7 +155,7 @@ namespace DirectoryFunctionsNamespace
                 {
                     if (Directory.Exists(dir_path) == false)
                     {
-                        MyReportFunctions.ReportError(dir_path + " does not exists");
+                        ReportFunctions.ReportError(dir_path + " does not exists");
                         return new string[0];
                     }
                 }
@@ -190,7 +190,7 @@ namespace DirectoryFunctionsNamespace
                 {
                     if (Directory.Exists(dir_path) == false)
                     {
-                        MyReportFunctions.ReportError(dir_path + " does not exists");
+                        ReportFunctions.ReportError(dir_path + " does not exists");
                         return new string[0];
                     }
                 }

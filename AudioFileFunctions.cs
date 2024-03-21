@@ -59,7 +59,7 @@ namespace AudioFileFunctions
             }
             if (vl_enum_out == Mp3BitrateVL_Enum.NoVL)
             {
-                MyReportFunctions.ReportError("failed to cast to Enum\r\n" + "Version: " + version_in.ToString() +
+                ReportFunctions.ReportError("failed to cast to Enum\r\n" + "Version: " + version_in.ToString() +
                     "\r\n" + "Layer: " + layer_in.ToString());
             }
             return vl_enum_out;
@@ -199,7 +199,7 @@ namespace AudioFileFunctions
             }
             catch
             {
-                MyReportFunctions.ReportError("Error reading audio file.\r\nFile: " + file_path);
+                ReportFunctions.ReportError("Error reading audio file.\r\nFile: " + file_path);
             }
             return byte_arr_out;
         }

@@ -23,7 +23,7 @@ namespace SoundFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError("Sound was not played\r\nSound path: " + file_path);
+                ReportFunctions.ReportError("Sound was not played\r\nSound path: " + file_path);
             }
         }
     }

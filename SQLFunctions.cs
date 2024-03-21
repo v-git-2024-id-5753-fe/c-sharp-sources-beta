@@ -62,12 +62,12 @@ namespace SqlFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             DataRow for_return = table_1_record.Rows[0];
             return for_return;
@@ -160,7 +160,7 @@ namespace SqlFunctionsNamespace
                 }
                 catch (SqlException e)
                 {
-                    MyReportFunctions.ReportError(e.Message);
+                    ReportFunctions.ReportError(e.Message);
                     database_con.Close();
                 }
             }
@@ -201,7 +201,7 @@ namespace SqlFunctionsNamespace
                 }
                 catch (SqlException e)
                 {
-                    MyReportFunctions.ReportError(e.Message);
+                    ReportFunctions.ReportError(e.Message);
                     database_con.Close();
                 }
             }
@@ -246,13 +246,13 @@ namespace SqlFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
             }
             catch
             {
                 database_con.Close();
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return table_out;
         }
@@ -277,7 +277,7 @@ namespace SqlFunctionsNamespace
             catch
             {
                 database_con.Close();
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return for_return.ToArray();
         }
@@ -307,12 +307,12 @@ namespace SqlFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return table_out;
         }
@@ -334,7 +334,7 @@ namespace SqlFunctionsNamespace
                 }
                 catch
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
                 return table_out;
             }
@@ -390,7 +390,7 @@ namespace SqlFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError("Cast failed.\r\nData in: [" + trace_i.ToString()
+                ReportFunctions.ReportError("Cast failed.\r\nData in: [" + trace_i.ToString()
                     + "," + trace_j.ToString() + "]" + " was " + datatable_in.Rows[trace_j][trace_i].ToString());
             }
             return arr_out;
@@ -409,7 +409,7 @@ namespace SqlFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError("Cast failed.\r\nData in row " + trace_i.ToString()
+                ReportFunctions.ReportError("Cast failed.\r\nData in row " + trace_i.ToString()
                     + " was " + datatable_in.Rows[trace_i][0].ToString());
             }
             return arr_out;
@@ -426,7 +426,7 @@ namespace SqlFunctionsNamespace
             }
             catch (SqlException e)
             {
-                MyReportFunctions.ReportError(e.Message);
+                ReportFunctions.ReportError(e.Message);
             }
         }
         static public DataTable DatabaseIDGet(SqlConnection database_con, string table_name)
@@ -438,7 +438,7 @@ namespace SqlFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return table_out;
         }
@@ -494,7 +494,7 @@ namespace SqlFunctionsNamespace
             catch
             {
                 sql_con.Close();
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return for_return;
         }
@@ -546,7 +546,7 @@ namespace SqlFunctionsNamespace
             FileFunctionsNamespace.FileFunctions.TextFile.StringsToConsole(title_string);
             if (values_strings[0].Split('\t').Length != (title_string.Length - 1))
             {
-                MyReportFunctions.ReportError("String split length != keys number");
+                ReportFunctions.ReportError("String split length != keys number");
                 return 0;
             }
             return 1;

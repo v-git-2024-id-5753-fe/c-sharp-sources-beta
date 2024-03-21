@@ -75,7 +75,7 @@ namespace MathFunctionsNamespace
         {
             if (elem_num < 0)
             {
-                MyReportFunctions.ReportError("array size < 0");
+                ReportFunctions.ReportError("array size < 0");
                 return;
             }
             array_in = new int[elem_num];
@@ -88,7 +88,7 @@ namespace MathFunctionsNamespace
         {
             if (elem_num < 0)
             {
-                MyReportFunctions.ReportError("array size < 0");
+                ReportFunctions.ReportError("array size < 0");
                 return;
             }
             Array_Int32 = new int[elem_num];
@@ -115,7 +115,7 @@ namespace MathFunctionsNamespace
                 }
                 catch
                 {
-                    MyReportFunctions.ReportError("Conversion error. The string is " + strings_in[i]);
+                    ReportFunctions.ReportError("Conversion error. The string is " + strings_in[i]);
                 }
             }
         }
@@ -182,12 +182,12 @@ namespace MathFunctionsNamespace
             Int32 arr_2_num = ArrayName.IndexOf(name_arr_2);
             if (arr_1_num == -1)
             {
-                MyReportFunctions.ReportError("Array 1 name was not found");
+                ReportFunctions.ReportError("Array 1 name was not found");
                 return null;
             }
             if (arr_2_num == -1)
             {
-                MyReportFunctions.ReportError("Array 2 name was not found");
+                ReportFunctions.ReportError("Array 2 name was not found");
                 return null;
             }
             // counting 1st
@@ -222,12 +222,12 @@ namespace MathFunctionsNamespace
             Int32 arr_2_num = ArrayName.IndexOf(name_arr_2);
             if (arr_1_num == -1)
             {
-                MyReportFunctions.ReportError("Array 1 name was not found");
+                ReportFunctions.ReportError("Array 1 name was not found");
                 return null;
             }
             if (arr_2_num == -1)
             {
-                MyReportFunctions.ReportError("Array 2 name was not found");
+                ReportFunctions.ReportError("Array 2 name was not found");
                 return null;
             }
             // counting 1st
@@ -304,12 +304,12 @@ namespace MathFunctionsNamespace
             Int32 arr_2_num = ArrayName.IndexOf(name_arr_2);
             if (arr_1_num == -1)
             {
-                MyReportFunctions.ReportError("Array 1 name was not found");
+                ReportFunctions.ReportError("Array 1 name was not found");
                 return null;
             }
             if (arr_2_num == -1)
             {
-                MyReportFunctions.ReportError("Array 2 name was not found");
+                ReportFunctions.ReportError("Array 2 name was not found");
                 return null;
             }
             int[,] arr_out = new int[0, 0];
@@ -406,7 +406,7 @@ namespace MathFunctionsNamespace
             Int32 arr_num = ArrayName.IndexOf(arr_name);
             if (arr_num == -1)
             {
-                MyReportFunctions.ReportError("Array name was not found");
+                ReportFunctions.ReportError("Array name was not found");
                 return null;
             }
             return ArrayN[arr_num].NumbersGreaterOrEqual(number_to_compare);
@@ -416,7 +416,7 @@ namespace MathFunctionsNamespace
             Int32 arr_num = ArrayName.IndexOf(arr_name);
             if (arr_num == -1)
             {
-                MyReportFunctions.ReportError("Array name was not found");
+                ReportFunctions.ReportError("Array name was not found");
                 return null;
             }
             return ArrayN[arr_num].NumbersLesserOrEqual(number_to_compare);
@@ -444,7 +444,7 @@ namespace MathFunctionsNamespace
             if (arr_num < -1)
             {
                 arr_num = -1;
-                MyReportFunctions.ReportError("parameter was less than -1");
+                ReportFunctions.ReportError("parameter was less than -1");
             }
             if (arr_num == -1)
             {
@@ -463,7 +463,7 @@ namespace MathFunctionsNamespace
             }
             if (arr_num >= ArrayN.Length)
             {
-                MyReportFunctions.ReportError("Array number is bigger than number of arrays");
+                ReportFunctions.ReportError("Array number is bigger than number of arrays");
                 return;
             }
             ArrayN[arr_num].ToConsole(ArrayN[arr_num].Array_Int32);
@@ -479,7 +479,7 @@ namespace MathFunctionsNamespace
         {
             if (array_num >= ArrayN.Length)
             {
-                MyReportFunctions.ReportError("Array number is bigger than number of arrays");
+                ReportFunctions.ReportError("Array number is bigger than number of arrays");
                 return new int[0];
             }
             return ArrayN[array_num].Array_Int32;
@@ -489,12 +489,12 @@ namespace MathFunctionsNamespace
             Int32 arr_num = ArrayName.IndexOf(name);
             if (arr_num == -1)
             {
-                MyReportFunctions.ReportError("Array name was not found");
+                ReportFunctions.ReportError("Array name was not found");
                 return new int[0];
             }
             if (arr_num >= ArrayN.Length)
             {
-                MyReportFunctions.ReportError("Array number is bigger than number of arrays");
+                ReportFunctions.ReportError("Array number is bigger than number of arrays");
                 return new int[0];
             }
             return GetArray(arr_num);
@@ -504,12 +504,12 @@ namespace MathFunctionsNamespace
             Int32 arr_num = ArrayName.IndexOf(name);
             if (arr_num == -1)
             {
-                MyReportFunctions.ReportError("Array name was not found");
+                ReportFunctions.ReportError("Array name was not found");
                 return null;
             }
             if (arr_num >= ArrayN.Length)
             {
-                MyReportFunctions.ReportError("Array number is bigger than number of arrays");
+                ReportFunctions.ReportError("Array number is bigger than number of arrays");
                 return null;
             }
             return ArrayN[arr_num];
@@ -535,7 +535,7 @@ namespace MathFunctionsNamespace
             {
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                     return new string[0];
                 }
                 string[] arr_out = new string[arr_in.Length];
@@ -549,12 +549,12 @@ namespace MathFunctionsNamespace
             {
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                     return new T[0];
                 }
                 if (seq_length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.NumberIsZero);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.NumberIsZero);
                     return new T[0];
                 }
                 T[] arr_out = new T[seq_length];
@@ -923,7 +923,7 @@ namespace MathFunctionsNamespace
             {
                 if (radius < 0)
                 {
-                    MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Number_Is_Less_Than_Zero);
+                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Number_Is_Less_Than_Zero);
                     return 0;
                 }
                 return Math.Pow(radius, 2) * Math.PI;
@@ -1049,7 +1049,7 @@ namespace MathFunctionsNamespace
                         Int32 index_num = Array.IndexOf(numbers_for_array, num_for_arr);
                         if (index_num == -1)
                         {
-                            MyReportFunctions.ReportError("The error should not appear. Check the code");
+                            ReportFunctions.ReportError("The error should not appear. Check the code");
                             return new int[0][];
                         }
                         if ((repeteat_counting[index_num] < repeat_current) &&
@@ -1093,7 +1093,7 @@ namespace MathFunctionsNamespace
                             if ((down_number_found == false) &&
                                     (up_number_found == false))
                             {
-                                MyReportFunctions.ReportError("This error should not appear. check the code");
+                                ReportFunctions.ReportError("This error should not appear. check the code");
                                 return new int[0][];
                             }
                         }
@@ -1211,7 +1211,7 @@ namespace MathFunctionsNamespace
                         Int32 index_num = Array.IndexOf(numbers_for_arr, num_for_arr);
                         if (index_num == -1)
                         {
-                            MyReportFunctions.ReportError("The error should not appear. Check the code");
+                            ReportFunctions.ReportError("The error should not appear. Check the code");
                             return new int[0][];
                         }
                         if (repeteat_count[index_num] <= repeat_current)
@@ -1310,7 +1310,7 @@ namespace MathFunctionsNamespace
             {
                 if (bytes_in.Length < 4)
                 {
-                    MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_Wrong);
+                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_Wrong);
                     return 0;
                 }
                 
@@ -1456,7 +1456,7 @@ namespace MathFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError("Conversion failed. The number is " + num_in);
+                ReportFunctions.ReportError("Conversion failed. The number is " + num_in);
                 return num_return;
             }
             return num_return;
@@ -1475,7 +1475,7 @@ namespace MathFunctionsNamespace
                 }
                 catch
                 {
-                    MyReportFunctions.ReportError("Conversion failed at " + i.ToString()
+                    ReportFunctions.ReportError("Conversion failed at " + i.ToString()
                         + ". After that no conversion is done" + "\r\n" +
                         "The number is " + arr_in[i]);
                     return arr_out;
@@ -1495,7 +1495,7 @@ namespace MathFunctionsNamespace
                 }
                 catch
                 {
-                    MyReportFunctions.ReportError("Conversion failed at " + i.ToString()
+                    ReportFunctions.ReportError("Conversion failed at " + i.ToString()
                         + ". After that no conversion is done");
                     return arr_out;
                 }
@@ -1531,7 +1531,7 @@ namespace MathFunctionsNamespace
             {
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportError("Devide by 0");
+                    ReportFunctions.ReportError("Devide by 0");
                     return 0;
                 }
                 return arr_in.Sum() / arr_in.Length;
@@ -1547,7 +1547,7 @@ namespace MathFunctionsNamespace
             {
                 if ((arr_in.Length == 0) || (interval_step == 0))
                 {
-                    MyReportFunctions.ReportError("Devide by 0");
+                    ReportFunctions.ReportError("Devide by 0");
                     return new int[0][];
                 }
                 // counting 1st
@@ -1601,7 +1601,7 @@ namespace MathFunctionsNamespace
             {
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportError("Devide by 0");
+                    ReportFunctions.ReportError("Devide by 0");
                     return new int[0][];
                 }
                 // counting 1st
@@ -1720,7 +1720,7 @@ namespace MathFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return for_return;
         }
@@ -1736,7 +1736,7 @@ namespace MathFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return for_return;
         }
@@ -1804,7 +1804,7 @@ namespace MathFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return num_out;
         }
@@ -1833,7 +1833,7 @@ namespace MathFunctionsNamespace
             }
             catch (Exception e)
             {
-                MyReportFunctions.ReportError(e.Message);
+                ReportFunctions.ReportError(e.Message);
             }
             return str_out;
         }
@@ -1850,7 +1850,7 @@ namespace MathFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return arr_out;
         }
@@ -1870,7 +1870,7 @@ namespace MathFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return arr_out;
         }
@@ -1879,7 +1879,7 @@ namespace MathFunctionsNamespace
             byte[,] arr_out = new byte[0, 0];
             if (N_size == 0)
             {
-                MyReportFunctions.ReportError("devide by 0");
+                ReportFunctions.ReportError("devide by 0");
                 return arr_out;
             }
             if (M_size == -1)
@@ -1888,7 +1888,7 @@ namespace MathFunctionsNamespace
             }
             if ((N_size * M_size) != arr_in.Length)
             {
-                MyReportFunctions.ReportError("Array size does not fit the NxM array");
+                ReportFunctions.ReportError("Array size does not fit the NxM array");
                 return arr_out;
             }
             arr_out = new byte[N_size, M_size];
@@ -1917,7 +1917,7 @@ namespace MathFunctionsNamespace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return arr_out;
         }

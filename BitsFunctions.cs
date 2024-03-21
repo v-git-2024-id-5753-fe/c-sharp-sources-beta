@@ -1,14 +1,44 @@
 ﻿
 // Commercial use (license)
-// Please study about commercial use of the code that is publicly available 
+// Please study about commercial use of the code that is publicly available
 
 using System;
 
+
 namespace BitsFunctionsNamespace
 {
+
+//2024.03.21 14:21. Moscow. Workplace.
+// Casting in C# is from number to number and not by bits. For example, UInt32 cast to Int32 is by value and not by bits.
+// There may be error if value is greater than Int32 can have. (this cast was not checked)
+
     class BitsFunctions
     {
 
+
+        /// <summary>
+        /// Written. 2024.03.21 16:37. Moscow. Workplace.
+        /// </summary>
+        /// <param name="num_in"></param>
+        /// <returns></returns>
+        public static int BitsReversed(int num_in)
+        {
+
+                
+                int reverse = 0;
+                for (int bit = 0; bit < 32; bit++)
+                {
+                    reverse <<= 1;
+                    reverse |= (num_in & 1);
+                num_in >>= 1;
+                }
+
+                return reverse;
+            }
+
+
+
+        
 
         public static byte BitsGet(UInt32 num_in, Int32 start_num, Int32 end_num)
         {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ReportFunctionsNamespace
 {
-    static class MyReportFunctions
+    static class ReportFunctions
     {
         /// <summary>
         /// PrInt32 info about error in console.

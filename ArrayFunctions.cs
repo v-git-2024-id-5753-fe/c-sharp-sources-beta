@@ -23,7 +23,7 @@ namespace ArrayFunctionsNamespace
         4. 2023.09.02 19:58. there is copy function written in array my functions.
         tested. it creates copy of array.
         */
-    static class ArrayMethods
+    static class ArrayFunctions
     {
 
         static Random _internal_random = new Random();
@@ -130,19 +130,19 @@ namespace ArrayFunctionsNamespace
             {
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                     return new T[0];
                 }
                 if (column_num < 0)
                 {
-                    MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Index_is_wrong);
+                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Index_is_wrong);
                     return new T[0];
                 }
                 // 2023.12.26 13:08. Moscow. Workplace. Check if it is reference or copied array.
                 // 2023.12.26 13:12. Moscow. Workplace. Checked it is reference. Code was updated.  
 
                 // T[] arr_out = arr_in[column_num];                
-                T[] arr_out = ArrayMethods.Copy(arr_in[column_num]);
+                T[] arr_out = ArrayFunctions.Copy(arr_in[column_num]);
 
 
                 return arr_out;
@@ -207,12 +207,12 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new T[0];
                     }
                     if (row_num < 0)
                     {
-                        MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Index_is_wrong);
+                        ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Index_is_wrong);
                         return new T[0];
                     }
                     T[] arr_out = new T[arr_in.Length - 1];
@@ -246,12 +246,12 @@ namespace ArrayFunctionsNamespace
             {
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                     return new T[0];
                 }
                 if (row_num < 0)
                 {
-                    MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Index_is_wrong);
+                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Index_is_wrong);
                     return new T[0];
                 }
                 T[] arr_out = new T[arr_in.Length];
@@ -285,12 +285,12 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new T[0][];
                     }
                     if (row_num < 0)
                     {
-                        MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Index_is_wrong);
+                        ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Index_is_wrong);
                         return new T[0][];
                     }
                     T[][] arr_out = new T[arr_in.Length][];
@@ -345,12 +345,12 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new T[0][];
                     }
                     if (start_row < 0)
                     {
-                        MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Index_is_wrong);
+                        ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Index_is_wrong);
                         return new T[0][];
                     }
                     T[][] arr_out = new T[arr_in.Length][];
@@ -488,7 +488,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if ((array_in.Length % columns_number) != 0)
                     {
-                        MyReportFunctions.ReportError("Columns have different length\r\n" +
+                        ReportFunctions.ReportError("Columns have different length\r\n" +
                             "array length: " + array_in.Length.ToString() + "\r\n" +
                             "to split on: " + columns_number.ToString() + "\r\n" +
                             "division reminder: " + (array_in.Length % columns_number).ToString());
@@ -666,7 +666,7 @@ namespace ArrayFunctionsNamespace
                 }
                 catch (Exception e)
                 {
-                    MyReportFunctions.ReportError("Error! check input arrays\r\nError message: " + e.Message);
+                    ReportFunctions.ReportError("Error! check input arrays\r\nError message: " + e.Message);
                 }
             }
             return arr_out;
@@ -683,7 +683,7 @@ namespace ArrayFunctionsNamespace
         {
             if (indexes_in.Length == 0)
             {
-                MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_0);
+                ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_0);
                 return arr_in;
             }
             T[][] arr_out = new T[arr_in.Length][];
@@ -695,7 +695,7 @@ namespace ArrayFunctionsNamespace
                 }
                 catch (Exception e)
                 {
-                    MyReportFunctions.ReportError(i);
+                    ReportFunctions.ReportError(i);
                 }
             }
             return arr_out;
@@ -721,7 +721,7 @@ namespace ArrayFunctionsNamespace
             /// <returns></returns>
             public static T[] FromIndex<T>(T[] arr_1, T[] arr_2, Int32 from_index)
             {
-                T[][] arr_split = ArrayMethods.Split.FromIndex(arr_1, from_index);
+                T[][] arr_split = ArrayFunctions.Split.FromIndex(arr_1, from_index);
                 T[] arr_out = new T[arr_1.Length + arr_2.Length];
                 Int32 index_for_insert = 0;
                 Array.Copy(arr_split[0], arr_out, arr_split[0].Length);
@@ -840,7 +840,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0];
                     }
                     string[] arr_out = new string[arr_in.Length];
@@ -852,7 +852,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                             return new string[0];
                         }
                     }
@@ -872,7 +872,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0][];
                     }
                     string[][] arr_out = new string[arr_in.Length][];
@@ -887,7 +887,7 @@ namespace ArrayFunctionsNamespace
                             }
                             catch
                             {
-                                MyReportFunctions.ReportError(i, j);
+                                ReportFunctions.ReportError(i, j);
                             }
                         }
                     }
@@ -1004,7 +1004,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0];
                     }
                     string[] arr_out = new string[arr_in.Length];
@@ -1025,7 +1025,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                             return new string[0];
                         }
                     }
@@ -1045,7 +1045,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new UInt32[0];
                     }
 
@@ -1114,7 +1114,7 @@ namespace ArrayFunctionsNamespace
                 /// <returns></returns>
                 public static Int16[][] A_To_MxN(Int16[] array_in, Int32 columns_number, bool columns_length_equal = true)
                 {
-                    return ArrayMethods.Split.A_To_MxN(array_in, columns_number, columns_length_equal);
+                    return ArrayFunctions.Split.A_To_MxN(array_in, columns_number, columns_length_equal);
                 }
             }
             /// <summary>
@@ -1153,7 +1153,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new UInt16[0][];
                     }
                     UInt16[][] arr_out = new UInt16[arr_in.Length][];
@@ -1173,7 +1173,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new UInt16[0];
                     }
                     UInt16[] arr_out = new UInt16[arr_in.Length];
@@ -1194,7 +1194,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0][];
                     }
                     string[][] arr_out = new string[arr_in.Length][];
@@ -1209,7 +1209,7 @@ namespace ArrayFunctionsNamespace
                             }
                             catch
                             {
-                                MyReportFunctions.ReportError(i, j);
+                                ReportFunctions.ReportError(i, j);
                             }
                         }
                     }
@@ -1225,7 +1225,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new int[0];
                     }
                     int[] arr_out = new int[arr_in.Length];
@@ -1237,7 +1237,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError("There should be such error - Int16 to Int32 Conversion. Check the code");
+                            ReportFunctions.ReportError("There should be such error - Int16 to Int32 Conversion. Check the code");
                             return new int[0];
                         }
                     }
@@ -1280,7 +1280,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0];
                     }
                     string[] arr_out = new string[arr_in.Length];
@@ -1292,7 +1292,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                             return new string[0];
                         }
                     }
@@ -1309,10 +1309,166 @@ namespace ArrayFunctionsNamespace
         {
 
             /// <summary>
+            /// Written. 2024.03.21 11:37. Moscow. Workplace.
+            /// </summary>
+            public static class Generate
+            {
+
+                /// <summary>
+                /// Generate UInt32[] filled with random numbers
+                /// Written. 2024.03.21 11:40. Moscow. Workplace.
+                /// Tested. Works. 2024.03.21 12:00. Moscow. Workplace.
+                /// </summary>
+                /// <param name="numbers_num"></param>
+                /// <param name="min"></param>
+                /// <param name="max"></param>
+                /// <returns></returns>
+                public static uint[] RandomMinMaxValue(UInt32 numbers_num, UInt32 min, UInt32 max)
+                {
+                    uint[] arr_out = new uint[numbers_num];
+                    for (Int32 i = 0; i < arr_out.Length; i++)
+                    {
+                        if (max <= int.MaxValue)
+                        {
+                            arr_out[i] = (uint)_internal_random.Next((int)min, (int)max);
+                        }
+                          
+                        if (max > int.MaxValue)
+                        {
+                            byte[] bytes_of_number = new byte[4];                           
+                            _internal_random.NextBytes(bytes_of_number);
+
+
+                            arr_out[i] = MathFunctions.UInt32Number.BytesToUInt32(bytes_of_number);
+                            // 2024.03.21 11:51. Moscow. Workplace.
+                            // There is trouble with casting int to uint. negative casting gives error or casts to 0
+                            /*
+                            arr_out[i] = (uint)_internal_random.Next((int)min, int.MaxValue);
+                            uint bit_set = (uint)_internal_random.Next(0, 2);                      
+                            arr_out[i] |= (bit_set << 32);                            
+                             */
+
+                        }
+                    }
+                    return arr_out;
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+
+            /// <summary>
             /// Written. 2024.01.11 15:19. Moscow. Workplace.
             /// </summary>
             public static class Convert
             {
+
+
+
+
+
+
+
+                /// <summary>
+                /// Converts array to filestring according to required number format, delimer and missing number string (defined by char). <br></br> 
+                /// Written. 2024.03.21 11:33. Moscow. Workplace. <br></br>
+                /// Tested. Works. 2024.03.21 12:02. Moscow. Workplace. <br></br> 
+                /// </summary>
+                /// <param name="arr_in"></param>
+                /// <param name="num_per_row"></param>
+                /// <param name="delimer"></param>
+                /// <param name="missing_number_char">Defines missing number string. The string will be of the length of the longest number with this char</param>
+                /// <param name="base_in"></param>
+                /// <param name="pad_number"></param>
+                /// <returns></returns>
+                public static string ToFileString(uint[] arr_in, uint num_per_row, int base_in = 10, string delimer = "\t", char missing_number_char = '.', int pad_number = -1)
+                {
+                    if (arr_in.Length == 0)
+                    {
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
+                        return "";
+                    }
+
+                    int rows_num = arr_in.Length / (int)num_per_row;
+                    bool IsNotRectangle = false;
+                    if ((arr_in.Length % num_per_row) != 0)
+                    {
+                        rows_num += 1;
+                        IsNotRectangle = true;
+                    }
+
+                    string[] strings_filestring = new string[rows_num];
+
+                    StringBuilder write_string = new StringBuilder();
+
+                    int col_index = 0;
+
+                    int pad_length = pad_number;
+
+                    if (base_in == 10)
+                    {
+                        if (pad_number == -1)
+                        {
+                            uint max_int = arr_in.Max();
+                            pad_length = max_int.ToString().Length;
+                        }
+                    }
+
+                    if (base_in == 16)
+                    {
+                        pad_length = 8;
+                    }
+
+                    for (int i = 0; i < arr_in.Length; i++)
+                    {
+                        if (base_in == 10)
+                        {
+                            write_string.Append(System.Convert.ToString(arr_in[i], base_in).ToUpper().PadRight(pad_length, ' '));
+                        }
+                        if (base_in == 16)
+                        {
+                            write_string.Append(System.Convert.ToString(arr_in[i], base_in).ToUpper().PadLeft(pad_length, '0'));
+                        }
+                        write_string.Append(delimer);
+                        col_index += 1;
+                        if (col_index > (num_per_row - 1))
+                        {
+                            write_string.Append("\r\n");
+                            col_index = 0;
+                        }
+                    }
+
+                    if (IsNotRectangle == true)
+                    {
+                        int row_filled = arr_in.Length % (int)num_per_row;
+                        for (int i = 0; i < (num_per_row - row_filled); i++)
+                        {
+                            write_string.Append("".PadRight(pad_length, missing_number_char));
+                            write_string.Append(delimer);
+                        }
+                        write_string.Append("\r\n");
+                    }
+                   
+                    string return_string = write_string.ToString();
+
+                    return return_string;
+
+                }
+
+
+
+
+
+
+
+
 
 
                 /// <summary>
@@ -1324,7 +1480,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new float[0];
                     }
 
@@ -1394,7 +1550,7 @@ namespace ArrayFunctionsNamespace
                 /// <returns></returns>
                 public static int[] AxB_To_C(int[][] array_in)
                 {
-                    return ArrayMethods.Merge.NxM_To_A(array_in);
+                    return ArrayFunctions.Merge.NxM_To_A(array_in);
                 }
             }
             /// <summary>
@@ -1415,12 +1571,12 @@ namespace ArrayFunctionsNamespace
                     // check if input is correct
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new int[0];
                     }
                     if (number_for_max_in_arr == 0)
                     {
-                        MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_0);
+                        ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_0);
                     }
                     // calculating normilize number.                   
                     double normlize_coeficient = (double)arr_in.Max() / (double)number_for_max_in_arr;
@@ -1445,7 +1601,7 @@ namespace ArrayFunctionsNamespace
             /// <returns></returns>
             public static bool Contains(int[] arr_search_in, int[] arr_search)
             {
-                return ArrayMethods.Contains(arr_search_in, arr_search);
+                return ArrayFunctions.Contains(arr_search_in, arr_search);
             }
             public static class Split
             {
@@ -1460,7 +1616,7 @@ namespace ArrayFunctionsNamespace
                 /// <returns></returns>
                 public static int[][] A_To_MxN(int[] array_in, Int32 columns_number, bool columns_length_equal = true)
                 {
-                    return ArrayMethods.Split.A_To_MxN(array_in, columns_number, columns_length_equal);
+                    return ArrayFunctions.Split.A_To_MxN(array_in, columns_number, columns_length_equal);
                 }
             }
 
@@ -1498,7 +1654,7 @@ namespace ArrayFunctionsNamespace
                 /// <param name="min"></param>
                 /// <param name="max"></param>
                 /// <returns></returns>
-                public static int[] WithRandomMinMaxValue(Int32 numbers_num, Int32 min, Int32 max)
+                public static int[] RandomMinMaxValue(Int32 numbers_num, Int32 min, Int32 max)
                 {
                     int[] arr_out = new int[numbers_num];
                     for (Int32 i = 0; i < arr_out.Length; i++)
@@ -1647,7 +1803,7 @@ namespace ArrayFunctionsNamespace
                     return;
                 }
                 Console.WriteLine("Array" + typeof(int).Name.ToString() + ". Length is " + arr_in.Length.ToString() + "x" + arr_in[0].Length.ToString());
-                int[] array_all_values = ArrayMethods.Merge.NxM_To_A(arr_in);
+                int[] array_all_values = ArrayFunctions.Merge.NxM_To_A(arr_in);
                 string min_num = array_all_values.Min().ToString();
                 string max_num = array_all_values.Max().ToString();
                 Int32 pad_size = max_num.Length;
@@ -1681,7 +1837,7 @@ namespace ArrayFunctionsNamespace
                     }
                     catch
                     {
-                        MyReportFunctions.ReportError("Cast failed at " + i.ToString());
+                        ReportFunctions.ReportError("Cast failed at " + i.ToString());
                     }
                 }
                 return arr_out;
@@ -1708,7 +1864,7 @@ namespace ArrayFunctionsNamespace
             /// <returns></returns>
             public static int[] Sort(int[] arr_in, int[] indexes_in)
             {
-                return ArrayMethods.Sort(arr_in, indexes_in);
+                return ArrayFunctions.Sort(arr_in, indexes_in);
             }
             /// <summary>
             /// Sort AxB array according to indexes provided
@@ -1720,7 +1876,7 @@ namespace ArrayFunctionsNamespace
             /// <returns></returns>
             public static int[][] Sort(int[][] arr_in, int[] indexes_in)
             {
-                return ArrayMethods.Sort(arr_in, indexes_in);
+                return ArrayFunctions.Sort(arr_in, indexes_in);
             }
             public static int[] Sort(int[] arr_in, ArraySortingEnum order_to_sort)
             {
@@ -1908,7 +2064,7 @@ namespace ArrayFunctionsNamespace
                     {
                         if (arr_in.Length == 0)
                         {
-                            MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                            ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                             return 0;
                         }
 
@@ -1949,7 +2105,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return false;
                     }
                     bool result_out = true;
@@ -2041,7 +2197,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     int[][] arr_out = new int[arr_in.Length][];
@@ -2061,7 +2217,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     int[] arr_out = new int[arr_in.Length];
@@ -2084,7 +2240,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_1.Length != arr_2.Length)
                     {
-                        MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                        ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                         return arr_1;
                     }
                     int[] arr_out = new int[arr_1.Length];
@@ -2106,7 +2262,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     int[] arr_out = new int[arr_in.Length];
@@ -2128,14 +2284,14 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_1.Length != arr_2.Length)
                     {
-                        MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                        ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                         return arr_1;
                     }
                     for (Int32 i = 0; i < arr_1.Length; i++)
                     {
                         if (arr_1[i].Length != arr_2[i].Length)
                         {
-                            MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                            ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                             return arr_1;
                         }
                     }
@@ -2158,7 +2314,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     int[][] arr_out = new int[arr_in.Length][];
@@ -2172,7 +2328,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_1.Length != arr_2.Length)
                     {
-                        MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                        ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                         return arr_1;
                     }
                     int[] arr_out = new int[arr_1.Length];
@@ -2186,7 +2342,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     int[] arr_out = new int[arr_in.Length];
@@ -2200,14 +2356,14 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_1.Length != arr_2.Length)
                     {
-                        MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                        ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                         return arr_1;
                     }
                     for (Int32 i = 0; i < arr_1.Length; i++)
                     {
                         if (arr_1[i].Length != arr_2[i].Length)
                         {
-                            MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                            ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                             return arr_1;
                         }
                     }
@@ -2222,7 +2378,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     int[][] arr_out = new int[arr_in.Length][];
@@ -2236,7 +2392,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_1.Length != arr_2.Length)
                     {
-                        MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                        ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                         return arr_1;
                     }
                     int[] arr_out = new int[arr_1.Length];
@@ -2248,7 +2404,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                             return arr_1;
                         }
                     }
@@ -2258,12 +2414,12 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     if (number_in == 0)
                     {
-                        MyReportFunctions.ReportError("Devide by 0");
+                        ReportFunctions.ReportError("Devide by 0");
                         return arr_in;
                     }
                     int[] arr_out = new int[arr_in.Length];
@@ -2277,14 +2433,14 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_1.Length != arr_2.Length)
                     {
-                        MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                        ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                         return arr_1;
                     }
                     for (Int32 i = 0; i < arr_1.Length; i++)
                     {
                         if (arr_1[i].Length != arr_2[i].Length)
                         {
-                            MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                            ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                             return arr_1;
                         }
                     }
@@ -2297,7 +2453,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                             return arr_1;
                         }
                     }
@@ -2307,12 +2463,12 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     if (number_in == 0)
                     {
-                        MyReportFunctions.ReportError("Devide by 0");
+                        ReportFunctions.ReportError("Devide by 0");
                         return arr_in;
                     }
                     int[][] arr_out = new int[arr_in.Length][];
@@ -2334,7 +2490,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_1.Length != arr_2.Length)
                     {
-                        MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                        ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                         return arr_1;
                     }
                     int[] arr_out = new int[arr_1.Length];
@@ -2356,7 +2512,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     int[] arr_out = new int[arr_in.Length];
@@ -2378,14 +2534,14 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_1.Length != arr_2.Length)
                     {
-                        MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                        ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                         return arr_1;
                     }
                     for (Int32 i = 0; i < arr_1.Length; i++)
                     {
                         if (arr_1[i].Length != arr_2[i].Length)
                         {
-                            MyReportFunctions.ReportError(arr_1.Length, arr_2.Length, MyReportFunctions.ErrorMessage.LengthDifferent);
+                            ReportFunctions.ReportError(arr_1.Length, arr_2.Length, ReportFunctions.ErrorMessage.LengthDifferent);
                             return arr_1;
                         }
                     }
@@ -2408,7 +2564,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return arr_in;
                     }
                     int[][] arr_out = new int[arr_in.Length][];
@@ -2445,17 +2601,110 @@ namespace ArrayFunctionsNamespace
             }
             public static class Convert
             {
+
                 /// <summary>
-                /// Written. 2023.11.05 13:26. St. Peterburg. Home. <br></br>
-                /// Tested. Works. 2023.11.05 13:33. St. Peterburg. Home. 
+                /// Converts array to filestring according to required number format, delimer and missing number string (defined by char). <br></br> 
+                /// Written. 2024.03.21 11:15. Moscow. Workplace. <br></br>
+                /// Tested. Works. 2024.03.21 11:27. Moscow. Workplace. <br></br> 
                 /// </summary>
                 /// <param name="arr_in"></param>
+                /// <param name="num_per_row"></param>
+                /// <param name="delimer"></param>
+                /// <param name="missing_number_char">Defines missing number string. The string will be of the length of the longest number with this char</param>
+                /// <param name="base_in"></param>
+                /// <param name="pad_number"></param>
                 /// <returns></returns>
-                public static char[] ToCharArray(int[] arr_in)
+                public static string ToFileString(int[] arr_in, int num_per_row, int base_in = 10, string delimer = "\t", char missing_number_char = '.', int pad_number = -1)
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
+                        return "";
+                    }
+
+                    int rows_num = arr_in.Length/num_per_row;
+                    bool IsNotRectangle = false;
+                    if ((arr_in.Length % num_per_row) != 0)
+                    {
+                        rows_num += 1;
+                        IsNotRectangle = true;
+                    }
+
+                    string[] strings_filestring = new string[rows_num];
+
+                    StringBuilder write_string = new StringBuilder();
+                   
+                    int col_index = 0;
+
+                    int pad_length = pad_number;
+
+                    if (base_in == 10)
+                    {
+                        if (pad_number == -1)
+                        {
+                            int max_int = arr_in.Max();
+                            int min_int = arr_in.Min();
+                            pad_length = min_int.ToString().Length;
+                            if (max_int.ToString().Length > min_int.ToString().Length)
+                            {
+                                pad_length = max_int.ToString().Length;
+                            }
+                        }
+                    }
+
+                    if (base_in == 16)
+                    {
+                        pad_length = 8;
+                    }
+
+                    for (int i = 0; i < arr_in.Length; i++)
+                    {
+                        if (base_in == 10)
+                        {
+                            write_string.Append(System.Convert.ToString(arr_in[i], base_in).ToUpper().PadRight(pad_length, ' '));
+                        }
+                        if (base_in == 16)
+                        {
+                            write_string.Append(System.Convert.ToString(arr_in[i], base_in).ToUpper().PadLeft(pad_length, '0'));
+                        }
+                        write_string.Append(delimer);
+                        col_index += 1;
+                        if (col_index > (num_per_row - 1))
+                        {
+                            write_string.Append("\r\n");
+                            col_index = 0;                            
+                        }
+                    }
+
+                    if (IsNotRectangle == true)
+                    {
+                        int row_filled = arr_in.Length % num_per_row;
+                        for (int i = 0; i < (num_per_row - row_filled); i++)
+                        {
+                            write_string.Append("".PadRight(pad_length, missing_number_char));
+                            write_string.Append(delimer);
+                            write_string.Append("\r\n");
+                        }
+                    }
+                    
+                    string return_string = write_string.ToString();
+                    
+                    return return_string;
+
+                }
+
+
+                    /// <summary>
+                    /// Written. 2023.11.05 13:26. St. Peterburg. Home. <br></br>
+                    /// Tested. Works. 2023.11.05 13:33. St. Peterburg. Home. 
+                    /// </summary>
+                    /// <param name="arr_in"></param>
+                    /// <returns></returns>
+                    public static char[] ToCharArray(int[] arr_in)
+                {
+                    if (arr_in.Length == 0)
+                    {
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new char[0];
                     }
                     char[] arr_out = Array.ConvertAll(arr_in, Int32ToChar);
@@ -2506,7 +2755,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0];
                     }
                     string[] arr_out = new string[arr_in.Length];
@@ -2518,7 +2767,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                         }
                     }
                     // space for code. end.
@@ -2536,7 +2785,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0][];
                     }
                     string[][] arr_out = new string[arr_in.Length][];
@@ -2551,7 +2800,7 @@ namespace ArrayFunctionsNamespace
                             }
                             catch
                             {
-                                MyReportFunctions.ReportError(i, j);
+                                ReportFunctions.ReportError(i, j);
                             }
                         }
                     }
@@ -2574,7 +2823,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0];
                     }
                     string[] arr_out = new string[arr_in.Length];
@@ -2586,7 +2835,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                         }
                     }
                     // space for code. end.
@@ -2603,7 +2852,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0][];
                     }
                     string[][] arr_out = new string[arr_in.Length][];
@@ -2618,7 +2867,7 @@ namespace ArrayFunctionsNamespace
                             }
                             catch
                             {
-                                MyReportFunctions.ReportError(i, j);
+                                ReportFunctions.ReportError(i, j);
                             }
                         }
                     }
@@ -2635,7 +2884,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new double[0];
                     }
                     double[] arr_out = new double[arr_in.Length];
@@ -2647,7 +2896,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                         }
                     }
                     // space for code. end.
@@ -2664,7 +2913,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new double[0][];
                     }
                     double[][] arr_out = new double[arr_in.Length][];
@@ -2679,7 +2928,7 @@ namespace ArrayFunctionsNamespace
                             }
                             catch
                             {
-                                MyReportFunctions.ReportError(i, j);
+                                ReportFunctions.ReportError(i, j);
                             }
                         }
                     }
@@ -2697,7 +2946,7 @@ namespace ArrayFunctionsNamespace
                 // space for code. start.
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                     return new int[0];
                 }
                 int[] arr_out = new int[arr_in.Length];
@@ -2709,7 +2958,7 @@ namespace ArrayFunctionsNamespace
                     }
                     catch
                     {
-                        MyReportFunctions.ReportError(i);
+                        ReportFunctions.ReportError(i);
                     }
                 }
                 // space for code. end.
@@ -2726,7 +2975,7 @@ namespace ArrayFunctionsNamespace
                 // space for code. start.
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                     return new int[0][];
                 }
                 int[][] arr_out = new int[arr_in.Length][];
@@ -2741,7 +2990,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i, j);
+                            ReportFunctions.ReportError(i, j);
                         }
                     }
                 }
@@ -2757,7 +3006,7 @@ namespace ArrayFunctionsNamespace
             /// <returns></returns>
             public static object[][] Sort(object[][] arr_in, int[] indexes_in)
             {
-                return ArrayMethods.Sort(arr_in, indexes_in);
+                return ArrayFunctions.Sort(arr_in, indexes_in);
             }
             /// <summary>
             /// Sort object array according to indexes provided
@@ -2768,7 +3017,7 @@ namespace ArrayFunctionsNamespace
             /// <returns></returns>
             public static object[] Sort(object[] arr_in, int[] indexes_in)
             {
-                return ArrayMethods.Sort(arr_in, indexes_in);
+                return ArrayFunctions.Sort(arr_in, indexes_in);
             }
         }
         /// <summary>
@@ -2828,7 +3077,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0];
                     }
 
@@ -2871,7 +3120,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new int[0];
                     }
                     int[] arr_out = new int[arr_in.Length];
@@ -3114,7 +3363,7 @@ namespace ArrayFunctionsNamespace
                     return;
                 }
                 Console.WriteLine("Array " + typeof(string).Name.ToString() + ". Length is " + arr_in.Length.ToString() + "x" + arr_in[0].Length.ToString());
-                string[] all_strings = ArrayMethods.Merge.NxM_To_A(arr_in);
+                string[] all_strings = ArrayFunctions.Merge.NxM_To_A(arr_in);
                 string longest_string = all_strings.OrderByDescending(s => s.Length).First();
                 Int32 pad_size = longest_string.Length;
                 string[][] str_arr = StringArray.Pad.Right(arr_in, pad_size);
@@ -3137,7 +3386,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (str_arr.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0][];
                     }
                     string[][] arr_out = new string[str_arr.Length][];
@@ -3164,7 +3413,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (str_arr.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0][];
                     }
                     string[][] arr_out = new string[str_arr.Length][];
@@ -3243,7 +3492,7 @@ namespace ArrayFunctionsNamespace
                     // 1. if array has zero length, it may indicate that the code is wrong.
                     if (str_arr.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0][];
                     }
                     // 2. columns number
@@ -3260,7 +3509,7 @@ namespace ArrayFunctionsNamespace
                         string[] to_put_in_arr = str_arr[i].Split(delimer);
                         if (to_put_in_arr.Length != columns_num)
                         {
-                            MyReportFunctions.ReportError("File text line has different amount of columns" + "\r\n" +
+                            ReportFunctions.ReportError("File text line has different amount of columns" + "\r\n" +
                                 "file line is " + i.ToString() + "\r\n" +
                                 "line has " + to_put_in_arr.Length.ToString() + " columns" + "\r\n" +
                                 "number of columns should be " + columns_num.ToString());
@@ -3314,7 +3563,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (str_arr.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return "";
                     }
                     Int32 arr_length_check = str_arr[0].Length;
@@ -3322,7 +3571,7 @@ namespace ArrayFunctionsNamespace
                     {
                         if (str_arr[a].Length != arr_length_check)
                         {
-                            MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.LengthDifferent);
+                            ReportFunctions.ReportError(ReportFunctions.ErrorMessage.LengthDifferent);
                             return "";
                         }
                     }
@@ -3355,7 +3604,7 @@ namespace ArrayFunctionsNamespace
                     // therefore there is notification to console.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new int[0][];
                     }
                     // 2. array int[][] for return
@@ -3368,7 +3617,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                         }
                     }
                     // space for code. end.
@@ -3389,7 +3638,7 @@ namespace ArrayFunctionsNamespace
                 {                    
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new uint[0];
                     }
                     uint[] arr_out = new uint[arr_in.Length];
@@ -3401,7 +3650,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                         }
                     }                    
                     return arr_out;
@@ -3419,7 +3668,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new int[0];
                     }
                     int[] arr_out = new int[arr_in.Length];
@@ -3431,7 +3680,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                         }
                     }
                     // space for code. end.
@@ -3448,7 +3697,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new int[0][];
                     }
                     int[][] arr_out = new int[arr_in.Length][];
@@ -3463,7 +3712,7 @@ namespace ArrayFunctionsNamespace
                             }
                             catch
                             {
-                                MyReportFunctions.ReportError(i, j);
+                                ReportFunctions.ReportError(i, j);
                             }
                         }
                     }
@@ -3492,7 +3741,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (strings_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new Int16[0];
                     }
                     Int16[] arr_out = new Int16[strings_in.Length];
@@ -3504,7 +3753,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                         }
                     }
                     // space for code. end.
@@ -3522,7 +3771,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError(i);
+                            ReportFunctions.ReportError(i);
                         }
                     }
                     // space for code. end.
@@ -3548,7 +3797,7 @@ namespace ArrayFunctionsNamespace
                         }
                         catch
                         {
-                            MyReportFunctions.ReportError("Cast failed at " + i.ToString());
+                            ReportFunctions.ReportError("Cast failed at " + i.ToString());
                         }
                     }
                     return arr_out;
@@ -3568,17 +3817,17 @@ namespace ArrayFunctionsNamespace
                 /// <returns></returns>
                 public static string[][] A_B_To_NxM(string[] arr_1, string[] arr_2)
                 {
-                    return ArrayMethods.Merge.A_B_To_NxM(arr_1, arr_2);
+                    return ArrayFunctions.Merge.A_B_To_NxM(arr_1, arr_2);
                 }
 
 
                 public static string[] A_B_To_C(string[] arr_1, string[] arr_2)
                 {
-                    return ArrayMethods.Merge.A_B_To_C(arr_1, arr_2);
+                    return ArrayFunctions.Merge.A_B_To_C(arr_1, arr_2);
                 }
                 public static string[] NxM_To_A(string[][] arr_in)
                 {
-                    return ArrayMethods.Merge.NxM_To_A(arr_in);
+                    return ArrayFunctions.Merge.NxM_To_A(arr_in);
                 }
             }
         }
@@ -3666,7 +3915,7 @@ namespace ArrayFunctionsNamespace
             {
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_0);
+                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_0);
                     return 0;
                 }
                 // 2023.11.23 11:33. Moscow. Workplace. Deviding by 0 is error
@@ -3682,7 +3931,7 @@ namespace ArrayFunctionsNamespace
                 }
                 if (is_non_zero == false)
                 {
-                    MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_0);
+                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_0);
                     return 0;
                 }
                 Int32 size_of_array = 0;
@@ -3697,7 +3946,7 @@ namespace ArrayFunctionsNamespace
                 // 2023.11.23 11:38. Moscow. Workplace. See average for byte[].
                 if (arr_in.Length > 8000000)
                 {
-                    MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_exceeded);
+                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_exceeded);
                     return 0;
                 }
                 Int32 byte_selector(byte byte_in)
@@ -3714,7 +3963,7 @@ namespace ArrayFunctionsNamespace
                 {
                     // 2023.11.23 11:44. Moscow. Workplace. Average from numbers
                     // that are no larger than 255 can not be larger than 255
-                    MyReportFunctions.ReportError("This should not occur. Check the code");
+                    ReportFunctions.ReportError("This should not occur. Check the code");
                     return 0;
                 }
                 return (byte)average_bytes;
@@ -3740,14 +3989,14 @@ namespace ArrayFunctionsNamespace
             {
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_0);
+                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_0);
                     return 0;
                 }
                 if (arr_in.Length > 8000000)
                 {
                     // 2023.11.23 10:29. Moscow. Workplace. 16777216 is  
                     // 1 in the 1st bit of 4th byte
-                    MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_exceeded);
+                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_exceeded);
                     return 0;
                 }
                 Int32 byte_selector(byte byte_in)
@@ -3760,7 +4009,7 @@ namespace ArrayFunctionsNamespace
                 {
                     // 2023.11.23 10:54. Moscow.  Moscow. Workplace. Average from numbers
                     // that are no larger than 255 can not be larger than 255
-                    MyReportFunctions.ReportError("This should not occur. Check the code");
+                    ReportFunctions.ReportError("This should not occur. Check the code");
                     return 0;
                 }
                 return (byte)average_bytes;
@@ -3773,7 +4022,7 @@ namespace ArrayFunctionsNamespace
             /// <returns></returns>
             public static byte[] Copy(byte[] arr_in)
             {
-                return ArrayMethods.Copy(arr_in);
+                return ArrayFunctions.Copy(arr_in);
             }
 
 
@@ -3841,8 +4090,8 @@ namespace ArrayFunctionsNamespace
                 // the number could be converted to byte. The function was written not for large array.
                 // Fixed. Generate(arr_size) -> Generate(arr_size,0,255);
 
-                int[] int32_array = ArrayMethods.Int32Array.Generate.WithRandomMinMaxValue(arr_size,0,255);
-                byte[] byte_array = ArrayMethods.Int32Array.Convert.ToByteArray(int32_array);
+                int[] int32_array = ArrayFunctions.Int32Array.Generate.RandomMinMaxValue(arr_size,0,255);
+                byte[] byte_array = ArrayFunctions.Int32Array.Convert.ToByteArray(int32_array);
                 return byte_array;
             }
             /// <summary>
@@ -3882,7 +4131,7 @@ namespace ArrayFunctionsNamespace
                 {
                    if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new char[0][];
                     }
 
@@ -3931,7 +4180,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new string[0][];
                     }
                     string[][] arr_out = new string[arr_in.Length][];
@@ -3946,7 +4195,7 @@ namespace ArrayFunctionsNamespace
                             }
                             catch
                             {
-                                MyReportFunctions.ReportError(i, j);
+                                ReportFunctions.ReportError(i, j);
                             }
                         }
                     }
@@ -3969,7 +4218,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length % 4 != 0)
                     {
-                        MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_Wrong);
+                        ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_Wrong);
                         return new float[0];
                     }
                     float[] arr_out = new float[arr_in.Length / 4];
@@ -3998,7 +4247,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length % 2 != 0)
                     {
-                        MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_Wrong);
+                        ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_Wrong);
                         return new UInt16[0];
                     }
                     UInt16[] arr_out = new UInt16[arr_in.Length / 2];
@@ -4035,7 +4284,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (arr_in.Length % 2 != 0)
                     {
-                        MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_Wrong);
+                        ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_Wrong);
                         return new Int16[0];
                     }
                     Int16[] arr_out = new Int16[arr_in.Length / 2];
@@ -4058,7 +4307,7 @@ namespace ArrayFunctionsNamespace
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new int[0][];
                     }
                     int[][] arr_out = new int[arr_in.Length][];
@@ -4073,7 +4322,7 @@ namespace ArrayFunctionsNamespace
                             }
                             catch
                             {
-                                MyReportFunctions.ReportError(i, j);
+                                ReportFunctions.ReportError(i, j);
                             }
                         }
                     }
@@ -4175,7 +4424,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (array_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new byte[0][];
                     }
                     string str_from_byte = Encoding.UTF7.GetString(array_in);
@@ -4224,7 +4473,7 @@ namespace ArrayFunctionsNamespace
                 {
                     if (array_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new byte[0][];
                     }
                     string str_from_byte = Encoding.UTF7.GetString(array_in);
@@ -4274,7 +4523,7 @@ namespace ArrayFunctionsNamespace
                 /// <returns></returns>
                 public static byte[][] A_To_MxN(byte[] array_in, Int32 columns_number, bool columns_length_equal = true)
                 {
-                    return ArrayMethods.Split.A_To_MxN(array_in, columns_number, columns_length_equal);
+                    return ArrayFunctions.Split.A_To_MxN(array_in, columns_number, columns_length_equal);
                 }
             }
             /// <summary>
@@ -4337,7 +4586,7 @@ namespace ArrayFunctionsNamespace
                 public static byte[] FromIndexByLength(byte[] arr_in, UInt32 index, UInt32 length)
                 {
 
-                    return ArrayMethods.Extract.FromIndexByLength(arr_in, index, length);
+                    return ArrayFunctions.Extract.FromIndexByLength(arr_in, index, length);
                 }
 
                 /// <summary>
@@ -4350,7 +4599,7 @@ namespace ArrayFunctionsNamespace
                 /// <returns></returns>
                 public static byte[] FromStartByLength(byte[] arr_in, UInt32 length_arr)
                 {
-                    return ArrayMethods.Extract.FromStartByLength(arr_in, length_arr);
+                    return ArrayFunctions.Extract.FromStartByLength(arr_in, length_arr);
                 }
 
 
@@ -4497,7 +4746,7 @@ namespace ArrayFunctionsNamespace
                 /// <returns></returns>
                 public static byte[] NxM_To_A(byte[][] array_in)
                 {
-                    return ArrayMethods.Merge.NxM_To_A(array_in);
+                    return ArrayFunctions.Merge.NxM_To_A(array_in);
                 }
                 /// <summary>
                 /// Prints byte[][] in console
@@ -4552,7 +4801,7 @@ namespace ArrayFunctionsNamespace
                 byte[][] arr_out = new byte[0][];
                 if (num_arr == 0)
                 {
-                    MyReportFunctions.ReportError("Arrays number is 0. Division by 0");
+                    ReportFunctions.ReportError("Arrays number is 0. Division by 0");
                     return arr_out;
                 }
                 Int32 num_arr_out = num_arr;

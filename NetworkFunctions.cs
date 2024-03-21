@@ -1,6 +1,9 @@
 ﻿using ArrayFunctionsNamespace;
+using BitsFunctionsNamespace;
 using FileFunctionsNamespace;
 using MathFunctionsNamespace;
+using NetworkFunctionsNamespace;
+//using NetworkFunctionsNamespace;
 using ReportFunctionsNamespace;
 using System;
 using System.Collections.Generic;
@@ -33,7 +36,7 @@ namespace NetworkFunctionsNamespace
     /// <summary>
     /// Written. 2024.02.18 11:44. Moscow. Hostel.
     /// </summary>
-    public static class CRS32
+    class CRC32_Class
     {
 
         // 2024.02.18 12:07. Moscow. Hostel.
@@ -72,114 +75,121 @@ public static class Crc8
 }
 */
         // 2024.02.18 12:19. Moscow. Hostel. CRC16 needs to be found
-        
 
-
-
-
-  /*      
-
-        public const UInt32 DefaultPolynomial = 0xedb88320;
-        public static UInt32[] CRS32_Table = null;
-        static CRS32()
+        public const UInt32 DefaultPolynomial = 0x04C11DB7;
+        UInt32 internal_polynomial = DefaultPolynomial;
+        public UInt32 Polynomial
         {
-            CRS32_Table = InitializeTable(DefaultPolynomial);
+            get
+            {
+                return internal_polynomial;
+            }
+            set
+            {
+                internal_polynomial = value;
+                InitializeCRCTable(internal_polynomial);
+            }
+        } 
+        public UInt32[] CRS32_Table = null;
+        public CRC32_Class(UInt32 polynomial_in)
+        {
+            CRS32_Table = InitializeCRCTable(polynomial_in);
         }
 
-
-        private static UInt32[] InitializeTable(UInt32 polynomial)
+        private UInt32[] InitializeCRCTable(UInt32 polynomial)
         {
             UInt32[] createTable = new UInt32[256];
-            for (Int32 i = 0; i < 256; i++)
+            
+            // 2024.03.21 16:42. Moscow. Workplace.
+            // for using shift right there is reversed polynomial - that is reversed bits in the number (1st, 2nd -> 32nd, 31st)
+            UInt32 polynomial_reversed = (uint)BitsFunctions.BitsReversed((int)polynomial);
+            for (UInt32 i = 0; i < 256; i++)
             {
-                UInt32 entry = (UInt32)i;
-                for (Int32 j = 0; j < 8; j++)
+                UInt32 entry = i;
+                for (UInt32 j = 0; j < 8; j++)
+                {
                     if ((entry & 1) == 1)
-                        entry = (entry >> 1) ^ polynomial;
+                    {                        
+                        entry = (entry >> 1) ^ polynomial_reversed;
+                    }
                     else
+                    {
                         entry = entry >> 1;
+                    }
+
+                }
                 createTable[i] = entry;
             }
             return createTable;
         }
-        
-        */
-        /*
-         * 
-         * CRC32:
 
-        public class Crc32
-        {
-        private readonly uint[] _table;
-        private const UInt32 Poly = 0xedb88320;
 
-        private UInt32 ComputeChecksum(IEnumerable<byte> bytes)
+
+        public UInt32 ComputeChecksum(byte[] byte_arr)
         {
-        var crc = 0xffffffff;
-        foreach (var t in bytes)
-        {
-            var index = (byte) ((crc & 0xff) ^ t);
-            crc = (crc >> 8) ^ _table[index];
+            var crc = 0xffffffff;
+            foreach (var t in byte_arr)
+            {
+                var index = (byte)((crc & 0xff) ^ t);
+                crc = (crc >> 8) ^ CRS32_Table[index];
+            }
+            return ~crc;
         }
 
-        return ~crc;
-        }
-
-        public IEnumerable<byte> ComputeChecksumBytes(IEnumerable<byte> bytes)
+        public byte[] ComputeChecksumBytes(byte[] byte_arr)
         {
-        return BitConverter.GetBytes(ComputeChecksum(bytes));
+            return BitConverter.GetBytes(ComputeChecksum(byte_arr));
         }
-
-        public Crc32()
-        {
-        _table = new uint[256];
-        for (UInt32 i = 0; i < _table.Length; ++i)
-        {
-            var temp = i;
-            for (var j = 8; j > 0; --j)
-                if ((temp & 1) == 1)
-                    temp = (temp >> 1) ^ Poly;
-                else
-                    temp >>= 1;
-            _table[i] = temp;
-        }
-        }
-        }
-        */
-
-        /*
-         * 
-         * CRC32 из кода на C выше:
-
-        byte[] GetCRC32(IEnumerable<byte> bytes)
-        {
-        var crcTable = new uint[256];
-        UInt32 crc;
-
-        for (UInt32 i = 0; i < 256; i++)
-        {
-        crc = i;
-        for (UInt32 j = 0; j < 8; j++)
-            crc = (crc & 1) != 0 ? (crc >> 1) ^ 0xEDB88320 : crc >> 1;
-
-        crcTable[i] = crc;
-        }
-
-        crc = bytes.Aggregate(0xFFFFFFFF, (current, s) => crcTable[(current ^ s) & 0xFF] ^ (current >> 8));
-
-        crc ^= 0xFFFFFFFF;
-        return BitConverter.GetBytes(crc);
-        }
-        */
-
-
-
-
-
-
     }
 
+    class CRC32Test
+    {
+        CRC32_Class crc32 = new CRC32_Class(CRC32_Class.DefaultPolynomial);
+        public void ShowTable()
+        {
+           Console.Write(ArrayFunctions.UInt32Array.Convert.ToFileString(crc32.CRS32_Table, 8, 16, " "));
+        }
+        public void SetPolynomial(uint num_in)
+        {
+            crc32.Polynomial = num_in;
+        }
+    }
+
+
+
     /*
+     * 
+     * CRC32 из кода на C выше:
+
+    byte[] GetCRC32(IEnumerable<byte> bytes)
+    {
+    var crcTable = new uint[256];
+    UInt32 crc;
+
+    for (UInt32 i = 0; i < 256; i++)
+    {
+    crc = i;
+    for (UInt32 j = 0; j < 8; j++)
+        crc = (crc & 1) != 0 ? (crc >> 1) ^ 0xEDB88320 : crc >> 1;
+
+    crcTable[i] = crc;
+    }
+
+    crc = bytes.Aggregate(0xFFFFFFFF, (current, s) => crcTable[(current ^ s) & 0xFF] ^ (current >> 8));
+
+    crc ^= 0xFFFFFFFF;
+    return BitConverter.GetBytes(crc);
+    }
+    */
+
+
+
+
+
+
+}
+
+/*
 public class Crc32 : HashAlgorithm
 {
 public const UInt32 DefaultPolynomial = 0xedb88320;
@@ -286,7 +296,7 @@ return hash;
 
 
 
-    class TCPClientFunctionsClass
+class TCPClientFunctionsClass
     {
         TcpClient ClientTCP = null;
         IPAddress ServerAddress = null;
@@ -297,9 +307,9 @@ return hash;
             byte[] end_of_packet_bytes = MathFunctions.UInt32ToBytes(end_of_packet);
             byte[] cmd_bytes = new byte[1];
             cmd_bytes[0] = (byte)cmd_in;
-            header_bytes = ArrayMethods.ByteArray.MergeArrays(header_bytes, cmd_bytes);
-            arr_out = ArrayMethods.ByteArray.MergeArrays(header_bytes, data_in);
-            arr_out = ArrayMethods.ByteArray.MergeArrays(data_in, end_of_packet_bytes);
+            header_bytes = ArrayFunctions.ByteArray.MergeArrays(header_bytes, cmd_bytes);
+            arr_out = ArrayFunctions.ByteArray.MergeArrays(header_bytes, data_in);
+            arr_out = ArrayFunctions.ByteArray.MergeArrays(data_in, end_of_packet_bytes);
             return arr_out;
         }
         public void ServerConnect(string ip_address, Int32 port)
@@ -330,17 +340,17 @@ return hash;
             byte[] end_of_packet_bytes = MathFunctions.UInt32ToBytes(end_of_packet);
             byte[] cmd_bytes = new byte[1];
             cmd_bytes[0] = (byte)cmd_in;
-            header_bytes = ArrayMethods.ByteArray.MergeArrays(header_bytes, cmd_bytes);
-            arr_out = ArrayMethods.ByteArray.MergeArrays(header_bytes, data_in);
-            arr_out = ArrayMethods.ByteArray.MergeArrays(data_in, end_of_packet_bytes);
+            header_bytes = ArrayFunctions.ByteArray.MergeArrays(header_bytes, cmd_bytes);
+            arr_out = ArrayFunctions.ByteArray.MergeArrays(header_bytes, data_in);
+            arr_out = ArrayFunctions.ByteArray.MergeArrays(data_in, end_of_packet_bytes);
             return arr_out;
         }
         public static bool CheckPacket(byte[] packet_in, UInt32 start_of_packet = 0xAFFFFFFF, UInt32 end_of_packet = 0xBFFFFFFF)
         {
             byte[] header_bytes = MathFunctions.UInt32ToBytes(start_of_packet);
-            Int32 header_num = ArrayMethods.ByteArray.IndexOf(packet_in, header_bytes);
+            Int32 header_num = ArrayFunctions.ByteArray.IndexOf(packet_in, header_bytes);
             byte[] end_of_packet_bytes = MathFunctions.UInt32ToBytes(end_of_packet);
-            Int32 end_of_packet_num = ArrayMethods.ByteArray.IndexOf(packet_in, end_of_packet_bytes);
+            Int32 end_of_packet_num = ArrayFunctions.ByteArray.IndexOf(packet_in, end_of_packet_bytes);
             bool bool_out = false;
             if ((header_num != -1) && (end_of_packet_num != -1))
             {
@@ -357,10 +367,10 @@ return hash;
             byte[] arr_out = new byte[0];
             byte[] header_bytes = MathFunctions.UInt32ToBytes(start_of_packet);
             byte[] end_of_packet_bytes = MathFunctions.UInt32ToBytes(end_of_packet);
-            Int32 header_index = ArrayMethods.ByteArray.LastIndexOf(packet_in, header_bytes);
-            Int32 end_of_packet_index = ArrayMethods.ByteArray.IndexOf(packet_in, end_of_packet_bytes);
-            arr_out = ArrayMethods.ByteArray.ExtractArray.BelowIndex(packet_in, header_index);
-            arr_out = ArrayMethods.ByteArray.ExtractArray.AboveIndex(arr_out, end_of_packet_index);
+            Int32 header_index = ArrayFunctions.ByteArray.LastIndexOf(packet_in, header_bytes);
+            Int32 end_of_packet_index = ArrayFunctions.ByteArray.IndexOf(packet_in, end_of_packet_bytes);
+            arr_out = ArrayFunctions.ByteArray.ExtractArray.BelowIndex(packet_in, header_index);
+            arr_out = ArrayFunctions.ByteArray.ExtractArray.AboveIndex(arr_out, end_of_packet_index);
             return arr_out;
         }
         public void ServerStart(string ip_address, Int32 port, Int32 buffer_size = 0x3FFFF)
@@ -434,7 +444,7 @@ return hash;
             {
                 public static byte[] Bytes(byte[] bytes_in)
                 {
-                    return MathFunctions.UInt32ToBytes(Number(bytes_in));
+                    return MathFunctions.UInt32ToBytes(SumBytes.Number(bytes_in));
                 }
                 public static UInt32 Number(byte[] bytes_in)
                 {
@@ -473,7 +483,7 @@ return hash;
             }
             catch
             {
-                MyReportFunctions.ReportError("Something wrong in " + nameof(ServerSendBytes));
+                ReportFunctions.ReportError("Something wrong in " + nameof(ServerSendBytes));
             }
         }
         private static byte[] ServerRecieveBytes(TcpClient client_tcp)
@@ -488,7 +498,7 @@ return hash;
             }
             catch
             {
-                MyReportFunctions.ReportError("Something wrong in " + nameof(ServerSendBytes));
+                ReportFunctions.ReportError("Something wrong in " + nameof(ServerSendBytes));
             }
             return for_return;
         }
@@ -547,14 +557,14 @@ return hash;
             byte[] num_out = new byte[0];
             if (num_size <= 0)
             {
-                MyReportFunctions.ReportError(nameof(num_size) + " wrong.\r\n" + nameof(num_size) + " is " + num_size.ToString());
+                ReportFunctions.ReportError(nameof(num_size) + " wrong.\r\n" + nameof(num_size) + " is " + num_size.ToString());
                 return num_out;
             }
             Int32 div_res = 0;
             System.Math.DivRem(num_size, 2, out div_res);
             if (div_res != 0)
             {
-                MyReportFunctions.ReportError(nameof(num_size) + " wrong.\r\n" + nameof(num_size) + " is " + num_size.ToString());
+                ReportFunctions.ReportError(nameof(num_size) + " wrong.\r\n" + nameof(num_size) + " is " + num_size.ToString());
                 return num_out;
             }
             num_out = new byte[num_size];
@@ -604,8 +614,7 @@ return hash;
         {
             return string_in.Split(new char[] { delimer_in }, 2);
         }
-    }
-    class NetworkDataClass
+        class NetworkDataClass
     {
         public NetworkDataClass()
         {

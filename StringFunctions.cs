@@ -526,7 +526,7 @@ namespace StringFunctionsNamespace
             Int32 char_index = letters_order.IndexOf(char_in);
             if (char_index == -1)
             {
-                MyReportFunctions.ReportError("Letter is not in letters order string\r\n" +
+                ReportFunctions.ReportError("Letter is not in letters order string\r\n" +
                     "Letter: " + char_in.ToString() + "\r\n" +
                     "Letters order string: " + letters_order);
                 return letters_order[0];
@@ -613,7 +613,7 @@ namespace StringFunctionsNamespace
                 {
                     if (arr_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new Dictionary<char, int>();
                     }
                     Dictionary<char, int> dict_out = new Dictionary<char, int>();
@@ -634,7 +634,7 @@ namespace StringFunctionsNamespace
                 {
                     if (dict_in.Count == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new SymbolData[0];
                     }
                     SymbolData[] arr_out = new SymbolData[dict_in.Count];
@@ -658,7 +658,7 @@ namespace StringFunctionsNamespace
                 char[] symbols_list = new char[0];
                 if (str_in.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.StringZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.StringZeroLength);
                     return symbols_list;
                 }
                 char[] symbols_in_str = str_in.ToCharArray();
@@ -694,7 +694,7 @@ namespace StringFunctionsNamespace
                 data_out.Symbol = symbol_in;
                 if (str_in.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.StringZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.StringZeroLength);
                     return data_out;
                 }
                 char[] symbols_in_str = str_in.ToCharArray();
@@ -763,7 +763,7 @@ namespace StringFunctionsNamespace
             {
                 if (arr_in.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                     return;
                 }
                 string str_for_file = "";
@@ -795,7 +795,7 @@ namespace StringFunctionsNamespace
                             string filepath = filelist[i];
                             if (System.IO.File.Exists(filepath) == false)
                             {
-                                MyReportFunctions.ReportError("File does not exists. File " + filepath);
+                                ReportFunctions.ReportError("File does not exists. File " + filepath);
                                 return new SymbolData[0];
                             }
                         }
@@ -845,7 +845,7 @@ namespace StringFunctionsNamespace
                     }
                     else
                     {
-                        MyReportFunctions.ReportError("File does not exists. File " + filepath);
+                        ReportFunctions.ReportError("File does not exists. File " + filepath);
                         return new SymbolData[0];
                     }
                 }
@@ -864,7 +864,7 @@ namespace StringFunctionsNamespace
                 {
                     if (str_in.Length == 0)
                     {
-                        MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                         return new SymbolData[0];
                     }
                     char[] symbols_str = SymbolsInString(str_in);

@@ -258,7 +258,7 @@ namespace MyUSBMethodsNamespace
                 if (buffer_is_full == true)
                 {
                     Is_Bytes_Received = true;
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayMaxLength, _usb_rx_buffer_count);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayMaxLength, _usb_rx_buffer_count);
                 }
                 Form_In_Use.Invoke(new EventHandler(USB_Timer_Start));
             }
@@ -425,7 +425,7 @@ namespace MyUSBMethodsNamespace
             {
                 if (report_error == true)
                 {
-                    MyReportFunctions.ReportError("Open VCP error.\r\n" + e.Message);
+                    ReportFunctions.ReportError("Open VCP error.\r\n" + e.Message);
                 }
             }
             return result_out;
@@ -503,7 +503,8 @@ namespace MyUSBMethodsNamespace
             ReceiveNumberOfBytes,
             ReceiveByLengthInt16,
             ReceiveByLengthInt8,
-            ReceiveStrings
+            ReceiveStrings,
+            Recieve_MODBUS_RTU
         }
         USB_Receive_Methods_List USB_Reception_Type = USB_Receive_Methods_List.NoReception;
         //bool USB_Reception_1_byte_rx = false;
@@ -549,7 +550,7 @@ namespace MyUSBMethodsNamespace
         public void SendPeriod(byte[] data_in, Int32 period)
         {
             USB_Timer_send_period.Interval = period;
-            USB_send_period_bytes = ArrayMethods.ByteArray.Copy(data_in);
+            USB_send_period_bytes = ArrayFunctions.ByteArray.Copy(data_in);
             Send(USB_send_period_bytes);
             USB_Timer_send_period.Start();
         }
@@ -617,7 +618,7 @@ namespace MyUSBMethodsNamespace
             }
             catch (Exception e)
             {
-                MyReportFunctions.ReportError("VCP. Send error.\r\n" + e.Message);
+                ReportFunctions.ReportError("VCP. Send error.\r\n" + e.Message);
             }
             return for_return;
         }
@@ -632,7 +633,7 @@ namespace MyUSBMethodsNamespace
             }
             catch (Exception e)
             {
-                MyReportFunctions.ReportError("VCP. Send error.\r\n" + e.Message);
+                ReportFunctions.ReportError("VCP. Send error.\r\n" + e.Message);
             }
             return for_return;
         }
@@ -655,7 +656,7 @@ namespace MyUSBMethodsNamespace
             {
                 if (show_error == true)
                 {
-                    MyReportFunctions.ReportError("Close VCP error.\r\n" + e.Message);
+                    ReportFunctions.ReportError("Close VCP error.\r\n" + e.Message);
                 }
             }
             return result_out;

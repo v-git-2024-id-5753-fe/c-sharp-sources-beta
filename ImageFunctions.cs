@@ -202,15 +202,15 @@ namespace ImageFunctionsNameSpace
             string extension = Path.GetExtension(file_in);
             if (extension != extension_compress_lines)
             {
-                MyReportFunctions.ReportError("Wrong file. File is " + extension + ". File should be " + extension_compress_lines);
+                ReportFunctions.ReportError("Wrong file. File is " + extension + ". File should be " + extension_compress_lines);
                 return;
             }
             _internal_File_Bytes = FileFunctions.TextFile.FileToBytes(file_in);
             Size.BeforeDecompression = _internal_File_Bytes.Length;
-            byte[] height_bytes = ArrayMethods.Extract.AboveIndex(_internal_File_Bytes, 4);
-            height_bytes = ArrayMethods.Extract.BelowIndex(height_bytes, 1);
-            byte[] width_bytes = ArrayMethods.Extract.AboveIndex(_internal_File_Bytes, 8);
-            width_bytes = ArrayMethods.Extract.BelowIndex(_internal_File_Bytes, 5);
+            byte[] height_bytes = ArrayFunctions.Extract.AboveIndex(_internal_File_Bytes, 4);
+            height_bytes = ArrayFunctions.Extract.BelowIndex(height_bytes, 1);
+            byte[] width_bytes = ArrayFunctions.Extract.AboveIndex(_internal_File_Bytes, 8);
+            width_bytes = ArrayFunctions.Extract.BelowIndex(_internal_File_Bytes, 5);
             _size_height = MathFunctions.BytesToInt16(height_bytes);
             _size_width = MathFunctions.BytesToInt16(width_bytes);
         }
@@ -252,8 +252,8 @@ namespace ImageFunctionsNameSpace
                     // it was for debug. 2024.02.10 18:52. Moscow. Hostel.
                     // Int32 b = 0;
                 }
-                byte[] pixel_color_bytes = ArrayMethods.Extract.FromIndexToIndex(_internal_File_Bytes, i, i + 3);
-                byte[] line_size_bytes = ArrayMethods.Extract.FromIndexToIndex(_internal_File_Bytes, i + 6, i + 7);
+                byte[] pixel_color_bytes = ArrayFunctions.Extract.FromIndexToIndex(_internal_File_Bytes, i, i + 3);
+                byte[] line_size_bytes = ArrayFunctions.Extract.FromIndexToIndex(_internal_File_Bytes, i + 6, i + 7);
                 PixelColor = MathFunctions.Int32Number.BytesToInt32(pixel_color_bytes);
                 LineSize = MathFunctions.BytesToInt16(line_size_bytes);
                 for (Int32 j = 0; j < LineSize; j++)
@@ -440,9 +440,9 @@ namespace ImageFunctionsNameSpace
                 byte[] red_bytes = ColorFunctions.Extract.FromArray.Red(color_arr);
                 byte[] green_bytes = ColorFunctions.Extract.FromArray.Green(color_arr);
                 byte[] blue_bytes = ColorFunctions.Extract.FromArray.Blue(color_arr);
-                byte red_average = ArrayMethods.ByteArray.Average(red_bytes);
-                byte green_average = ArrayMethods.ByteArray.Average(green_bytes);
-                byte blue_average = ArrayMethods.ByteArray.Average(blue_bytes);
+                byte red_average = ArrayFunctions.ByteArray.Average(red_bytes);
+                byte green_average = ArrayFunctions.ByteArray.Average(green_bytes);
+                byte blue_average = ArrayFunctions.ByteArray.Average(blue_bytes);
                 // 2024.03.07 08:04. Moscow. Workplace. 
                 // note. negative int32 can not be casted to uint.
                 UInt32 uint32_for_out = (uint)0xFF << 24;
@@ -511,7 +511,7 @@ namespace ImageFunctionsNameSpace
                 }
                 if (point_width == 0)
                 {
-                    MyReportFunctions.ReportError("PoInt32 radius error");
+                    ReportFunctions.ReportError("PoInt32 radius error");
                     Bitmap bitmap_error = Generate.Rectungular_Checkboard(200, 200);
                     return bitmap_error;
                 }
@@ -760,7 +760,7 @@ namespace ImageFunctionsNameSpace
             {
                 if (point_width == 0)
                 {
-                    MyReportFunctions.ReportError("PoInt32 radius error");
+                    ReportFunctions.ReportError("PoInt32 radius error");
                     Bitmap bitmap_error = Generate.Rectungular_Checkboard(200, 200);
                     return bitmap_error;
                 }
@@ -796,7 +796,7 @@ namespace ImageFunctionsNameSpace
             {
                 if (point_width == 0)
                 {
-                    MyReportFunctions.ReportError("PoInt32 radius error");
+                    ReportFunctions.ReportError("PoInt32 radius error");
                     Bitmap bitmap_error = Generate.Rectungular_Checkboard(200, 200);
                     FromBitmap(bitmap_error, form_call_from);
                     return;
@@ -899,8 +899,8 @@ namespace ImageFunctionsNameSpace
                         bool object_found = false;
                         for (Int32 i = 0; i < bitmap_in.Width; i++)
                         {
-                            int[] column = ArrayMethods.Column.Take(bitmap_int32, i);
-                            if (ArrayMethods.Int32Array.Math.ElementsTheSame(column) == true)
+                            int[] column = ArrayFunctions.Column.Take(bitmap_int32, i);
+                            if (ArrayFunctions.Int32Array.Math.ElementsTheSame(column) == true)
                             {
                                 Int32 bitmap_pixel = bitmap_in.GetPixel(i, 0).ToArgb();
                                 Int32 background_pixel = color_background.ToArgb();
@@ -915,7 +915,7 @@ namespace ImageFunctionsNameSpace
                             }
                             if (object_found == false)
                             {
-                                if (ArrayMethods.Int32Array.Math.ElementsTheSame(column) == true)
+                                if (ArrayFunctions.Int32Array.Math.ElementsTheSame(column) == true)
                                 {
                                     Int32 bitmap_pixel = bitmap_in.GetPixel(i, 0).ToArgb();
                                     Int32 background_pixel = color_background.ToArgb();
@@ -929,7 +929,7 @@ namespace ImageFunctionsNameSpace
                             }
                             if (object_found == true)
                             {
-                                if (ArrayMethods.Int32Array.Math.ElementsTheSame(column) == true)
+                                if (ArrayFunctions.Int32Array.Math.ElementsTheSame(column) == true)
                                 {
                                     Int32 bitmap_pixel = bitmap_in.GetPixel(i, 0).ToArgb();
                                     Int32 background_pixel = color_background.ToArgb();
@@ -1034,8 +1034,8 @@ namespace ImageFunctionsNameSpace
                     Int32 length_out = 0;
                     for (Int32 i = columns_count - 1; i >= 0; i--)
                     {
-                        int[] row_int32 = ArrayMethods.Column.Take(ImageInt32Array, i);
-                        if (ArrayMethods.Int32Array.Math.ElementsTheSame(row_int32) == true)
+                        int[] row_int32 = ArrayFunctions.Column.Take(ImageInt32Array, i);
+                        if (ArrayFunctions.Int32Array.Math.ElementsTheSame(row_int32) == true)
                         {
                             length_out += 1;
                         }
@@ -1061,8 +1061,8 @@ namespace ImageFunctionsNameSpace
                     Int32 length_out = 0;
                     for (Int32 i = 0; i < columns_count; i++)
                     {
-                        int[] row_int32 = ArrayMethods.Column.Take(ImageInt32Array, i);
-                        if (ArrayMethods.Int32Array.Math.ElementsTheSame(row_int32) == true)
+                        int[] row_int32 = ArrayFunctions.Column.Take(ImageInt32Array, i);
+                        if (ArrayFunctions.Int32Array.Math.ElementsTheSame(row_int32) == true)
                         {
                             length_out += 1;
                         }
@@ -1088,8 +1088,8 @@ namespace ImageFunctionsNameSpace
                     Int32 length_out = 0;
                     for (Int32 i = rows_count - 1; i >= 0; i--)
                     {
-                        int[] row_int32 = ArrayMethods.Row.Take(ImageInt32Array, i);
-                        if (ArrayMethods.Int32Array.Math.ElementsTheSame(row_int32) == true)
+                        int[] row_int32 = ArrayFunctions.Row.Take(ImageInt32Array, i);
+                        if (ArrayFunctions.Int32Array.Math.ElementsTheSame(row_int32) == true)
                         {
                             length_out += 1;
                         }
@@ -1114,8 +1114,8 @@ namespace ImageFunctionsNameSpace
                     Int32 length_out = 0;
                     for (Int32 i = 0; i < rows_count; i++)
                     {
-                        int[] row_int32 = ArrayMethods.Row.Take(ImageInt32Array, i);
-                        if (ArrayMethods.Int32Array.Math.ElementsTheSame(row_int32) == true)
+                        int[] row_int32 = ArrayFunctions.Row.Take(ImageInt32Array, i);
+                        if (ArrayFunctions.Int32Array.Math.ElementsTheSame(row_int32) == true)
                         {
                             length_out += 1;
                         }
@@ -1325,7 +1325,7 @@ namespace ImageFunctionsNameSpace
                 */
                 for (Int32 i = 0; i < bitmap_int32.Length; i++)
                 {
-                    int[] column_int32 = ArrayMethods.Column.Take(bitmap_int32, i);
+                    int[] column_int32 = ArrayFunctions.Column.Take(bitmap_int32, i);
                     if (column_int32.Contains(mark_color.ToArgb()) == true)
                     {
                         mark_values.Add(i);
@@ -1391,7 +1391,7 @@ namespace ImageFunctionsNameSpace
                 // There static class Crop. There were no need to have class and therefore 
                 // Crop is moved to MyImageFunctions.
                 int[][] arr_image = BitmapToInt32ArrayAxB(image_in);
-                int[][] arr_part_image = ArrayMethods.Extract.PartAxBFromCxD(arr_image, w_start, w_size, h_start, h_size);
+                int[][] arr_part_image = ArrayFunctions.Extract.PartAxBFromCxD(arr_image, w_start, w_size, h_start, h_size);
                 return Int32ArrayAxBToBitmap(arr_part_image);
             }
         }
@@ -1414,7 +1414,7 @@ namespace ImageFunctionsNameSpace
             /// <returns></returns>
             public static Bitmap FromInt32Array(int[][] arr_in, UInt32 w_start, UInt32 h_start, UInt32 w_size, UInt32 h_size)
             {
-                int[][] arr_part_image = ArrayMethods.Extract.PartAxBFromCxD(arr_in, w_start, w_size, h_start, h_size);
+                int[][] arr_part_image = ArrayFunctions.Extract.PartAxBFromCxD(arr_in, w_start, w_size, h_start, h_size);
                 return Int32ArrayAxBToBitmap(arr_part_image);
             }
         }
@@ -1480,7 +1480,7 @@ namespace ImageFunctionsNameSpace
 
                         if (is_level_found == false)
                         {
-                            MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_Wrong);
+                            ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_Wrong);
                             return new char[0][];
                         }
 
@@ -1579,7 +1579,7 @@ namespace ImageFunctionsNameSpace
                     execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
                 }
                 int[][] bitmap_int32_2D_array = BitmapToInt32ArrayAxB(image_in, alpha_ch);
-                int[] arr_out = ArrayMethods.Int32Array.Merge.AxB_To_C(bitmap_int32_2D_array);
+                int[] arr_out = ArrayFunctions.Int32Array.Merge.AxB_To_C(bitmap_int32_2D_array);
                 if (TimeExecutionShow == true)
                 {
                     double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
@@ -1690,7 +1690,7 @@ namespace ImageFunctionsNameSpace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
         }
         static public Color Int32ToColor(Int32 value_in)
@@ -1734,7 +1734,7 @@ namespace ImageFunctionsNameSpace
         {
             if (colors_in.Length == 0)
             {
-                MyReportFunctions.ReportError("Trouble. No colors\r\n" + "Colors Height is " + colors_in.Length.ToString() + "\r\n");
+                ReportFunctions.ReportError("Trouble. No colors\r\n" + "Colors Height is " + colors_in.Length.ToString() + "\r\n");
                 return;
             }
             string str_out = "";
@@ -1766,7 +1766,7 @@ namespace ImageFunctionsNameSpace
         {
             if (values_in.Length == 0)
             {
-                MyReportFunctions.ReportError("Array is empty. Array size is " + values_in.Length.ToString());
+                ReportFunctions.ReportError("Array is empty. Array size is " + values_in.Length.ToString());
                 // Bitmap(0,0) gives error that such values can not be used. 2024.02.10 19:13. Moscow. Hostel.
                 return new Bitmap(1, 1);
             }
@@ -1817,7 +1817,7 @@ namespace ImageFunctionsNameSpace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return arr_out;
         }
@@ -1844,7 +1844,7 @@ namespace ImageFunctionsNameSpace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
         }
         public static ImageCodecInfo GetEncoder(ImageFormat format)
@@ -1871,7 +1871,7 @@ namespace ImageFunctionsNameSpace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return arr_out;
         }
@@ -1887,7 +1887,7 @@ namespace ImageFunctionsNameSpace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return bitmap_for_return;
         }
@@ -1908,7 +1908,7 @@ namespace ImageFunctionsNameSpace
             }
             catch
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return bitmap_for_return;
         }
@@ -1941,7 +1941,7 @@ namespace ImageFunctionsNameSpace
         {
             if (System.IO.File.Exists(filename) == false)
             {
-                MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.FileDoesNotExist);
+                ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.FileDoesNotExist);
                 return ImageFunctions.Generate.Rectungular_Checkboard(100, 100);
             }
 

@@ -11,7 +11,7 @@ using MathFunctionsNamespace;
 using System.Diagnostics;
 using System.Reflection;
 using System.Drawing;
-using static ArrayFunctionsNamespace.ArrayMethods.Int32Array;
+using static ArrayFunctionsNamespace.ArrayFunctions.Int32Array;
 using static FileFunctionsNamespace.FileFunctions;
 using static FileFunctionsNamespace.FileFunctions.TextFile;
 using System.Windows.Forms;
@@ -177,7 +177,7 @@ namespace FileFunctionsNamespace
             {
                 data_parts[i] = ExtractData(bytes_in[i]);
             }
-            return ArrayMethods.Merge.NxM_To_A(data_parts);
+            return ArrayFunctions.Merge.NxM_To_A(data_parts);
         }
         /// <summary>
         /// Return byte[] accodring to size in the first 4 bytes
@@ -186,12 +186,12 @@ namespace FileFunctionsNamespace
         /// <returns></returns>
         public static byte[] ExtractData(byte[] bytes)
         {
-            byte[] size_bytes = ArrayMethods.Extract.AboveIndex(bytes, 4);
+            byte[] size_bytes = ArrayFunctions.Extract.AboveIndex(bytes, 4);
             Int32 arr_size = MathFunctions.Int32Number.BytesToInt32(size_bytes);
-            byte[] data = ArrayMethods.Extract.BelowIndex(bytes, 3);
+            byte[] data = ArrayFunctions.Extract.BelowIndex(bytes, 3);
             if (arr_size != data.Length)
             {
-                data = ArrayMethods.Extract.AboveIndex(data, arr_size - 1 + 1);
+                data = ArrayFunctions.Extract.AboveIndex(data, arr_size - 1 + 1);
             }
             return data;
         }
@@ -241,7 +241,7 @@ namespace FileFunctionsNamespace
                 if (arr_2nd_index == arr_size)
                 {
                     byte[] arr_size_bytes = MathFunctions.Int32ToBytes(arr_size);
-                    arr_out[arr_num] = ArrayMethods.Merge.A_B_To_C(arr_size_bytes, arr_out[arr_num]);
+                    arr_out[arr_num] = ArrayFunctions.Merge.A_B_To_C(arr_size_bytes, arr_out[arr_num]);
                     arr_2nd_index = 0;
                     arr_num++;
                     // part filled and size is array length
@@ -256,7 +256,7 @@ namespace FileFunctionsNamespace
             {
                 arr_2nd_index -= 1; // return used value
                 byte[] arr_size_bytes = MathFunctions.Int32ToBytes(arr_2nd_index + 1);
-                arr_out[arr_num] = ArrayMethods.Merge.A_B_To_C(arr_size_bytes, arr_out[arr_num]);
+                arr_out[arr_num] = ArrayFunctions.Merge.A_B_To_C(arr_size_bytes, arr_out[arr_num]);
             }
             return arr_out;
         }
@@ -282,7 +282,7 @@ namespace FileFunctionsNamespace
             Int32 char_index = letters_order.IndexOf(char_in);
             if (char_index == -1)
             {
-                MyReportFunctions.ReportError("Letter is not in letters order string\r\n" +
+                ReportFunctions.ReportError("Letter is not in letters order string\r\n" +
                     "Letter: " + char_in.ToString() + "\r\n" +
                     "Letters order string: " + letters_order);
                 return letters_order[0];
@@ -455,7 +455,7 @@ namespace FileFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                     for_return = false;
                 }
                 return for_return;
@@ -599,7 +599,7 @@ namespace FileFunctionsNamespace
             }
             else
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
         }
         /// <summary>
@@ -682,7 +682,7 @@ namespace FileFunctionsNamespace
             }
             else
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
         }
         /// <summary>
@@ -781,7 +781,7 @@ namespace FileFunctionsNamespace
             }
             else
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
         }
         /// <summary>
@@ -886,7 +886,7 @@ namespace FileFunctionsNamespace
             }
             else
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
         }
         /// <summary>
@@ -901,8 +901,8 @@ namespace FileFunctionsNamespace
         public static bool Replace1stLetter_PasswordIn_1a(ActionType action_apply, string file_in, string file_out, string password_in)
         {
             bool result_out = false;
-            int[] password_values = ArrayMethods.Int32Array.ConvertToInt32(password_in.ToCharArray());
-            Int32 average_password = ArrayMethods.Int32Array.Average(password_values);
+            int[] password_values = ArrayFunctions.Int32Array.ConvertToInt32(password_in.ToCharArray());
+            Int32 average_password = ArrayFunctions.Int32Array.Average(password_values);
             if (System.IO.File.Exists(file_in) == true)
             {
                 // 2023-07-26 15:47 read temp file.
@@ -1028,7 +1028,7 @@ namespace FileFunctionsNamespace
             }
             else
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return result_out;
         }
@@ -1045,8 +1045,8 @@ namespace FileFunctionsNamespace
         public static bool Replace1stLetter_PasswordIn_1b(ActionType action_apply, string file_in, string file_out, string password_in, Int32 skip_words = 5)
         {
             bool result_out = false;
-            int[] password_values = ArrayMethods.Int32Array.ConvertToInt32(password_in.ToCharArray());
-            Int32 average_password = ArrayMethods.Int32Array.Average(password_values);
+            int[] password_values = ArrayFunctions.Int32Array.ConvertToInt32(password_in.ToCharArray());
+            Int32 average_password = ArrayFunctions.Int32Array.Average(password_values);
             if (System.IO.File.Exists(file_in) == true)
             {
                 // 2023-07-26 15:47 read temp file.
@@ -1283,7 +1283,7 @@ namespace FileFunctionsNamespace
             }
             else
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return result_out;
         }
@@ -1863,7 +1863,7 @@ namespace FileFunctionsNamespace
                 {
                     if (System.IO.File.Exists(filename) == false)
                         {
-                            MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.FileDoesNotExist);
+                            ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.FileDoesNotExist);
                             return ImageFunctions.Generate.Rectungular_Checkboard(100, 100);
                         }
                         
@@ -1989,7 +1989,7 @@ namespace FileFunctionsNamespace
                     }
                     catch
                     {
-                        MyReportFunctions.ReportError("Extension of file is null");
+                        ReportFunctions.ReportError("Extension of file is null");
                     }
                 }
 
@@ -2037,7 +2037,7 @@ namespace FileFunctionsNamespace
             }
             else
             {
-                MyReportFunctions.ReportError();
+                ReportFunctions.ReportError();
             }
             return str_to_return;
         }
@@ -2078,7 +2078,7 @@ namespace FileFunctionsNamespace
 
             if (System.IO.File.Exists(file_path) == false)
             {
-                MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.WrongPath);
+                ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.WrongPath);
                 return;
             }
 
@@ -2291,7 +2291,7 @@ namespace FileFunctionsNamespace
                     {
                         if (amount_add == 0)
                         {
-                            MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.NumberIsZero);
+                            ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.NumberIsZero);
                             return;
                         }
 
@@ -2336,7 +2336,7 @@ namespace FileFunctionsNamespace
                         string[] filelines = ReadFile.ToStrings(file_path);
                         if (line_number > filelines.Length)
                         {
-                            MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_exceeded);
+                            ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_exceeded);
                             return;
                         }
                         string[] lines_to_file = new string[filelines.Length + 1];
@@ -2407,7 +2407,7 @@ namespace FileFunctionsNamespace
                         string[] filelines = ReadFile.ToStrings(file_path);
                         if (line_number > filelines.Length)
                         {
-                            MyReportFunctions.ReportError(MyReportFunctions.ErrorMessage.Length_is_exceeded);
+                            ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_exceeded);
                             return;
                         }
                         string[] lines_to_file = new string[filelines.Length + 1];
@@ -2431,7 +2431,7 @@ namespace FileFunctionsNamespace
                 /// <param name="delimer_in"></param>
                 static public void StringsAxBToFile(string[][] strings_in, string filename, char delimer_in)
                 {
-                    string filestring = ArrayMethods.StringArray.Convert.StringsAxBToFilestring(strings_in, delimer_in);
+                    string filestring = ArrayFunctions.StringArray.Convert.StringsAxBToFilestring(strings_in, delimer_in);
                     FileFunctions.TextFile.WriteFile.FileStringToFile(filestring, filename);
                 }
                 /// <summary>
@@ -2497,9 +2497,9 @@ namespace FileFunctionsNamespace
                     }
                     file_read.Close();
                     // 4. string[] to string[][] by delimer
-                    string[][] str_arr_split = ArrayMethods.StringArray.Convert.ToStringArrayNxM(str_arr, delimer);
+                    string[][] str_arr_split = ArrayFunctions.StringArray.Convert.ToStringArrayNxM(str_arr, delimer);
                     // 5. convert filelines into int[][] array splitting lines by delimer
-                    int[][] arr_out = ArrayMethods.StringArray.Convert.ToInt32Array(str_arr_split);
+                    int[][] arr_out = ArrayFunctions.StringArray.Convert.ToInt32Array(str_arr_split);
                     // 6. return int[][]
                     return arr_out;
                 }
@@ -2570,7 +2570,7 @@ namespace FileFunctionsNamespace
             {
                 if (files_list.Length == 0)
                 {
-                    MyReportFunctions.ReportAttention(MyReportFunctions.AttentionMessage.ArrayZeroLength);
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
                     return;
                 }
                 string content_to_file = "";
@@ -2667,7 +2667,7 @@ namespace FileFunctionsNamespace
                 T[][] arr_out = new T[0][];
                 if (col_to_remove > array_in.Length)
                 {
-                    MyReportFunctions.ReportError("column number bigger than length" + "\r\n" +
+                    ReportFunctions.ReportError("column number bigger than length" + "\r\n" +
                         "column number is " + col_to_remove.ToString() + "\r\n" +
                          "array lenght is " + array_in.Length.ToString());
                     return arr_out;
@@ -2694,7 +2694,7 @@ namespace FileFunctionsNamespace
                 string[] arr_out = new string[0];
                 if (arr_in_1.Length != arr_in_2.Length)
                 {
-                    MyReportFunctions.ReportError("String Arrays have different lenght" + "\r\n" +
+                    ReportFunctions.ReportError("String Arrays have different lenght" + "\r\n" +
                         "array 1 is " + arr_in_1.Length.ToString() + "\r\n" +
                         "array 2 is " + arr_in_2.Length.ToString());
                     return arr_out;
@@ -2718,7 +2718,7 @@ namespace FileFunctionsNamespace
                 }
                 catch
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
                 return arr_out;
             }
@@ -2745,12 +2745,12 @@ namespace FileFunctionsNamespace
                 }
                 catch (Exception e)
                 {
-                    MyReportFunctions.ReportError(e.Message);
+                    ReportFunctions.ReportError(e.Message);
                     return str_out;
                 }
                 if (div_rem != 0)
                 {
-                    MyReportFunctions.ReportError("division reminder is not 0");
+                    ReportFunctions.ReportError("division reminder is not 0");
                     return str_out;
                 }
                 str_out = new string[string_in.Length / split_size];
@@ -2775,7 +2775,7 @@ namespace FileFunctionsNamespace
                 }
                 catch
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
                 return str_out;
             }
@@ -2884,7 +2884,7 @@ namespace FileFunctionsNamespace
                 string[] str_arr = FileToStrings(file_path);
                 if (str_arr.Length == 0)
                 {
-                    MyReportFunctions.ReportError("The file is empty");
+                    ReportFunctions.ReportError("The file is empty");
                     return new string[0][];
                 }
                 // counting
@@ -2900,7 +2900,7 @@ namespace FileFunctionsNamespace
                     string[] to_put_in_arr = str_arr[i].Split(delimer);
                     if (to_put_in_arr.Length != col_num)
                     {
-                        MyReportFunctions.ReportError("File text line has different amount of columns" + "\r\n" +
+                        ReportFunctions.ReportError("File text line has different amount of columns" + "\r\n" +
                             "file line is " + i.ToString() + "\r\n" +
                             "line has " + to_put_in_arr.Length.ToString() + " columns" + "\r\n" +
                             "number of columns should be " + col_num.ToString());
@@ -2946,7 +2946,7 @@ namespace FileFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
                 return for_return;
             }
@@ -2993,7 +2993,7 @@ namespace FileFunctionsNamespace
                     string sub_str_2 = str_out.Substring(end_ind + cut_end.Length);
                     str_out = sub_str_1 + sub_str_2;
                 }
-                MyReportFunctions.ReportError("that place can not be reached");
+                ReportFunctions.ReportError("that place can not be reached");
                 return string_in;
             }
             public enum CutStringOption_enum
@@ -3238,7 +3238,7 @@ namespace FileFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                     for_return = false;
                 }
                 return for_return;
@@ -3275,7 +3275,7 @@ namespace FileFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                     for_return = false;
                 }
                 return for_return;
@@ -3295,13 +3295,13 @@ namespace FileFunctionsNamespace
                     }
                     else
                     {
-                        MyReportFunctions.ReportError();
+                        ReportFunctions.ReportError();
                         for_return = false;
                     }
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                     for_return = false;
                 }
                 return for_return;
@@ -3318,7 +3318,7 @@ namespace FileFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                     for_return = false;
                 }
                 return for_return;
@@ -3340,7 +3340,7 @@ namespace FileFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
             }
             static public void DictionaryToConsole(Dictionary<string, string> dictionary_in)
@@ -3374,7 +3374,7 @@ namespace FileFunctionsNamespace
                     string[] str_split = strings_for_from_file[i].Split(delimer_in);
                     if (str_split.Length != 2)
                     {
-                        MyReportFunctions.ReportError();
+                        ReportFunctions.ReportError();
                         return for_return;
                     }
                     for_return.Add(str_split[0], str_split[1]);
@@ -3396,7 +3396,7 @@ namespace FileFunctionsNamespace
                 string for_random = "abcdefghijklmnopqrstuvwxyz";
                 if (size == 0)
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                     return for_return;
                 }
                 Random rand_num = new Random();
@@ -3412,7 +3412,7 @@ namespace FileFunctionsNamespace
                 for (Int32 i = 1; i < files_list_in.Length; i++)
                 {
                     string[] for_merge = GetWordsFromFile(files_list_in[i]);
-                    arr_out = ArrayMethods.Merge.A_B_To_C(arr_out, for_merge);
+                    arr_out = ArrayFunctions.Merge.A_B_To_C(arr_out, for_merge);
                 }
                 return arr_out;
             }
@@ -3426,16 +3426,16 @@ namespace FileFunctionsNamespace
             {
                 Dictionary<string, int> dict_out = new Dictionary<string, int>();
                 int[] dic_values = dic_in.Values.ToArray();
-                ArrayMethods.ArraySortingEnum sort_int32_order = ArrayMethods.ArraySortingEnum.NoSorting;
+                ArrayFunctions.ArraySortingEnum sort_int32_order = ArrayFunctions.ArraySortingEnum.NoSorting;
                 if (sort_order == DictionarySortEnum.Desending)
                 {
-                    sort_int32_order = ArrayMethods.ArraySortingEnum.Descending;
+                    sort_int32_order = ArrayFunctions.ArraySortingEnum.Descending;
                 }
                 if (sort_order == DictionarySortEnum.Ascending)
                 {
-                    sort_int32_order = ArrayMethods.ArraySortingEnum.Ascenidng;
+                    sort_int32_order = ArrayFunctions.ArraySortingEnum.Ascenidng;
                 }
-                int[] dic_values_sorted = ArrayMethods.Int32Array.Sort(dic_values, sort_int32_order);
+                int[] dic_values_sorted = ArrayFunctions.Int32Array.Sort(dic_values, sort_int32_order);
                 for (Int32 i = 0; i < dic_values.Length; i++)
                 {
                     Int32 index_key = Array.IndexOf(dic_values, dic_values_sorted[i]);
@@ -3453,7 +3453,7 @@ namespace FileFunctionsNamespace
                 }
                 catch
                 {
-                    MyReportFunctions.ReportError("File was not opened");
+                    ReportFunctions.ReportError("File was not opened");
                     return new string[0];
                 }
                 string content_file = file_read.ReadToEnd();
@@ -3504,7 +3504,7 @@ namespace FileFunctionsNamespace
                 string for_return = "";
                 if (size == 0)
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                     return for_return;
                 }
                 Random rand_num = new Random();
@@ -3536,7 +3536,7 @@ namespace FileFunctionsNamespace
                 }
                 else
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
                 return uint32_out;
             }
@@ -3549,7 +3549,7 @@ namespace FileFunctionsNamespace
                 }
                 catch
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                 }
             }
             static public void StringsNx2ToFile(string[][] strings_in, string file_name, char key_value_delimer = '\t')
@@ -3561,7 +3561,7 @@ namespace FileFunctionsNamespace
             // Moved to MyArrayFunctions.StringArray. 2023.12.20 16:17. Workplace.
             static public string StringsNx2ToFilestring(string[][] strings_in, char key_value_delimer = '\t')
             {
-                return ArrayMethods.StringArray.Convert.StringsAxBToFilestring(strings_in, key_value_delimer);
+                return ArrayFunctions.StringArray.Convert.StringsAxBToFilestring(strings_in, key_value_delimer);
             }
             static public bool is_symbol_hex(string symbol_in)
             {
@@ -3712,7 +3712,7 @@ namespace FileFunctionsNamespace
                 {
                     if (no_error_msg == false)
                     {
-                        MyReportFunctions.ReportError();
+                        ReportFunctions.ReportError();
                     }
                 }
                 return for_return;
@@ -3822,7 +3822,7 @@ namespace FileFunctionsNamespace
                 string for_return = "";
                 if (size == 0)
                 {
-                    MyReportFunctions.ReportError();
+                    ReportFunctions.ReportError();
                     return for_return;
                 }
                 Random rand_num = new Random();
