@@ -4187,6 +4187,11 @@ namespace ArrayFunctionsNamespace
                     for (Int32 i = 0; i < arr_in.Length; i++)
                     {
                         arr_out[i] = new string[arr_in[i].Length];
+
+                        // 2024.03.22 10:28. Moscow. Workplace.
+                        // ToString("x2"). Not checked. It should convert byte to HEX string with left padding with char '0'
+
+
                         for (Int32 j = 0; j < arr_in[i].Length; j++)
                         {
                             try

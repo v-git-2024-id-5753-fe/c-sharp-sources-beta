@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Threading;
 
 // Commercial use (license)
@@ -79,19 +80,19 @@ public static class Crc8
             set
             {
                 internal_polynomial = value;
-                InitializeCRCTable(internal_polynomial);
+                CreateCRCReflectedTable(internal_polynomial);
             }
-        } 
-        public UInt32[] CRS32_Table = null;
+        }
+        public UInt32[] CRS32_Reflected_Table = null;
         public CRC32_Class(UInt32 polynomial_in)
         {
-            CRS32_Table = InitializeCRCTable(polynomial_in);
+            CRS32_Reflected_Table = CreateCRCReflectedTable(polynomial_in);
         }
 
-        private UInt32[] InitializeCRCTable(UInt32 polynomial)
+        private UInt32[] CreateCRCReflectedTable(UInt32 polynomial)
         {
             UInt32[] createTable = new UInt32[256];
-            
+
             // 2024.03.21 16:42. Moscow. Workplace.
             // for using shift right there is reversed polynomial - that is reversed bits in the number (1st, 2nd -> 32nd, 31st)
             UInt32 polynomial_reversed = (uint)BitsFunctions.BitsReversed((int)polynomial);
@@ -101,7 +102,7 @@ public static class Crc8
                 for (UInt32 j = 0; j < 8; j++)
                 {
                     if ((entry & 1) == 1)
-                    {                        
+                    {
                         entry = (entry >> 1) ^ polynomial_reversed;
                     }
                     else
@@ -116,14 +117,22 @@ public static class Crc8
         }
 
 
-
+        /// <summary>
+        /// Calculates CRC32.<br></br>
+        /// Written. 2024.03.21. 10:00 - 15:00. Moscow. Workplace. <br></br>
+        /// Tested. Works. Comparison to 2 websites was used to check the result. 2024.03.22 10:20. Moscow. Workplace.
+        /// </summary>
+        /// <param name="byte_arr"></param>
+        /// <returns></returns>
         public UInt32 ComputeChecksum(byte[] byte_arr)
         {
+            // 2024.03.22 10:31. Moscow. Workplace.
+            // Uses reflected CRC32 table. 
             var crc = 0xffffffff;
             foreach (var t in byte_arr)
             {
                 var index = (byte)((crc & 0xff) ^ t);
-                crc = (crc >> 8) ^ CRS32_Table[index];
+                crc = (crc >> 8) ^ CRS32_Reflected_Table[index];
             }
             return ~crc;
         }
@@ -134,161 +143,33 @@ public static class Crc8
         }
     }
 
+    /// <summary>
+    /// Written. 2024.03.21. 10:00 - 15:00. Moscow. Workplace. <br></br>
+    /// - Shows in console CRC32 reflected table. <br></br>
+    /// - Shows in console CRC32 checksum of provided byte[]. <br></br>
+    /// </summary>
     class CRC32Test
     {
         CRC32_Class crc32 = new CRC32_Class(CRC32_Class.DefaultPolynomial);
         public void ShowTable()
         {
-           Console.Write(ArrayFunctions.UInt32Array.Convert.ToFileString(crc32.CRS32_Table, 8, 16, " "));
+            Console.Write(ArrayFunctions.UInt32Array.Convert.ToFileString(crc32.CRS32_Reflected_Table, 8, 16, " "));
         }
         public void SetPolynomial(uint num_in)
         {
             crc32.Polynomial = num_in;
         }
+
+        public void ChecksumToConsole(byte[] byte_arr)
+        {
+            uint crc32_value = crc32.ComputeChecksum(byte_arr);
+            Console.WriteLine(crc32_value.ToString());
+        }
     }
 
 
 
-    /*
-     * 
-     * CRC32 из кода на C выше:
-
-    byte[] GetCRC32(IEnumerable<byte> bytes)
-    {
-    var crcTable = new uint[256];
-    UInt32 crc;
-
-    for (UInt32 i = 0; i < 256; i++)
-    {
-    crc = i;
-    for (UInt32 j = 0; j < 8; j++)
-        crc = (crc & 1) != 0 ? (crc >> 1) ^ 0xEDB88320 : crc >> 1;
-
-    crcTable[i] = crc;
-    }
-
-    crc = bytes.Aggregate(0xFFFFFFFF, (current, s) => crcTable[(current ^ s) & 0xFF] ^ (current >> 8));
-
-    crc ^= 0xFFFFFFFF;
-    return BitConverter.GetBytes(crc);
-    }
-    */
-
-
-
-
-
-
-}
-
-/*
-public class Crc32 : HashAlgorithm
-{
-public const UInt32 DefaultPolynomial = 0xedb88320;
-public const UInt32 DefaultSeed = 0xffffffff;
-
-private UInt32 hash;
-private UInt32 seed;
-private UInt32[] table;
-private static UInt32[] defaultTable;
-
-public Crc32()
-{
-table = InitializeTable(DefaultPolynomial);
-seed = DefaultSeed;
-Initialize();
-}
-
-public Crc32(UInt32 polynomial, UInt32 seed)
-{
-table = InitializeTable(polynomial);
-this.seed = seed;
-Initialize();
-}
-
-public override void Initialize()
-{
-hash = seed;
-}
-
-protected override void HashCore(byte[] buffer, Int32 start, Int32 length)
-{
-hash = CalculateHash(table, hash, buffer, start, length);
-}
-
-protected override byte[] HashFinal()
-{
-byte[] hashBuffer = UInt32ToBigEndianBytes(~hash);
-this.HashValue = hashBuffer;
-return hashBuffer;
-}
-
-public override Int32 HashSize
-{
-get { return 32; }
-}
-
-public static UInt32 Compute(byte[] buffer)
-{
-return ~CalculateHash(InitializeTable(DefaultPolynomial), DefaultSeed, buffer, 0, buffer.Length);
-}
-
-public static UInt32 Compute(UInt32 seed, byte[] buffer)
-{
-return ~CalculateHash(InitializeTable(DefaultPolynomial), seed, buffer, 0, buffer.Length);
-}
-
-public static UInt32 Compute(UInt32 polynomial, UInt32 seed, byte[] buffer)
-{
-return ~CalculateHash(InitializeTable(polynomial), seed, buffer, 0, buffer.Length);
-}
-
-
-
-private static UInt32 CalculateHash(UInt32[] table, UInt32 seed, byte[] buffer, Int32 start, Int32 size)
-{
-UInt32 crc = seed;
-for (Int32 i = start; i < size; i++)
-unchecked
-{
-crc = (crc >> 8) ^ table[buffer[i] ^ crc & 0xff];
-}
-return crc;
-}
-
-private byte[] UInt32ToBigEndianBytes(UInt32 x)
-{
-return new byte[] {
-(byte)((x >> 24) & 0xff),
-(byte)((x >> 16) & 0xff),
-(byte)((x >> 8) & 0xff),
-(byte)(x & 0xff)
-};
-}
-
-public string Get(string FilePath)
-{
-Crc32 crc32 = new Crc32();
-String hash = String.Empty;
-
-using (FileStream fs = File.Open(FilePath, FileMode.Open))
-foreach (byte b in crc32.ComputeHash(fs)) hash += b.ToString("x2").ToLower();
-
-return hash;
-}
-}
-
-
-*/
-
-
-
-
-
-
-
-
-class TCPClientFunctionsClass
+    class TCPClientFunctionsClass
     {
         TcpClient ClientTCP = null;
         IPAddress ServerAddress = null;
@@ -607,101 +488,102 @@ class TCPClientFunctionsClass
             return string_in.Split(new char[] { delimer_in }, 2);
         }
         class NetworkDataClass
-    {
-        public NetworkDataClass()
         {
-            CMD_Method_Bind.Clear();
-            CMD_Method_Bind.Add(commands_list_enum.cmd1, commands_list_cmd1_method);
-            CMD_Method_Bind.Add(commands_list_enum.cmd2, commands_list_cmd2_method);
-        }
-        private void commands_list_cmd2_method()
-        {
-            throw new NotImplementedException();
-        }
-        private void commands_list_cmd1_method()
-        {
-            throw new NotImplementedException();
-        }
-        // not finished.
-        // 2023-05-05 09:55 ByteArrayToVariables()        
-        Dictionary<string, UInt32> data_values = new Dictionary<string, UInt32>();
-        Dictionary<string, Type> data_types = new Dictionary<string, Type>();
-        byte[] network_bytes_received = new byte[0];
-        public void ByteArrayToVariables()
-        {
-            MemoryStream memory_read = new MemoryStream(network_bytes_received);
-            BinaryReader binary_read = new BinaryReader(memory_read);
-            var_1 = binary_read.ReadUInt32();
-            var_2 = binary_read.ReadUInt32();
-            binary_read.Close();
-            memory_read.Close();
-        }
-        void VariablesToDictionaries()
-        {
-            data_values = new Dictionary<string, UInt32>();
-            data_types = new Dictionary<string, Type>();
-            data_values.Add(nameof(var_1), var_1);
-            data_types.Add(nameof(var_1), var_1.GetType());
-            data_values.Add(nameof(var_2), var_2);
-            data_types.Add(nameof(var_2), var_2.GetType());
-        }
-        // template
-        public UInt32 var_1 = 0;
-        public UInt32 var_2 = 0;
-        void DictionariesToVariables()
-        {
-            var_1 = data_values[nameof(var_1)];
-            var_2 = data_values[nameof(var_2)];
-        }
-        //[StructLayout(LayoutKind.Explicit)]
-        //public struct Union
-        //{
-        //    [FieldOffset(0)] public Int32 num_1;
-        //    [FieldOffset(0)] public Int32 num_2;
-        //}
-        public void ToConsole()
-        {
-            VariablesToDictionaries();
-            for (Int32 i = 0; i < data_values.Count; i++)
+            public NetworkDataClass()
             {
-                Console.WriteLine(data_values.ElementAt(i).Key + " " + data_values.ElementAt(i).Value);
+                CMD_Method_Bind.Clear();
+                CMD_Method_Bind.Add(commands_list_enum.cmd1, commands_list_cmd1_method);
+                CMD_Method_Bind.Add(commands_list_enum.cmd2, commands_list_cmd2_method);
             }
-        }
-        public enum commands_list_enum
-        {
-            DoNothing = 0,
-            NotFound = 1,
-            cmd1 = 10,
-            cmd2 = 40
-        }
-        public commands_list_enum CMD_TO_ENUM(byte cmd_in)
-        {
-            commands_list_enum enum_out = commands_list_enum.DoNothing;
-            byte[] enum_values = (byte[])Enum.GetValues(typeof(commands_list_enum));
-            if (enum_values.Contains(cmd_in))
+            private void commands_list_cmd2_method()
             {
-                enum_out = (commands_list_enum)cmd_in;
+                throw new NotImplementedException();
             }
-            else
+            private void commands_list_cmd1_method()
             {
-                enum_out = commands_list_enum.NotFound;
+                throw new NotImplementedException();
             }
-            return enum_out;
-        }
-        Dictionary<commands_list_enum, Action> CMD_Method_Bind = new Dictionary<commands_list_enum, Action>();
-        public void CMD_Execute(commands_list_enum cmd_in)
-        {
-            switch (cmd_in)
+            // not finished.
+            // 2023-05-05 09:55 ByteArrayToVariables()        
+            Dictionary<string, UInt32> data_values = new Dictionary<string, UInt32>();
+            Dictionary<string, Type> data_types = new Dictionary<string, Type>();
+            byte[] network_bytes_received = new byte[0];
+            public void ByteArrayToVariables()
             {
-                case commands_list_enum.DoNothing: return;
-                case commands_list_enum.NotFound: return;
-                case commands_list_enum.cmd1:
-                    CMD_Method_Bind[commands_list_enum.cmd1]();
-                    return;
-                case commands_list_enum.cmd2:
-                    CMD_Method_Bind[commands_list_enum.cmd2]();
-                    return;
-                default: return;
+                MemoryStream memory_read = new MemoryStream(network_bytes_received);
+                BinaryReader binary_read = new BinaryReader(memory_read);
+                var_1 = binary_read.ReadUInt32();
+                var_2 = binary_read.ReadUInt32();
+                binary_read.Close();
+                memory_read.Close();
+            }
+            void VariablesToDictionaries()
+            {
+                data_values = new Dictionary<string, UInt32>();
+                data_types = new Dictionary<string, Type>();
+                data_values.Add(nameof(var_1), var_1);
+                data_types.Add(nameof(var_1), var_1.GetType());
+                data_values.Add(nameof(var_2), var_2);
+                data_types.Add(nameof(var_2), var_2.GetType());
+            }
+            // template
+            public UInt32 var_1 = 0;
+            public UInt32 var_2 = 0;
+            void DictionariesToVariables()
+            {
+                var_1 = data_values[nameof(var_1)];
+                var_2 = data_values[nameof(var_2)];
+            }
+            //[StructLayout(LayoutKind.Explicit)]
+            //public struct Union
+            //{
+            //    [FieldOffset(0)] public Int32 num_1;
+            //    [FieldOffset(0)] public Int32 num_2;
+            //}
+            public void ToConsole()
+            {
+                VariablesToDictionaries();
+                for (Int32 i = 0; i < data_values.Count; i++)
+                {
+                    Console.WriteLine(data_values.ElementAt(i).Key + " " + data_values.ElementAt(i).Value);
+                }
+            }
+            public enum commands_list_enum
+            {
+                DoNothing = 0,
+                NotFound = 1,
+                cmd1 = 10,
+                cmd2 = 40
+            }
+            public commands_list_enum CMD_TO_ENUM(byte cmd_in)
+            {
+                commands_list_enum enum_out = commands_list_enum.DoNothing;
+                byte[] enum_values = (byte[])Enum.GetValues(typeof(commands_list_enum));
+                if (enum_values.Contains(cmd_in))
+                {
+                    enum_out = (commands_list_enum)cmd_in;
+                }
+                else
+                {
+                    enum_out = commands_list_enum.NotFound;
+                }
+                return enum_out;
+            }
+            Dictionary<commands_list_enum, Action> CMD_Method_Bind = new Dictionary<commands_list_enum, Action>();
+            public void CMD_Execute(commands_list_enum cmd_in)
+            {
+                switch (cmd_in)
+                {
+                    case commands_list_enum.DoNothing: return;
+                    case commands_list_enum.NotFound: return;
+                    case commands_list_enum.cmd1:
+                        CMD_Method_Bind[commands_list_enum.cmd1]();
+                        return;
+                    case commands_list_enum.cmd2:
+                        CMD_Method_Bind[commands_list_enum.cmd2]();
+                        return;
+                    default: return;
+                }
             }
         }
     }

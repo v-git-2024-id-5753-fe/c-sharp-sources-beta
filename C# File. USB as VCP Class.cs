@@ -885,12 +885,127 @@ namespace MyUSBFunctionsNamespace
         /// <param name="delay_last_byte"></param>
         public void RecieveByCMD(Int32 cmd_code, Int32 total_bytes, Int32 delay_last_byte = 500)
         {
-
+            // Not completed. 2024.03.22 10:46. Moscow. Workplace.
         }
 
 
 
-        private void TimerStartRecieveByLength(object sender, EventArgs e)
+        /// <summary>
+        /// Written. 2024.03.22 11:06. Moscow. Workplace.
+        /// For receving 1 reply by MODBUS RTU. For another reply a new instance should be made
+        /// </summary>
+        class MODBUS_RTU_CMD_Data
+        {
+            /// <summary>
+            /// Slave address.
+            /// </summary>
+            public byte FromAddress = 0;
+            public byte FunctionCode = 0;
+            /// <summary>
+            /// These are bytes of registers. CRC32 is not included in the bytes.<br></br>
+            /// Note that register is 16 bits.
+            /// </summary>
+            public byte NumberOfBytes = 0;
+            public UInt16 CRC16 = 0;
+            public byte[] ReceivedBytes = null;
+            public uint ReceivedCount = 0;
+            public MODBUS_RTU_CMD_Data()
+            {
+                ReceivedBytes = new byte[3];
+            }
+            public bool IsPacketReceived = false;
+            public bool CreatePacket()
+            {
+                if (ReceivedCount == 3)
+                {
+                    return false;
+                }                
+                byte[] arr_3_bytes = new byte[3];
+                Array.Copy(ReceivedBytes, arr_3_bytes, 3);
+                // 2024.03.22 11:11. Moscow. Workplace.
+                // +3 - byte with address byte, byte with function code, byte with number of bytes.
+                // +2 - CRC16 bytes.
+                ReceivedBytes = new byte[NumberOfBytes + 3 + 2];
+                Array.Copy(arr_3_bytes, ReceivedBytes, 3);
+                return true;
+            }
+
+            public void LoadByte(byte byte_in)
+            {
+                ReceivedCount += 1;
+                
+                // Address from which to receive bytes
+                if (ReceivedCount == 1)
+                {
+                    ReceivedBytes[ReceivedCount - 1] = byte_in;
+                    if (byte_in != FromAddress)
+                    {                        
+                        ReceivedCount = 0;
+                    }
+                    return;
+                }
+
+                // Function code.
+                if (ReceivedCount == 2)
+                {
+                    ReceivedBytes[ReceivedCount - 1] = byte_in;
+                    if (byte_in != FunctionCode)
+                    {
+                        ReceivedCount = 0;
+                    }
+                    return ;
+                }
+
+                // Number of bytes.
+                if (ReceivedCount == 3)
+                {
+                    ReceivedBytes[ReceivedCount - 1] = byte_in;
+                    if (CreatePacket() != true)
+                    {
+                        ReceivedCount = 0;
+                    }
+                    return;
+                }
+
+                // Number of bytes.
+                if ((ReceivedCount > 3) &&
+                    (ReceivedCount <= (3 + NumberOfBytes)))
+                {
+                    ReceivedBytes[ReceivedCount - 1] = byte_in;
+                    return ;
+                }
+
+                // Checksum CRC16
+                if ((ReceivedCount > (3 + NumberOfBytes)) &&
+                    (ReceivedCount <= (3 + NumberOfBytes + 2)))
+                {
+                    ReceivedBytes[ReceivedCount - 1] = byte_in;
+                    return;
+                }
+                else
+                {
+                    IsPacketReceived = true;
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// Written. 2024.03.22 10:51. Moscow. Workplace.
+        /// </summary>
+        /// <param name="from_address"></param>
+        /// <param name="bytes_amount"></param>
+        /// <param name="delay_last_byte">1st byte is the trigger to count the delay. Each byte resets the counter</param>
+        public void Receive_MODBUS_RTU(byte from_address, uint bytes_amount, Int32 delay_last_byte = 500)
+        {
+            USB_Reception_Type = USB_Receive_Methods_List.Recieve_MODBUS_RTU;
+        }
+
+
+
+
+            private void TimerStartRecieveByLength(object sender, EventArgs e)
         {
             TimerRecieveByLength_DelayLastByte.Start();
         }
