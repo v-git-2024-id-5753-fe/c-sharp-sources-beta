@@ -1,11 +1,7 @@
 ﻿using DatetimeFunctionsNamespace;
 using FileFunctionsNamespace;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 // Commercial use (license)
 // Please study about commercial use of the code that is publicly available 

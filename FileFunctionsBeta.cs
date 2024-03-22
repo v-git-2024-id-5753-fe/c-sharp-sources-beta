@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using ReportFunctionsNamespace;
 using ArrayFunctionsNamespace;
@@ -11,9 +10,6 @@ using MathFunctionsNamespace;
 using System.Diagnostics;
 using System.Reflection;
 using System.Drawing;
-using static ArrayFunctionsNamespace.ArrayFunctions.Int32Array;
-using static FileFunctionsNamespace.FileFunctions;
-using static FileFunctionsNamespace.FileFunctions.TextFile;
 using System.Windows.Forms;
 using ImageFunctionsNameSpace;
 
@@ -2922,7 +2918,7 @@ namespace FileFunctionsNamespace
                 }
                 return double_format;
             }
-            static public void DoubleArrayToConsole(double[] array_in, Int32 decimal_places = 5)
+            static public void DoubleArrayToConsole(float[] array_in, Int32 decimal_places = 5)
             {
                 string double_format = DoubleFormat();
                 for (Int32 i = 0; i < array_in.Length; i++)

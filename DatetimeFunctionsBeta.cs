@@ -3,7 +3,6 @@ using MathFunctionsNamespace;
 using ReportFunctionsNamespace;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 // Commercial use (license)
 // Please study about commercial use of the code that is publicly available 

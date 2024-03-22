@@ -1579,13 +1579,13 @@ namespace ArrayFunctionsNamespace
                         ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_0);
                     }
                     // calculating normilize number.                   
-                    double normlize_coeficient = (double)arr_in.Max() / (double)number_for_max_in_arr;
+                    double normlize_coeficient = (float)arr_in.Max() / (float)number_for_max_in_arr;
                     // making array for return
                     int[] arr_out = new int[arr_in.Length];
                     // devide each number in array
                     for (Int32 i = 0; i < arr_out.Length; i++)
                     {
-                        arr_out[i] = (int)((double)arr_in[i] / (double)normlize_coeficient);
+                        arr_out[i] = (int)((float)arr_in[i] / (float)normlize_coeficient);
                     }
                     // return array
                     return arr_out;
@@ -2591,9 +2591,9 @@ namespace ArrayFunctionsNamespace
                         {
                             arr_out[i] = (byte)arr_1[i] - (byte)arr_2[i];
                         }
-                        if (type_in == typeof(double))
+                        if (type_in == typeof(float))
                         {
-                            arr_out[i] = (double)arr_1[i] - (double)arr_2[i];
+                            arr_out[i] = (float)arr_1[i] - (float)arr_2[i];
                         }
                     }
                     return arr_out;
@@ -2879,20 +2879,20 @@ namespace ArrayFunctionsNamespace
                 /// </summary>
                 /// <param name="arr_in"></param>
                 /// <returns></returns>
-                public static double[] TodoubleArray(object[] arr_in)
+                public static float[] TodoubleArray(object[] arr_in)
                 {
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
                         ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
-                        return new double[0];
+                        return new float[0];
                     }
-                    double[] arr_out = new double[arr_in.Length];
+                    float[] arr_out = new float[arr_in.Length];
                     for (Int32 i = 0; i < arr_in.Length; i++)
                     {
                         try
                         {
-                            arr_out[i] = (double)arr_in[i];
+                            arr_out[i] = (float)arr_in[i];
                         }
                         catch
                         {
@@ -2908,23 +2908,23 @@ namespace ArrayFunctionsNamespace
                 /// </summary>
                 /// <param name="arr_in"></param>
                 /// <returns></returns>
-                public static double[][] TodoubleArray(object[][] arr_in)
+                public static float[][] TodoubleArray(object[][] arr_in)
                 {
                     // space for code. start.
                     if (arr_in.Length == 0)
                     {
                         ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
-                        return new double[0][];
+                        return new float[0][];
                     }
-                    double[][] arr_out = new double[arr_in.Length][];
+                    float[][] arr_out = new float[arr_in.Length][];
                     for (Int32 i = 0; i < arr_in.Length; i++)
                     {
-                        arr_out[i] = new double[arr_in[i].Length];
+                        arr_out[i] = new float[arr_in[i].Length];
                         for (Int32 j = 0; j < arr_in[i].Length; j++)
                         {
                             try
                             {
-                                arr_out[i][j] = (double)arr_in[i][j];
+                                arr_out[i][j] = (float)arr_in[i][j];
                             }
                             catch
                             {
@@ -3473,7 +3473,7 @@ namespace ArrayFunctionsNamespace
                         if (count_done >= 0.01 * strings_in[0].Length)
                         {
                             count_done = 0;
-                            Console.WriteLine("Completed " + ((double)i / (double)strings_in[0].Length).ToString());
+                            Console.WriteLine("Completed " + ((float)i / (float)strings_in[0].Length).ToString());
                         }
                         */
                     }

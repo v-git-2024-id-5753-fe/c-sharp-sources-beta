@@ -7,15 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static FileFunctionsNamespace.FileFunctions.TextFile;
 
 // Commercial use (license)
 // Please study about commercial use of the code that is publicly available 

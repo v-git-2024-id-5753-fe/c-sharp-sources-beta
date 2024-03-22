@@ -22,14 +22,14 @@ Any format can be converted to string array and from string array to required da
 There are a lot of functions exists for conversion from string and conversion to string
 
 2024.03.07. Detailed.
-Double[] -> String[] -> File .txt. 
-Double[] <- String[] <-
+float[] -> String[] -> File .txt. 
+float[] <- String[] <-
 
 Int32[] -> String[] -> File .txt. 
 Int32[] <- String[] <-
 
-Double[][] -> String[][] -> File .txt with delimer. 
-Double[][] <- String[][] <-
+float[][] -> String[][] -> File .txt with delimer. 
+float[][] <- String[][] <-
 
 Int32[][] -> String[][] -> File .txt with delimer. 
 Int32[][] <- String[][] <-

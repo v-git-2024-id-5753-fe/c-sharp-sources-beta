@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using FileFunctionsNamespace;
 using ReportFunctionsNamespace;
 
 // Commercial use (license)
@@ -14,9 +11,6 @@ using ReportFunctionsNamespace;
 
 namespace MathFunctionsNamespace
 {
-    class MathOperations
-    {
-    }
     class RandomInt64
     {
         public RandomInt64()
@@ -581,9 +575,9 @@ namespace MathFunctionsNamespace
             /// </summary>
             /// <param name="radius"></param>
             /// <returns></returns>
-            public static double Sphere(double radius)
+            public static float Sphere(float radius)
             {
-                return ((double)4 / (double)3) * Math.PI * Math.Pow(radius, 3);
+                return ((float)4 / (float)3) * (float)Math.PI * (float)Math.Pow(radius, 3);
             }
             
             
@@ -599,7 +593,7 @@ namespace MathFunctionsNamespace
                 /// <param name="area"></param>
                 /// <param name="height"></param>
                 /// <returns></returns>
-                public static double ByAreaHeight(double area, double height)
+                public static float ByAreaHeight(float area, float height)
                 {
                     return area * height;
                 }
@@ -610,7 +604,7 @@ namespace MathFunctionsNamespace
                 /// <param name="radius"></param>
                 /// <param name="height"></param>
                 /// <returns></returns>
-                public static double ByRadiusHeight(double radius, double height)
+                public static float ByRadiusHeight(float radius, float height)
                 {
                     return Area.Cicrle(radius) * height;
                 }
@@ -639,9 +633,9 @@ namespace MathFunctionsNamespace
                 /// <param name="x_values"></param>
                 /// <param name="y_values"></param>
                 /// <returns></returns>
-                public static double AreaNBarsDouble(double[] x_values, double[] y_values)
+                public static float AreaNBarsDouble(float[] x_values, float[] y_values)
                 {
-                    double area_bars = 0;
+                    float area_bars = 0;
                     for (Int32 i = 0; i < x_values.Length - 1; i++)
                     {
                         area_bars += AreaDouble(x_values[i], y_values[i], x_values[i + 1], y_values[i + 1]);
@@ -680,7 +674,7 @@ namespace MathFunctionsNamespace
                 /// <param name="x_values"></param>
                 /// <param name="y_values"></param>
                 /// <returns></returns>
-                public static double AreaDouble(double x1, double y1, double x2, double y2)
+                public static float AreaDouble(float x1, float y1, float x2, float y2)
                 {
                     return (x2 - x1) * (y2 - y1);
                 }
@@ -719,8 +713,8 @@ namespace MathFunctionsNamespace
             // no need. 2024.01.12 16:35. Moscow. Workplace. 
             public class LineSlopeIntercept
             {
-                public double Slope = 0;
-                public double Intercept = 0;
+                public float Slope = 0;
+                public float Intercept = 0;
             }
 
 
@@ -730,14 +724,14 @@ namespace MathFunctionsNamespace
             /// <param name="x_values"></param>
             /// <param name="y_values"></param>
             /// <returns></returns>
-            public static double AreaUnderNLines(int[] x_values, int[] y_values)
+            public static float AreaUnderNLines(int[] x_values, int[] y_values)
             {
 
-                double area_out = 0;
+                float area_out = 0;
                 for (Int32 i = 0; i < x_values.Length - 1; i++)
                 {
-                    double[] line_a_b = SlopeInterceptFind(x_values[i], y_values[i], x_values[i + 1], y_values[i + 1]);
-                    double area_under_line = AreaUnderLine(line_a_b, (double)x_values[i], (double)x_values[i + 1]);
+                    float[] line_a_b = SlopeInterceptFind(x_values[i], y_values[i], x_values[i + 1], y_values[i + 1]);
+                    float area_under_line = AreaUnderLine(line_a_b, (float)x_values[i], (float)x_values[i + 1]);
                     area_out += area_under_line;
                 }
 
@@ -753,18 +747,18 @@ namespace MathFunctionsNamespace
                 /// <param name="x1"></param>
                 /// <param name="x2"></param>
                 /// <returns></returns>
-                public static double AreaUnderLine(double[] LineParameters, double x1, double x2)
+                public static float AreaUnderLine(float[] LineParameters, float x1, float x2)
             {
-                double y1_find = LineParameters[0] * x1 + LineParameters[1];
-                double y2_find = LineParameters[0] * x2 + LineParameters[1];
-                double area_out = 0;
+                float y1_find = LineParameters[0] * x1 + LineParameters[1];
+                float y2_find = LineParameters[0] * x2 + LineParameters[1];
+                float area_out = 0;
                 // case line intercept x axis. 2024.01.13 13:52. Moscow. Hostel.
                 if (((y1_find >= 0) && (y2_find < 0)) ||
                     ((y1_find < 0) && (y2_find >= 0)))
                 {
-                    double x_intercept = (-LineParameters[1]) / LineParameters[0];
-                    double area_rec_triangle_1 = 0.5 * (x_intercept - x1) * y1_find;
-                    double area_rec_triangle_2 = 0.5 * (x2 - x_intercept) * y2_find;
+                    float x_intercept = (-LineParameters[1]) / LineParameters[0];
+                    float area_rec_triangle_1 = (float)0.5 * (x_intercept - x1) * y1_find;
+                    float area_rec_triangle_2 = (float)0.5 * (x2 - x_intercept) * y2_find;
                     area_out = area_rec_triangle_1 + area_rec_triangle_2;
                 }
 
@@ -772,8 +766,8 @@ namespace MathFunctionsNamespace
                 if ((y1_find >= 0) && (y2_find >= 0)) 
                   
                 {
-                    double slope_area = System.Math.Abs((y2_find - y1_find)) * (x2 - x1) * 0.5;
-                    double rec_area = 0;
+                    float slope_area = System.Math.Abs((y2_find - y1_find)) * (x2 - x1) * (float)0.5;
+                    float rec_area = 0;
                     if (y1_find <= y2_find)
                     {
                         rec_area = y1_find * (x2 - x1);
@@ -792,8 +786,8 @@ namespace MathFunctionsNamespace
                 if ((y1_find <= 0) && (y2_find <= 0))
 
                 {
-                    double slope_area = System.Math.Abs((y2_find - y1_find)) * (x2 - x1) * 0.5;
-                    double rec_area = 0;
+                    float slope_area = System.Math.Abs(y2_find - y1_find) * (x2 - x1) * (float)0.5;
+                    float rec_area = 0;
                     if (y1_find <= y2_find)
                     {
                         rec_area = y2_find * (x2 - x1);
@@ -819,16 +813,16 @@ namespace MathFunctionsNamespace
             /// <param name="x2"></param>
             /// <param name="y2"></param>
             /// <returns></returns>
-            public static double[] SlopeInterceptFind(Int32 x1, Int32 y1, Int32 x2, Int32 y2)
+            public static float[] SlopeInterceptFind(Int32 x1, Int32 y1, Int32 x2, Int32 y2)
             {
                 // Slope can be small therefore calculation in double. 2024.01.12 15:58. Moscow. Workplace. 
-                double x1_double = (double)x1;
-                double y1_double = (double)y1;
-                double x2_double = (double)x2;
-                double y2_double = (double)y2;
-                double slope = (y2_double - y1_double) / (x2_double - x1_double);
-                double intercept = y1_double - slope*x1_double;
-                double[] arr_out = new double[2];
+                float x1_float = (float)x1;
+                float y1_float = (float)y1;
+                float x2_float = (float)x2;
+                float y2_float = (float)y2;
+                float slope = (y2_float - y1_float) / (x2_float - x1_float);
+                float intercept = y1_float - slope*x1_float;
+                float[] arr_out = new float[2];
                 arr_out[0] = slope;
                 arr_out[1] = intercept;
                 return arr_out;
@@ -851,9 +845,9 @@ namespace MathFunctionsNamespace
             /// <param name="side1"></param>
             /// <param name="side2"></param>
             /// <returns></returns>
-            public static double RectungularTriangle(double side1, double side2)
+            public static float RectungularTriangle(float side1, float side2)
             {
-                return (side1 * side2) / ((double)2);
+                return (side1 * side2) / ((float)2);
             }
 
             /// <summary>
@@ -863,7 +857,7 @@ namespace MathFunctionsNamespace
             /// <param name="side1"></param>
             /// <param name="side2"></param>
             /// <returns></returns>
-            public static double Rectungular(double side1, double side2)
+            public static float Rectungular(float side1, float side2)
             {
                 return side1 * side2;
             }
@@ -877,13 +871,13 @@ namespace MathFunctionsNamespace
             /// <param name="sides_number"></param>
             /// <param name="side"></param>
             /// <returns></returns>
-            public static double PolygonNSides(Int32 sides_number, double side)
+            public static float PolygonNSides(Int32 sides_number, float side)
             {
                 // Step by step. 2024.01.12 14:00. Moscow. Workplace.
-                double devident = Math.Pow(side, 2) * ((double)sides_number);
-                double devisor = ((double)4) * Math.Tan((Math.PI / (double)180) * (((double)180) / ((double)sides_number)));
+                float devident = (float)Math.Pow(side, 2) * ((float)sides_number);
+                float devisor = ((float)4) * (float)Math.Tan((Math.PI / (float)180) * (((float)180) / ((float)sides_number)));
 
-                double res_out = devident / devisor;
+                float res_out = devident / devisor;
                 return res_out;
             }
 
@@ -895,9 +889,9 @@ namespace MathFunctionsNamespace
             /// </summary>
             /// <param name="side"></param>
             /// <returns></returns>
-            public static double Hexagon(double side)
+            public static float Hexagon(float side)
             {
-                return (((double)3) * Math.Sqrt(3) * Math.Pow(side, 2)) / ((double)2);
+                return (((float)3) * (float)Math.Sqrt(3) * (float)Math.Pow(side, 2)) / ((float)2);
             }
 
 
@@ -908,9 +902,9 @@ namespace MathFunctionsNamespace
             /// </summary>
             /// <param name="side"></param>
             /// <returns></returns>
-            public static double Square(double side)
+            public static float Square(float side)
             {
-                return Math.Pow(side, 2);
+                return (float)Math.Pow(side, 2);
             }
             /// <summary>
             /// Return area of circle by using the radius of the circle <br></br>
@@ -919,14 +913,14 @@ namespace MathFunctionsNamespace
             /// </summary>
             /// <param name="side"></param>
             /// <returns></returns>
-            public static double Cicrle(double radius)
+            public static float Cicrle(float radius)
             {
                 if (radius < 0)
                 {
                     ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Number_Is_Less_Than_Zero);
                     return 0;
                 }
-                return Math.Pow(radius, 2) * Math.PI;
+                return (float)Math.Pow(radius, 2) * (float)Math.PI;
             }
             /// <summary>
             /// Return area of triangle by using 3 sides of the triangle <br></br>
@@ -937,10 +931,10 @@ namespace MathFunctionsNamespace
             /// <param name="side2"></param>
             /// <param name="side3"></param>
             /// <returns></returns>
-            public static double Triangle(double side1, double side2, double side3)
+            public static float Triangle(float side1, float side2, float side3)
             {
-                double semiperimeter = (side1 + side2 + side3) / 2;
-                double area = Math.Sqrt(semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - side3));
+                float semiperimeter = (side1 + side2 + side3) / 2;
+                float area = (float)Math.Sqrt(semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - side3));
                 return area;
             }
 
@@ -953,9 +947,9 @@ namespace MathFunctionsNamespace
             /// <param name="side_base"></param>
             /// <param name="side_height"></param>
             /// <returns></returns>
-            public static double RectungularTriangle(double side_base, double side_height)
+            public static float RectungularTriangle(float side_base, float side_height)
             {
-                double side3 = Math.Sqrt(Math.Pow(side_base, 2) + Math.Pow(side_height, 2));
+                float side3 = Math.Sqrt(Math.Pow(side_base, 2) + Math.Pow(side_height, 2));
                 return Triangle(side_base, side_height, side3);
             }
         
@@ -1306,7 +1300,7 @@ namespace MathFunctionsNamespace
             /// </summary>
             /// <param name="bytes_in"></param>
             /// <returns></returns>
-            public static UInt32 BytesToUInt32(byte[] bytes_in)
+            public static UInt32 BytesToUInt32(byte [] bytes_in)
             {
                 if (bytes_in.Length < 4)
                 {

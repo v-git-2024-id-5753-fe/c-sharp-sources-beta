@@ -1,22 +1,16 @@
 ﻿using ArrayFunctionsNamespace;
 using ReportFunctionsNamespace;
 using System;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static MyUSBMethodsNamespace.USB_as_VCP;
 using Timer = System.Windows.Forms.Timer;
 
 // Commercial use (license)
 // Please study about commercial use of the code that is publicly available 
 
-namespace MyUSBMethodsNamespace
+namespace MyUSBFunctionsNamespace
 {
     /*
     1. 2023.09.03 11:16. 5ms send time was used and the console showed correctly so I assume

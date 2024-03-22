@@ -3,7 +3,6 @@ using BitsFunctionsNamespace;
 using FileFunctionsNamespace;
 using MathFunctionsNamespace;
 using NetworkFunctionsNamespace;
-//using NetworkFunctionsNamespace;
 using ReportFunctionsNamespace;
 using System;
 using System.Collections.Generic;
@@ -11,14 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Security.Policy;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 // Commercial use (license)
 // Please study about commercial use of the code that is publicly available 
