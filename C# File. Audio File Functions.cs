@@ -177,7 +177,7 @@ namespace AudioFileFunctions
     // 2024.03.16 15:44. Saint-Petersburg. Home.  
     // this was not completed because there were no need to do it.
     [Obsolete]
-    class MyAudioFileMethods_class
+    class AudioFileMethods_class
     {
         public static UInt32 AudioFileMp3HeaderGet(byte[] frame_in)
         {

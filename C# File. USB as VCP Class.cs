@@ -10,7 +10,7 @@ using Timer = System.Windows.Forms.Timer;
 // Commercial use (license)
 // Please study about commercial use of the code that is publicly available 
 
-namespace MyUSBFunctionsNamespace
+namespace USB_as_VCP_Namespace
 {
     /*
     1. 2023.09.03 11:16. 5ms send time was used and the console showed correctly so I assume

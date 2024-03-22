@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 // Please study about commercial use of the code that is publicly available 
 
 // Written. 2024.01.04 14:55. Saint-Petersburg. Home.
-namespace MyDelayFunctionsNamespace
+namespace DelayFunctionsNamespace
 {
     public static class DelayFunctions
     {

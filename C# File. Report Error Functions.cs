@@ -134,6 +134,7 @@ namespace ReportFunctionsNamespace
             string filename = trace.GetFrame(1).GetFileName();
             string method_name = trace.GetFrame(1).GetMethod().Name;
             string line_num = trace.GetFrame(1).GetFileLineNumber().ToString();
+            Console.WriteLine("Function: " + method_name);
             if (select_data_type == AttentionMessage.ArrayZeroLength)
             {
                 Console.WriteLine("Attention! Array length is 0");
@@ -145,8 +146,7 @@ namespace ReportFunctionsNamespace
             if (select_data_type == AttentionMessage.NumberIsZero)
             {
                 Console.WriteLine("Attention! Number is 0 and it should not be so");
-            }
-            Console.WriteLine("Function: " + method_name);
+            }            
             Console.WriteLine("File: " + filename);
             Console.WriteLine("Line number: " + line_num);
         }

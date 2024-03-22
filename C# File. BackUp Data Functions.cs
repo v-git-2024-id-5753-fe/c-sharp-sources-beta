@@ -14,8 +14,8 @@ namespace DataBackUpFunctionsNamepsace
         static string _dir_back_up = "BackUp";
         public static void BackUp(string dir_path, string extension = "*.*")
         {
-            string[] filenames = DirectoryFunctions.GetFiles.All(dir_path, extension);
-            DirectoryFunctions.Make(_dir_back_up);
+            string[] filenames = DirectoryFunctionsNamespace.DirectoryFunctions.GetFiles.All(dir_path, extension);
+            DirectoryFunctionsNamespace.DirectoryFunctions.Make(_dir_back_up);
             string[] files_in_dir = Directory.GetFiles(_dir_back_up, "*.*", SearchOption.TopDirectoryOnly);
             if (files_in_dir.Length != 0)
             {
@@ -29,7 +29,7 @@ namespace DataBackUpFunctionsNamepsace
                 {
                     Console.WriteLine(e1.Message);
                 }
-                DirectoryFunctions.Make(_dir_back_up);
+                DirectoryFunctionsNamespace.DirectoryFunctions.Make(_dir_back_up);
                 try
                 {
                     Directory.Move(destinationDirectory, _dir_back_up + "\\Previous_BackUp");

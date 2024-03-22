@@ -756,9 +756,9 @@ namespace FileFunctionsNamespace
                         if ((TextProcessingClass.IsWordDate(word_str_append) == true) ||
                                 (TextProcessingClass.IsWordTime(word_str_append) == true))
                         {
-                            string dir = DirectoryFunctions.DirectoryPath.File(file_in);
+                            string dir = DirectoryFunctionsNamespace.DirectoryFunctions.DirectoryPath.File(file_in);
                             string filename = Path.GetFileName(dir);
-                            DirectoryFunctions.Make(dir);
+                            DirectoryFunctionsNamespace.DirectoryFunctions.Make(dir);
                             File.Copy(file_in, dir + "\\" + filename);
                             Console.WriteLine("Critical. File was not coded");
                             Console.WriteLine(file_in);
@@ -861,9 +861,9 @@ namespace FileFunctionsNamespace
                         if ((TextProcessingClass.IsWordDate(word) == true) ||
                             (TextProcessingClass.IsWordTime(word) == true))
                         {
-                            string dir = DirectoryFunctions.DirectoryPath.File(file_in);
+                            string dir = DirectoryFunctionsNamespace.DirectoryFunctions.DirectoryPath.File(file_in);
                             string filename = Path.GetFileName(dir);
-                            DirectoryFunctions.Make(dir);
+                            DirectoryFunctionsNamespace.DirectoryFunctions.Make(dir);
                             File.Copy(file_in, dir + "\\" + filename);
                             Console.WriteLine("Critical. File was not coded");
                             Console.WriteLine(file_in);
@@ -1284,7 +1284,11 @@ namespace FileFunctionsNamespace
             return result_out;
         }
     }
-    static class DirectoryMyMethods
+
+    // 2024.03.22 13:17. Moscow. Workplace.
+    // Obsolete because there is separate file for this
+    [Obsolete]
+    static class DirectoryFunctionsObsolete
     {
         static public void Make(string dir_path)
         {
@@ -3323,7 +3327,7 @@ namespace FileFunctionsNamespace
             {
                 if (System.IO.Directory.Exists(folder_path) == false)
                 {
-                    DirectoryFunctions.Make(folder_path);
+                    DirectoryFunctionsNamespace.DirectoryFunctions.Make(folder_path);
                 }
                 if (files_in.Length > 0)
                 {

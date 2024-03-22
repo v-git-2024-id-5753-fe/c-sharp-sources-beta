@@ -27,9 +27,102 @@ namespace NetworkFunctionsNamespace
     }
 
     /// <summary>
-    /// Written. 2024.02.18 11:44. Moscow. Hostel.
+    /// Calculates CRC16 of byte[].
+    /// Written. 2024.03.22 15:44. Moscow. Workplace. <br></br>
+    /// Tested. Works. 2024.03.22 15:44. Moscow. Workplace.
     /// </summary>
-    class CRC32_Class
+    class CRC16Class
+    {
+        public const UInt16 DefaultPolynomial = 0x8005;
+        UInt16 internal_polynomial = DefaultPolynomial;
+        public UInt16 Polynomial
+        {
+            get
+            {
+                return internal_polynomial;
+            }
+            set
+            {
+                internal_polynomial = value;
+                CreateCRCReflectedTable(internal_polynomial);
+            }
+        }
+        public UInt16[] CRC16_Reflected_Table = null;
+        public CRC16Class(UInt16 polynomial_in)
+        {
+            CRC16_Reflected_Table = CreateCRCReflectedTable(polynomial_in);
+        }
+
+        /// <summary>
+        /// Calculates reflect CRC16 table. <br></br>
+        /// Tested. Works. 2024.03.22 15:33. Moscow. Workplace.
+        /// </summary>
+        /// <param name="polynomial"></param>
+        /// <returns></returns>
+        private UInt16[] CreateCRCReflectedTable(UInt16 polynomial)
+        {
+            UInt16[] createTable = new UInt16[256];
+
+            // 2024.03.21 16:42. Moscow. Workplace.
+            // for using shift right there is reversed polynomial - that is reversed bits in the number (1st, 2nd -> 32nd, 31st)
+            UInt16 polynomial_reversed = (UInt16)BitsFunctions.BitsReversed(polynomial);
+            for (UInt16 i = 0; i < 256; i++)
+            {
+                UInt16 entry = i;
+                for (UInt16 j = 0; j < 8; j++)
+                {
+                    if ((entry & 1) == 1)
+                    {
+                        entry = (UInt16)((entry >> 1) ^ polynomial_reversed);
+                    }
+                    else
+                    {
+                        entry = (UInt16)(entry >> 1);
+                    }
+
+                }
+                createTable[i] = entry;
+            }
+            return createTable;
+        }
+
+
+        /// <summary>
+        /// Calculates CRC16.<br></br>
+        /// Written. 2024.03.22 15:34. Moscow. Workplace. <br></br>
+        /// Tested. Works. 2024.03.22 15:45. Moscow. Workplace.
+        /// </summary>
+        /// <param name="byte_arr"></param>
+        /// <returns></returns>
+        public UInt16 ComputeChecksum(byte[] byte_arr)
+        {
+            // 2024.03.22 10:31. Moscow. Workplace.
+            // Uses reflected CRC16 table. 
+            ushort crc = 0xffff;
+            foreach (byte t in byte_arr)
+            {
+                var index = (byte)((crc & 0xff) ^ t);
+                crc = (ushort)((crc >> 8) ^ CRC16_Reflected_Table[index]);
+            }
+            return (UInt16)crc;
+        }
+
+        public byte[] ComputeChecksumBytes(byte[] byte_arr)
+        {
+            return BitConverter.GetBytes(ComputeChecksum(byte_arr));
+        }
+
+    }
+
+
+
+
+    /// <summary>
+    /// Calculates CRC32 of byte[].
+    /// Written. 2024.02.18 11:44. Moscow. Hostel. <br></br>
+    /// Tested. Works. 2024.03.22 10:31. Moscow. Workplace.
+    /// </summary>
+    class CRC32Class
     {
 
         // 2024.02.18 12:07. Moscow. Hostel.
@@ -84,7 +177,7 @@ public static class Crc8
             }
         }
         public UInt32[] CRS32_Reflected_Table = null;
-        public CRC32_Class(UInt32 polynomial_in)
+        public CRC32Class(UInt32 polynomial_in)
         {
             CRS32_Reflected_Table = CreateCRCReflectedTable(polynomial_in);
         }
@@ -144,22 +237,54 @@ public static class Crc8
     }
 
     /// <summary>
-    /// Written. 2024.03.21. 10:00 - 15:00. Moscow. Workplace. <br></br>
+    /// Written. 2024.03.22 15:43. Moscow. Workplace. <br></br>
+    /// - Shows in console CRC32 reflected table. <br></br>
+    /// - Shows in console CRC32 checksum of provided byte[]. <br></br>
+    /// </summary>
+    class CRC16Test
+    {
+        CRC16Class crc16 = new CRC16Class(CRC16Class.DefaultPolynomial);
+        public void ShowTable()
+        {
+            Console.Write(ArrayFunctions.UInt16Array.Convert.ToFileString(crc16.CRC16_Reflected_Table, 8, 16, " "));
+        }
+        public void SetPolynomial(ushort num_in)
+        {
+            crc16.Polynomial = num_in;
+        }
+
+        public void ChecksumToConsole(byte[] byte_arr)
+        {
+           ushort crc16_value = crc16.ComputeChecksum(byte_arr);
+            Console.WriteLine(crc16_value.ToString());
+        }
+    }
+
+
+    /// <summary>
+    /// Written. 2024.03.22 13:03. Moscow. Workplace. <br></br>
+    /// Tested. Works. 2024.03.22 13:22. Moscow. Workplace. <br></br>
     /// - Shows in console CRC32 reflected table. <br></br>
     /// - Shows in console CRC32 checksum of provided byte[]. <br></br>
     /// </summary>
     class CRC32Test
     {
-        CRC32_Class crc32 = new CRC32_Class(CRC32_Class.DefaultPolynomial);
+        CRC32Class crc32 = new CRC32Class(CRC32Class.DefaultPolynomial);
+        
         public void ShowTable()
         {
             Console.Write(ArrayFunctions.UInt32Array.Convert.ToFileString(crc32.CRS32_Reflected_Table, 8, 16, " "));
         }
+
+        /// <summary>
+        /// Tested. Works. 2024.03.22 13:21. Moscow. Workplace.
+        /// </summary>
+        /// <param name="num_in"></param>
         public void SetPolynomial(uint num_in)
         {
             crc32.Polynomial = num_in;
         }
-
+                
         public void ChecksumToConsole(byte[] byte_arr)
         {
             uint crc32_value = crc32.ComputeChecksum(byte_arr);
@@ -201,7 +326,7 @@ public static class Crc8
             ClientTCP.Client.Send(bytes_in);
         }
     }
-    class MyTCPServerFunctionsClass
+    class TCPServerFunctionsClass
     {
         TcpListener ServerTCP = null;
         IPAddress ServerAddress = null;

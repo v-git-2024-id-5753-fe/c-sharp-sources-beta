@@ -6,6 +6,9 @@ using System.Text;
 using StringFunctionsNamespace;
 using System.Collections.Generic;
 using System.Diagnostics;
+using AudioFileFunctions;
+using NetworkFunctionsNamespace;
+using FileFunctionsNamespace;
 
 // Commercial use (license)
 // Please study about commercial use of the code that is publicly available 
@@ -822,11 +825,134 @@ namespace ArrayFunctionsNamespace
         {
 
 
+
+            /// <summary>
+            /// Written. 2024.03.22 13:06. Moscow. Workplace.
+            /// </summary>
+            public static class Generate
+            {
+                /// <summary>
+                /// Generate UInt16[] filled with random numbers <br></br>
+                /// Written. 2024.03.22 13:06. Moscow. Workplace. <br></br>
+                /// Tested. Works.2024.03.22 13:27. Moscow. Workplace.
+                /// </summary>
+                /// <param name="numbers_num"></param>
+                /// <param name="min"></param>
+                /// <param name="max"></param>
+                /// <returns></returns>
+                public static ushort[] RandomMinMaxValue(ushort numbers_num, ushort min, ushort max)
+                {
+                    ushort[] arr_out = new ushort[numbers_num];
+                    for (int i = 0; i < arr_out.Length; i++)
+                    {
+                        arr_out[i] = (ushort)_internal_random .Next(min, max + 1);                                                
+                    }
+                    return arr_out;
+                }
+            }
+
+
             /// <summary>
             /// Written. 2023.12.21 12:39. Workplace.
             /// </summary>
             public static class Convert
             {
+
+
+
+
+
+
+                /// <summary>
+                /// Converts UInt16[] to filestring according to required number format, delimer and missing number string (defined by char). <br></br> 
+                /// Written. 2024.03.22 13:31. Moscow. Workplace. <br></br>
+                /// Tested. Works. 2024.03.22 13:34. Moscow. Workplace. <br></br>
+                /// </summary>
+                /// <param name="arr_in"></param>
+                /// <param name="num_per_row"></param>
+                /// <param name="delimer"></param>
+                /// <param name="missing_number_char">Defines missing number string. The string will be of the length of the longest number with this char</param>
+                /// <param name="base_in"></param>
+                /// <param name="pad_number"></param>
+                /// <returns></returns>
+                public static string ToFileString(ushort[] arr_in, uint num_per_row, int base_in = 10, string delimer = "\t", char missing_number_char = '.', int pad_number = -1)
+                {
+                    if (arr_in.Length == 0)
+                    {
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
+                        return "";
+                    }
+
+                    int rows_num = arr_in.Length / (int)num_per_row;
+                    bool IsNotRectangle = false;
+                    if ((arr_in.Length % num_per_row) != 0)
+                    {
+                        rows_num += 1;
+                        IsNotRectangle = true;
+                    }
+
+                    string[] strings_filestring = new string[rows_num];
+
+                    StringBuilder write_string = new StringBuilder();
+
+                    int col_index = 0;
+
+                    int pad_length = pad_number;
+
+                    if (base_in == 10)
+                    {
+                        if (pad_number == -1)
+                        {
+                            uint max_int = arr_in.Max();
+                            pad_length = max_int.ToString().Length;
+                        }
+                    }
+
+                    if (base_in == 16)
+                    {
+                        pad_length = 4;
+                    }
+
+                    for (int i = 0; i < arr_in.Length; i++)
+                    {
+                        if (base_in == 10)
+                        {
+                            write_string.Append(System.Convert.ToString(arr_in[i], base_in).ToUpper().PadRight(pad_length, ' '));
+                        }
+                        if (base_in == 16)
+                        {
+                            write_string.Append(System.Convert.ToString(arr_in[i], base_in).ToUpper().PadLeft(pad_length, '0'));
+                        }
+                        write_string.Append(delimer);
+                        col_index += 1;
+                        if (col_index > (num_per_row - 1))
+                        {
+                            write_string.Append("\r\n");
+                            col_index = 0;
+                        }
+                    }
+
+                    if (IsNotRectangle == true)
+                    {
+                        int row_filled = arr_in.Length % (int)num_per_row;
+                        for (int i = 0; i < (num_per_row - row_filled); i++)
+                        {
+                            write_string.Append("".PadRight(pad_length, missing_number_char));
+                            write_string.Append(delimer);
+                        }
+                        write_string.Append("\r\n");
+                    }
+
+                    string return_string = write_string.ToString();
+
+                    return return_string;
+
+                }
+
+
+
+
+
 
 
                 /// <summary>
@@ -895,13 +1021,43 @@ namespace ArrayFunctionsNamespace
                 }
             }
 
+
             /// <summary>
-            /// Prints UInt16[][] to Console <br></br>
-            /// Written. 2023.12.21 12:36. Workplace. <br></br>
-            /// Tested. Works. 2023.12.21 12:52. Workplace.
+            /// Print UInt16[] in console. There is numbering elements that can be turned on/off<br></br>
+            /// Written. 2024.03.22 13:21. Moscow. Workplace. <br></br>
+            /// Tested. Works. 2024.03.22 13:27. Moscow. Workplace.
             /// </summary>
             /// <param name="arr_in"></param>
-            public static void ToConsole(UInt16[][] arr_in)
+            /// <param name="numbering_elements"></param>
+            public static void ToConsole(UInt16[] arr_in, bool numbering_elements = true)
+            {
+                if (arr_in.Length == 0)
+                {
+                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
+                    return;
+                }
+
+                Console.WriteLine("Array" + typeof(UInt16).Name.ToString() + ". Length is " + arr_in.Length.ToString());
+                for (int i = 0; i < arr_in.Length; i++)
+                {
+                    if (numbering_elements == true)
+                    {
+                        Console.Write(i.ToString() + ".\t");
+                    }
+                    Console.WriteLine(arr_in[i].ToString());
+                }
+
+            }
+            
+
+
+                /// <summary>
+                /// Prints UInt16[][] to Console <br></br>
+                /// Written. 2023.12.21 12:36. Workplace. <br></br>
+                /// Tested. Works. 2023.12.21 12:52. Workplace.
+                /// </summary>
+                /// <param name="arr_in"></param>
+                public static void ToConsole(UInt16[][] arr_in)
             {
                 if (arr_in.Length == 0)
                 {
@@ -1356,13 +1512,6 @@ namespace ArrayFunctionsNamespace
 
 
             }
-
-
-
-
-
-
-
 
             /// <summary>
             /// Written. 2024.01.11 15:19. Moscow. Workplace.

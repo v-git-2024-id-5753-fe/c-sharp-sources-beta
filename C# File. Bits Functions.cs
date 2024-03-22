@@ -34,11 +34,24 @@ namespace BitsFunctionsNamespace
                 }
 
                 return reverse;
+          }
+
+        public static ushort BitsReversed(ushort num_in)
+        {
+
+
+            ushort reverse = 0;
+            for (ushort bit = 0; bit < 16; bit++)
+            {
+                reverse <<= 1;
+                reverse |= (ushort)(num_in & 1);
+                num_in >>= 1;
             }
 
+            return reverse;
+        }
 
 
-        
 
         public static byte BitsGet(UInt32 num_in, Int32 start_num, Int32 end_num)
         {
