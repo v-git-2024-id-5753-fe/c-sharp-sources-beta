@@ -342,14 +342,14 @@ namespace ImageFunctionsNameSpace
         static Random _internal_random = new Random();
         // template for code execution. 2024.03.06 16:00. Moscow. Workplace. 
         /*
-        double execution_time_ms_start = 0;
+        float execution_time_ms_start = 0;
         if (TimeExecutionShow == true)
             {
-                execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
             }
         if (TimeExecutionShow == true)
             {
-                double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                 TimeExecutionMessage(nameof(function_name_here), execution_time_ms_stop - execution_time_ms_start);
             }
         */
@@ -392,7 +392,7 @@ namespace ImageFunctionsNameSpace
         /// Note. Low time function can be excluded from messages in console. <br></br>
         /// </summary>
         /// <param name="function_name"></param>
-        static void TimeExecutionMessage(string function_name, double total_ms_passed)
+        static void TimeExecutionMessage(string function_name, float total_ms_passed)
         {
             _time_execution_count += 1;
             Console.WriteLine(_time_execution_count.ToString() + ". " + DateTime.Now.ToString("HH:mm:ss") + " " + function_name +
@@ -422,10 +422,10 @@ namespace ImageFunctionsNameSpace
                 // 2024.03.06 17:32. Moscow. Workplace. 
                 // during writing the code.
                 // Averaging from certain color moves the color to white but via non-gray color. 
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 // 2024.03.07 12:31. Moscow. Workplace. 
                 // red green blue are the same for a pixel for black and white image
@@ -446,7 +446,7 @@ namespace ImageFunctionsNameSpace
                 uint32_for_out |= ((uint)blue_average << 0);
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(AverageColor.BlackWhite), execution_time_ms_stop - execution_time_ms_start);
                 }
                 return (int)uint32_for_out;
@@ -499,10 +499,10 @@ namespace ImageFunctionsNameSpace
             /// <returns></returns>
             public static Bitmap Random_Dots_Certain_Color(Color point_color, Int32 points_count = 10, UInt32 point_width = 1, UInt32 x_start = 0, UInt32 x_end = 200, UInt32 y_start = 0, UInt32 y_end = 200)
             {
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 if (point_width == 0)
                 {
@@ -522,7 +522,7 @@ namespace ImageFunctionsNameSpace
                 }
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(Random_Dots_Certain_Color), execution_time_ms_stop - execution_time_ms_start);
                 }
                 return bitmap_out;
@@ -556,10 +556,10 @@ namespace ImageFunctionsNameSpace
             /// <returns></returns>
             public static Bitmap Square_Certain_Color(Color color_in, Int32 side_length = 100)
             {
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 Bitmap bitmap_out = new Bitmap(side_length, side_length);
                 // 2024.03.06 17:18. Moscow. Workplace. 
@@ -573,7 +573,7 @@ namespace ImageFunctionsNameSpace
                 }
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(Generate.Square_Certain_Color), execution_time_ms_stop - execution_time_ms_start);
                 }
                 return bitmap_out;
@@ -696,10 +696,10 @@ namespace ImageFunctionsNameSpace
             /// <param name="start_number"></param>
             public static void BitmapArrayToFilesBMP(Bitmap[] bitmap_arr_in, string filename_base, Int32 start_number = 0)
             {
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 for (Int32 i = 0; i < bitmap_arr_in.Length; i++)
                 {
@@ -707,7 +707,7 @@ namespace ImageFunctionsNameSpace
                 }
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(ToFiles.BitmapArrayToFilesBMP), execution_time_ms_stop - execution_time_ms_start);
                 }
             }
@@ -725,15 +725,15 @@ namespace ImageFunctionsNameSpace
             /// <param name="filename"></param>
             public static void ToBMP(Bitmap bitmap_in, string filename)
             {
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 FileFunctions.ImageFile.WriteFile.BitmapToFileBMP(bitmap_in, filename);
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(ToFile.ToBMP), execution_time_ms_stop - execution_time_ms_start);
                 }
             }
@@ -816,10 +816,10 @@ namespace ImageFunctionsNameSpace
             /// <param name="form_call_from"></param>
             public static void FromBitmap(Bitmap bitmap_in, Form form_call_from)
             {
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 Int32 row_length = bitmap_in.Width;
                 Int32 rows_count = bitmap_in.Height;
@@ -836,7 +836,7 @@ namespace ImageFunctionsNameSpace
                 FormOutput.Show();
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(FromBitmap), execution_time_ms_stop - execution_time_ms_start);
                 }
             }
@@ -1251,10 +1251,10 @@ namespace ImageFunctionsNameSpace
             /// <returns></returns>
             public static Bitmap[] HorizontallyByLength(Bitmap bitmap_in, Int32 length_of_rectangle)
             {
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 Int32 amount_rectangles = 0;
                 Int32 remained_length = bitmap_in.Width;
@@ -1284,7 +1284,7 @@ namespace ImageFunctionsNameSpace
                 Bitmap_Arr_Out = Crop.MultipleRectangles(bitmap_in, Rectangles_For_Crop);
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(Crop.HorizontallyByLength), execution_time_ms_stop - execution_time_ms_start);
                 }
                 return Bitmap_Arr_Out;
@@ -1302,10 +1302,10 @@ namespace ImageFunctionsNameSpace
             /// <returns></returns>
             public static Bitmap[] HorizontallyByMark(Bitmap bitmap_in, Color mark_color, Color color_background)
             {
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 Bitmap bitmap_to_work = new Bitmap(bitmap_in);
                 List<int> mark_values = new List<int>();
@@ -1336,7 +1336,7 @@ namespace ImageFunctionsNameSpace
                 Bitmap[] bitmaps_crop = MultipleRectangles(bitmap_to_work, rectangles_crop);
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(HorizontallyByMark), execution_time_ms_stop - execution_time_ms_start);
                 }
                 return bitmaps_crop;
@@ -1430,10 +1430,10 @@ namespace ImageFunctionsNameSpace
             public static char[][] BitmapToText(Bitmap bitmap_in, char[] chars_in)
             {
 
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
 
 
@@ -1487,7 +1487,7 @@ namespace ImageFunctionsNameSpace
 
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(BitmapToText), execution_time_ms_stop - execution_time_ms_start);
                 }
 
@@ -1517,10 +1517,10 @@ namespace ImageFunctionsNameSpace
             /// <returns></returns>
             static public Bitmap ToBlackWhiteBitmap(Bitmap image_in)
             {
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 Bitmap bitmap_out = new Bitmap(image_in.Width, image_in.Height);
                 for (Int32 i = 0; i < image_in.Height; i++)
@@ -1537,7 +1537,7 @@ namespace ImageFunctionsNameSpace
                 }
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(ToBlackWhiteBitmap), execution_time_ms_stop - execution_time_ms_start);
                 }
                 return bitmap_out;
@@ -1568,16 +1568,16 @@ namespace ImageFunctionsNameSpace
             /// <returns></returns>
             public static int[] BitmapToInt32Array(Bitmap image_in, Int32 alpha_ch = -1)
             {
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
                 int[][] bitmap_int32_2D_array = BitmapToInt32ArrayAxB(image_in, alpha_ch);
                 int[] arr_out = ArrayFunctions.Int32Array.Merge.AxB_To_C(bitmap_int32_2D_array);
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(BitmapToInt32Array), execution_time_ms_stop - execution_time_ms_start);
                 }
                 return arr_out;
@@ -1941,15 +1941,15 @@ namespace ImageFunctionsNameSpace
             }
 
 
-            double execution_time_ms_start = 0;
+            float execution_time_ms_start = 0;
             if (TimeExecutionShow == true)
             {
-                execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
             }
             Bitmap bitmap_return = new Bitmap(filename);
             if (TimeExecutionShow == true)
             {
-                double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                 TimeExecutionMessage(nameof(FileBMPToBitmap), execution_time_ms_stop - execution_time_ms_start);
             }
             return bitmap_return;

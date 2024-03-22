@@ -63,7 +63,7 @@ ArrayInt32.Extract.FromEnd.Length
 There may have been trouble because of it.
 4.2. ';', ':', ' ' - delimers, separators between numbers. Avoid to use it in data processing.
 These are widely spreaded in data transfer, data storage. There may have been trouble because of it.
-4.2. ',' and '.' for double number is used interchangebly. Function to replace '.' to ',' and ',' to '.' will be usefull.
+4.2. ',' and '.' for float number is used interchangebly. Function to replace '.' to ',' and ',' to '.' will be usefull.
 
 
 3. 2023.03.01. Data Input. Data source. It can be from any source and therefore in any format but
@@ -98,8 +98,8 @@ The programm that contains many functions can become too large and too difficult
 1.1. Take row from array to process and then via cycle row by row.
 1.2. Take range of rows to save it to file.
 1.3. 1.1 and 1.2 for column.
-1.4. Array conversion from int, double to string array so it can be saved to file. 
-Conversion back from strings to Int32 array, double array.
+1.4. Array conversion from int, float to string array so it can be saved to file. 
+Conversion back from strings to Int32 array, float array.
 1.5. Array write to file. Function to write array to file using delimer between numbers and 
 function to read file to array.
 

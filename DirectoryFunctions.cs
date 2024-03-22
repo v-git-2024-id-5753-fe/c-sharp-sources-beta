@@ -17,14 +17,14 @@ namespace DirectoryFunctionsNamespace
 
         // template for code execution. 2024.03.12 10:14. Moscow. Workplace. 
         /*
-        double execution_time_ms_start = 0;
+        float execution_time_ms_start = 0;
         if (TimeExecutionShow == true)
             {
-                execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
             }
         if (TimeExecutionShow == true)
             {
-                double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                 TimeExecutionMessage(nameof(function_name_here), execution_time_ms_stop - execution_time_ms_start);
             }
         */
@@ -69,7 +69,7 @@ namespace DirectoryFunctionsNamespace
         /// </summary>
         /// <param name="function_name"></param>
         /// <param name="total_ms_passed"></param>
-        static void TimeExecutionMessage(string function_name, double total_ms_passed)
+        static void TimeExecutionMessage(string function_name, float total_ms_passed)
         {
             _time_execution_count += 1;
             Console.WriteLine(_time_execution_count.ToString() + ". " + DateTime.Now.ToString("HH:mm:ss") + " " + function_name +
@@ -220,7 +220,7 @@ namespace DirectoryFunctionsNamespace
                 return System.IO.Path.GetDirectoryName(filename) + "\\";
             }
         }
-        // new
+      
         /// <summary>
         /// Makes directory. 
         /// C# will make directory creating all the folders needed to make the last folder
@@ -253,10 +253,10 @@ namespace DirectoryFunctionsNamespace
             static public string[] ByPartOfName(string name_base, string dir_path, string file_extension = ".*", bool sub_dirs = false)
             {
 
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
 
                 string[] all_files = GetFiles.All(dir_path, file_extension, sub_dirs);
@@ -271,7 +271,7 @@ namespace DirectoryFunctionsNamespace
 
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(GetFiles.ByPartOfName), execution_time_ms_stop - execution_time_ms_start);
                 }
 
@@ -283,10 +283,10 @@ namespace DirectoryFunctionsNamespace
                 static public string[] All(string dir_path, string file_extension = ".*", bool sub_dirs = false)
             {
 
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
              
 
@@ -317,7 +317,7 @@ namespace DirectoryFunctionsNamespace
 
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(GetFiles.All), execution_time_ms_stop - execution_time_ms_start);
                 }
                 return files_in_dir;

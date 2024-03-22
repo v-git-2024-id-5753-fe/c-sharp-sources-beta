@@ -32,14 +32,14 @@ namespace ArrayFunctionsNamespace
 
         // template for code execution. 2024.03.08 20:57. Moscow. Hostel.
         /*
-        double execution_time_ms_start = 0;
+        float execution_time_ms_start = 0;
         if (TimeExecutionShow == true)
             {
-                execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
             }
         if (TimeExecutionShow == true)
             {
-                double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                 TimeExecutionMessage(nameof(function_name_here), execution_time_ms_stop - execution_time_ms_start);
             }
         */
@@ -84,7 +84,7 @@ namespace ArrayFunctionsNamespace
         /// </summary>
         /// <param name="function_name"></param>
         /// <param name="total_ms_passed"></param>
-        static void TimeExecutionMessage(string function_name, double total_ms_passed)
+        static void TimeExecutionMessage(string function_name, float total_ms_passed)
         {
             _time_execution_count += 1;
             Console.WriteLine(_time_execution_count.ToString() + ". " + DateTime.Now.ToString("HH:mm:ss") + " " + function_name +
@@ -1579,7 +1579,7 @@ namespace ArrayFunctionsNamespace
                         ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Length_is_0);
                     }
                     // calculating normilize number.                   
-                    double normlize_coeficient = (float)arr_in.Max() / (float)number_for_max_in_arr;
+                    float normlize_coeficient = (float)arr_in.Max() / (float)number_for_max_in_arr;
                     // making array for return
                     int[] arr_out = new int[arr_in.Length];
                     // devide each number in array
@@ -3040,10 +3040,10 @@ namespace ArrayFunctionsNamespace
                     return;
                 }
 
-                double execution_time_ms_start = 0;
+                float execution_time_ms_start = 0;
                 if (TimeExecutionShow == true)
                 {
-                    execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                    execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                 }
 
                 
@@ -3053,7 +3053,7 @@ namespace ArrayFunctionsNamespace
 
                 if (TimeExecutionShow == true)
                 {
-                    double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                    float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                     TimeExecutionMessage(nameof(CharArray.ToConsole), execution_time_ms_stop - execution_time_ms_start);
                 }
 
@@ -3081,10 +3081,10 @@ namespace ArrayFunctionsNamespace
                         return new string[0];
                     }
 
-                    double execution_time_ms_start = 0;
+                    float execution_time_ms_start = 0;
                     if (TimeExecutionShow == true)
                     {
-                        execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                        execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                     }
                    
 
@@ -3108,7 +3108,7 @@ namespace ArrayFunctionsNamespace
 
                     if (TimeExecutionShow == true)
                     {
-                        double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                        float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                         TimeExecutionMessage(nameof(Convert.ToStrings), execution_time_ms_stop - execution_time_ms_start);
                     }
 
@@ -4135,10 +4135,10 @@ namespace ArrayFunctionsNamespace
                         return new char[0][];
                     }
 
-                    double execution_time_ms_start = 0;
+                    float execution_time_ms_start = 0;
                     if (TimeExecutionShow == true)
                     {
-                        execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                        execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                     }
                    
 
@@ -4158,7 +4158,7 @@ namespace ArrayFunctionsNamespace
 
                     if (TimeExecutionShow == true)
                     {
-                        double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                        float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                         TimeExecutionMessage(nameof(Convert.ToCharArray), execution_time_ms_stop - execution_time_ms_start);
                     }
                     return char_arr_out;

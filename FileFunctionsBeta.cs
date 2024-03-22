@@ -1586,14 +1586,14 @@ namespace FileFunctionsNamespace
 
         // template for code execution. 2024.03.08 13:36. Moscow. Hostel.
         /*
-        double execution_time_ms_start = 0;
+        float execution_time_ms_start = 0;
         if (TimeExecutionShow == true)
             {
-                execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
             }
         if (TimeExecutionShow == true)
             {
-                double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                 TimeExecutionMessage(nameof(function_name_here), execution_time_ms_stop - execution_time_ms_start);
             }
         */
@@ -1638,7 +1638,7 @@ namespace FileFunctionsNamespace
        /// </summary>
        /// <param name="function_name"></param>
        /// <param name="total_ms_passed"></param>
-        static void TimeExecutionMessage(string function_name, double total_ms_passed)
+        static void TimeExecutionMessage(string function_name, float total_ms_passed)
         {
             _time_execution_count += 1;
             Console.WriteLine(_time_execution_count.ToString() + ". " + DateTime.Now.ToString("HH:mm:ss") + " " + function_name +
@@ -1822,10 +1822,10 @@ namespace FileFunctionsNamespace
             {
                 static public Bitmap[] FilesBMPToBitmapArray(string[] filenames)
                 {
-                    double execution_time_ms_start = 0;
+                    float execution_time_ms_start = 0;
                     if (TimeExecutionShow == true)
                     {
-                        execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                        execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                     }
 
                     Bitmap[] bitmap_arr_out = new Bitmap[filenames.Length];
@@ -1835,7 +1835,7 @@ namespace FileFunctionsNamespace
                     }
                     if (TimeExecutionShow == true)
                     {
-                        double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                        float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                         TimeExecutionMessage(nameof(FilesBMPToBitmapArray), execution_time_ms_stop - execution_time_ms_start);
                     }
 
@@ -1864,15 +1864,15 @@ namespace FileFunctionsNamespace
                         }
                         
                         
-                    double execution_time_ms_start = 0;
+                    float execution_time_ms_start = 0;
                     if (TimeExecutionShow == true)
                     {
-                        execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                        execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
                     }
                     Bitmap bitmap_return = new Bitmap(filename);
                     if (TimeExecutionShow == true)
                     {
-                        double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                        float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                         TimeExecutionMessage(nameof(FileBMPToBitmap), execution_time_ms_stop - execution_time_ms_start);
                     }
                     return bitmap_return;
@@ -2078,10 +2078,10 @@ namespace FileFunctionsNamespace
                 return;
             }
 
-            double execution_time_ms_start = 0;
+            float execution_time_ms_start = 0;
             if (TimeExecutionShow == true)
             {
-                execution_time_ms_start = _time_execution.Elapsed.TotalMilliseconds;
+                execution_time_ms_start = (float)_time_execution.Elapsed.TotalMilliseconds;
             }
 
 
@@ -2107,7 +2107,7 @@ namespace FileFunctionsNamespace
 
             if (TimeExecutionShow == true)
             {
-                double execution_time_ms_stop = _time_execution.Elapsed.TotalMilliseconds;
+                float execution_time_ms_stop = (float)_time_execution.Elapsed.TotalMilliseconds;
                 TimeExecutionMessage(nameof(FileDeleteSecured), execution_time_ms_stop - execution_time_ms_start);
             }
 

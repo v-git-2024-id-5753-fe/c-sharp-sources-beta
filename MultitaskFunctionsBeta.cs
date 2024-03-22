@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 // Commercial use (license)
 // Please study about commercial use of the code that is publicly available 
 
-namespace MultitaskMethodsNamespace
+namespace MultitaskFunctionsNamespace
 {
-    public class MultitaskMethods
+    public class MultitaskFunctions
     {
         public static Task CreateTask(Action method_in)
         {
@@ -31,7 +31,7 @@ namespace MultitaskMethodsNamespace
                     {
                         all_tasks_end = false;
                         break;
-                    }
+                    }                    
                 }
             }
             return true;
