@@ -1,4 +1,5 @@
 ﻿using ArrayFunctionsNamespace;
+using BitsFunctionsNamespace;
 using ReportFunctionsNamespace;
 using System;
 using System.IO.Ports;
@@ -156,9 +157,36 @@ namespace USB_as_VCP_Namespace
                 {
                     no_write_byte = (byte)USBPort.ReadByte();
                 }
+                return;
             }
-            // 2023.09.28 14:25. added.
-            if (USB_Reception_Type == USB_Receive_Methods_List.ReceiveNumberOfBytes)
+
+
+            // Added. 2024.03.23 17:28. Moscow. Hostel.
+            // not tested.
+            if (USB_Reception_Type == USB_Receive_Methods_List.Recieve_MODBUS_RTU)
+            {
+                int rx_bytes_number = USBPort.BytesToRead;
+                for (int i = 0; i < rx_bytes_number; i++)
+                {
+                    MODBUS_CMD_Data.LoadByte((byte)USBPort.ReadByte());
+                    if (MODBUS_CMD_Data.IsPacketReceived == true)
+                    {
+                        USB_Reception_Type = USB_Receive_Methods_List.NoReception;
+                        if (MODBUS_CMD_CRC16Check() == true)
+                        {
+                            MODBUS_Callback_bytes = new byte[MODBUS_CMD_Data.NumberOfBytes];
+                            Array.Copy(MODBUS_CMD_Data.ReceivedBytes, 3, MODBUS_Callback_bytes, 0, MODBUS_Callback_bytes.Length);
+                            ReceiveMODBUSCallback(MODBUS_Callback_bytes);
+                        }
+                        break;
+                    }
+                }
+                return;
+            }
+
+
+                // 2023.09.28 14:25. added.
+                if (USB_Reception_Type == USB_Receive_Methods_List.ReceiveNumberOfBytes)
             {
                 Int32 rx_bytes_number = USBPort.BytesToRead;
                 byte[] rx_bytes = new byte[rx_bytes_number];
@@ -960,6 +988,7 @@ namespace USB_as_VCP_Namespace
                 if (ReceivedCount == 3)
                 {
                     ReceivedBytes[ReceivedCount - 1] = byte_in;
+                    NumberOfBytes = byte_in;
                     if (CreatePacket() != true)
                     {
                         ReceivedCount = 0;
@@ -984,28 +1013,141 @@ namespace USB_as_VCP_Namespace
                 }
                 else
                 {
+                    CRC16 = ReceivedBytes[ReceivedBytes.Length - 2];
+                    CRC16 |= ReceivedBytes[ReceivedBytes.Length - 1];
                     IsPacketReceived = true;
                 }
-            }
+            }            
         }
 
 
-
+        // Added. 2024.03.23 17:04. Moscow. Hostel.
+        public delegate void ReceiveMODBUSDelegate(byte[] arr_in);
+        public ReceiveMODBUSDelegate ReceiveMODBUSCallback = null;
+        MODBUS_RTU_CMD_Data MODBUS_CMD_Data = null;
+        public CRC16Class CRC16Calculation = new CRC16Class(CRC16Class.DefaultPolynomial);
+        byte[] MODBUS_Callback_bytes = null;
+        private bool MODBUS_CMD_CRC16Check()
+        {
+            byte[] arr_with_bytes = new byte[MODBUS_CMD_Data.NumberOfBytes + 3];
+            Array.Copy(MODBUS_CMD_Data.ReceivedBytes, arr_with_bytes, arr_with_bytes.Length);
+            ushort crc16_of_received_bytes = CRC16Calculation.ComputeChecksum(arr_with_bytes);
+            bool check_result_out = false;
+            if (crc16_of_received_bytes == MODBUS_CMD_Data.CRC16)
+            {
+                check_result_out = true;
+            }
+            return check_result_out;
+        }
         /// <summary>
         /// Written. 2024.03.22 10:51. Moscow. Workplace.
         /// </summary>
         /// <param name="from_address"></param>
         /// <param name="bytes_amount"></param>
         /// <param name="delay_last_byte">1st byte is the trigger to count the delay. Each byte resets the counter</param>
-        public void Receive_MODBUS_RTU(byte from_address, uint bytes_amount, Int32 delay_last_byte = 500)
+        public void Receive_MODBUS_RTU(byte from_address, byte function_code, Int32 delay_last_byte = 500)
         {
             USB_Reception_Type = USB_Receive_Methods_List.Recieve_MODBUS_RTU;
+            MODBUS_CMD_Data = new MODBUS_RTU_CMD_Data();
+            MODBUS_CMD_Data.FromAddress = from_address;
+            MODBUS_CMD_Data.FunctionCode = function_code;
+        }
+
+
+        /// <summary>
+        /// Calculates CRC16 of byte[].
+        /// Written. 2024.03.22 15:44. Moscow. Workplace. <br></br>
+        /// Tested. Works. 2024.03.22 15:44. Moscow. Workplace.
+        /// </summary>
+        public class CRC16Class
+        {
+            public const UInt16 DefaultPolynomial = 0x8005;
+            UInt16 internal_polynomial = DefaultPolynomial;
+            public UInt16 Polynomial
+            {
+                get
+                {
+                    return internal_polynomial;
+                }
+                set
+                {
+                    internal_polynomial = value;
+                    CreateCRCReflectedTable(internal_polynomial);
+                }
+            }
+            public UInt16[] CRC16_Reflected_Table = null;
+            public CRC16Class(UInt16 polynomial_in)
+            {
+                CRC16_Reflected_Table = CreateCRCReflectedTable(polynomial_in);
+            }
+
+            /// <summary>
+            /// Calculates reflect CRC16 table. <br></br>
+            /// Tested. Works. 2024.03.22 15:33. Moscow. Workplace.
+            /// </summary>
+            /// <param name="polynomial"></param>
+            /// <returns></returns>
+            private UInt16[] CreateCRCReflectedTable(UInt16 polynomial)
+            {
+                UInt16[] createTable = new UInt16[256];
+
+                // 2024.03.21 16:42. Moscow. Workplace.
+                // for using shift right there is reversed polynomial - that is reversed bits in the number (1st, 2nd -> 32nd, 31st)
+                UInt16 polynomial_reversed = (UInt16)BitsFunctions.BitsReversed(polynomial);
+                for (UInt16 i = 0; i < 256; i++)
+                {
+                    UInt16 entry = i;
+                    for (UInt16 j = 0; j < 8; j++)
+                    {
+                        if ((entry & 1) == 1)
+                        {
+                            entry = (UInt16)((entry >> 1) ^ polynomial_reversed);
+                        }
+                        else
+                        {
+                            entry = (UInt16)(entry >> 1);
+                        }
+
+                    }
+                    createTable[i] = entry;
+                }
+                return createTable;
+            }
+
+
+            /// <summary>
+            /// Calculates CRC16.<br></br>
+            /// Written. 2024.03.22 15:34. Moscow. Workplace. <br></br>
+            /// Tested. Works. 2024.03.22 15:45. Moscow. Workplace.
+            /// </summary>
+            /// <param name="byte_arr"></param>
+            /// <returns></returns>
+            public UInt16 ComputeChecksum(byte[] byte_arr)
+            {
+                // 2024.03.22 10:31. Moscow. Workplace.
+                // Uses reflected CRC16 table. 
+                ushort crc = 0xffff;
+                foreach (byte t in byte_arr)
+                {
+                    var index = (byte)((crc & 0xff) ^ t);
+                    crc = (ushort)((crc >> 8) ^ CRC16_Reflected_Table[index]);
+                }
+                return (UInt16)crc;
+            }
+
+            public byte[] ComputeChecksumBytes(byte[] byte_arr)
+            {
+                return BitConverter.GetBytes(ComputeChecksum(byte_arr));
+            }
+
         }
 
 
 
 
-            private void TimerStartRecieveByLength(object sender, EventArgs e)
+
+
+        private void TimerStartRecieveByLength(object sender, EventArgs e)
         {
             TimerRecieveByLength_DelayLastByte.Start();
         }
