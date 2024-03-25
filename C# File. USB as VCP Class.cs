@@ -168,15 +168,31 @@ namespace USB_as_VCP_Namespace
                 int rx_bytes_number = USBPort.BytesToRead;
                 for (int i = 0; i < rx_bytes_number; i++)
                 {
-                    MODBUS_CMD_Data.LoadByte((byte)USBPort.ReadByte());
-                    if (MODBUS_CMD_Data.IsPacketReceived == true)
+                    MODBUS_RTU_CMD_RX.LoadByte((byte)USBPort.ReadByte());
+                    if (MODBUS_RTU_CMD_RX.IsPacketReceived == true)
                     {
                         USB_Reception_Type = USB_Receive_Methods_List.NoReception;
                         if (MODBUS_CMD_CRC16Check() == true)
                         {
-                            MODBUS_Callback_bytes = new byte[MODBUS_CMD_Data.NumberOfBytes];
-                            Array.Copy(MODBUS_CMD_Data.ReceivedBytes, 3, MODBUS_Callback_bytes, 0, MODBUS_Callback_bytes.Length);
-                            ReceiveMODBUSCallback(MODBUS_Callback_bytes);
+                            if (MODBUS_RTU_CMD_RX.IsErrorAnswer == false)
+                            {
+                                MODBUS_Callback_bytes = new byte[MODBUS_RTU_CMD_RX.NumberOfBytes];
+                                Array.Copy(MODBUS_RTU_CMD_RX.ReceivedBytes, 3, MODBUS_Callback_bytes, 0, MODBUS_Callback_bytes.Length);
+                                MODBUS_RTU_Callback(MODBUS_Callback_bytes);
+                            }
+
+                            if (MODBUS_RTU_CMD_RX.IsErrorAnswer == true)
+                            {
+                                MODBUS_Callback_bytes = new byte[1];
+                                Array.Copy(MODBUS_RTU_CMD_RX.ReceivedBytes, 2, MODBUS_Callback_bytes, 0, 1);
+                                MODBUS_RTU_Error_Callback(MODBUS_Callback_bytes);
+                            }
+
+
+                        }
+                        else
+                        {
+                            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Reception failed. CRC16 is not correct");
                         }
                         break;
                     }
@@ -917,13 +933,160 @@ namespace USB_as_VCP_Namespace
         }
 
 
+        /// <summary>
+        /// Written. 2024.03.25 17:00. Moscow. Workplace.
+        /// </summary>
+        /// <param name="error_code"></param>
+        /// <returns></returns>
+        public static string MODBUS_RTU_GetErrorMessage(byte error_code)
+        {
+            if (error_code == 0x01)
+            {
+                return "Illegal function";
+            }
+
+            if (error_code == 0x02)
+            {
+                return "Illegal address";
+            }
+
+            if (error_code == 0x03)
+            {
+                return "Illegal data";
+            }
+
+            if (error_code == 0x04)
+            {
+                return "Slave error";
+            }
+
+            return "Error code was not found";
+        }
+
+        MODBUS_RTU_TX_CMD_Class MODBUS_RTU_TX_CMD = null;
+
+        /// <summary>
+        /// Written. 2024.03.25 13:04. Moscow. Workplace.
+        /// </summary>
+        public class MODBUS_RTU_TX_CMD_Class
+        {
+            /// <summary>
+            /// Written. 2024.03.25 17:07. Moscow. Workplace. <br></br>
+            /// Error code - 0x86 according MODBUS APPLICATION PROTOCOL SPECIFICATION v1.1a, v1.1b
+            /// </summary>
+            public byte ErrorCode = 0x86;
+            public byte ToAddress = 0;
+            public byte FunctionCode = 0;
+            public ushort RegisterAddress = 0;
+            public ushort NumberOfRegisters = 0;
+            /// <summary>
+            /// For 0x06 function.
+            /// 2024.03.25 14:24. Moscow. Workplace.
+            /// </summary>
+            public ushort RegisterValue = 0;
+            public ushort CRC16 = 0;
+            public byte[] TransmitBytes = null;
+            public byte[] GetBytesForCRC16()
+            {
+                byte[] arr_out = new byte[6];
+                int arr_index = 0;
+
+                arr_out[arr_index] = ToAddress;
+                arr_index += 1;
+
+                arr_out[arr_index] = FunctionCode;
+                arr_index += 1;
+
+                arr_out[arr_index] = (byte)(RegisterAddress >> 8);
+                arr_index += 1;
+
+                arr_out[arr_index] = (byte)(RegisterAddress >> 0);
+                arr_index += 1;
+
+                if (FunctionCode == 0x04)
+                {
+                    TransmitBytes[arr_index] = (byte)(NumberOfRegisters >> 8);
+                    arr_index += 1;
+
+                    TransmitBytes[arr_index] = (byte)(NumberOfRegisters >> 0);
+                    arr_index += 1;
+                }
+
+                if (FunctionCode == 0x06)
+                {
+                    TransmitBytes[arr_index] = (byte)(RegisterValue >> 8);
+                    arr_index += 1;
+
+                    TransmitBytes[arr_index] = (byte)(RegisterValue >> 0);
+                    arr_index += 1;
+                }
+
+                return arr_out;
+            }
+
+            /// <summary>
+            /// Create all required bytes for transfer <br></br> 
+            /// Note. The function is called automatically after MODBUS RTU Send. <br></br>
+            /// Note. Function code must be assigned for correct execution. <br></br>
+            /// Written. 2024.03.25 14:26. Moscow. Workplace.
+            ///  
+            /// </summary>
+            public void CreatePacket()
+            {
+                TransmitBytes = new byte[8];
+                int arr_index = 0;
+
+                TransmitBytes[arr_index] = ToAddress;
+                arr_index += 1;
+
+                TransmitBytes[arr_index] = FunctionCode;
+                arr_index += 1;
+
+                TransmitBytes[arr_index] = (byte)(RegisterAddress >> 8);
+                arr_index += 1;
+
+                TransmitBytes[arr_index] = (byte)(RegisterAddress >> 0);
+                arr_index += 1;
+
+                if (FunctionCode == 0x04)
+                {
+                    TransmitBytes[arr_index] = (byte)(NumberOfRegisters >> 8);
+                    arr_index += 1;
+
+                    TransmitBytes[arr_index] = (byte)(NumberOfRegisters >> 0);
+                    arr_index += 1;
+                }
+
+                if (FunctionCode == 0x06)
+                {
+                    TransmitBytes[arr_index] = (byte)(RegisterValue >> 8);
+                    arr_index += 1;
+
+                    TransmitBytes[arr_index] = (byte)(RegisterValue >> 0);
+                    arr_index += 1;
+                }
+
+                TransmitBytes[arr_index] = (byte)(CRC16 >> 8);
+                arr_index += 1;
+
+                TransmitBytes[arr_index] = (byte)(CRC16 >> 0);
+                arr_index += 1;
+            }
+
+        }
 
         /// <summary>
         /// Written. 2024.03.22 11:06. Moscow. Workplace.
         /// For receving 1 reply by MODBUS RTU. For another reply a new instance should be made
         /// </summary>
-        class MODBUS_RTU_CMD_Data
+        class MODBUS_RTU_RX_CMD_Class
         {
+            /// <summary>
+            /// Written. 2024.03.25 17:06. Moscow. Workplace. <br></br>
+            /// Error code - 0x86 according MODBUS APPLICATION PROTOCOL SPECIFICATION v1.1a, v1.1b
+            /// </summary>
+            public byte ErrorCode = 0x86;
+            public bool IsErrorAnswer = false;
             /// <summary>
             /// Slave address.
             /// </summary>
@@ -937,14 +1100,14 @@ namespace USB_as_VCP_Namespace
             public UInt16 CRC16 = 0;
             public byte[] ReceivedBytes = null;
             public uint ReceivedCount = 0;
-            public MODBUS_RTU_CMD_Data()
+            public MODBUS_RTU_RX_CMD_Class()
             {
                 ReceivedBytes = new byte[3];
             }
             public bool IsPacketReceived = false;
             public bool CreatePacket()
             {
-                if (ReceivedCount == 3)
+                if (ReceivedCount != 3)
                 {
                     return false;
                 }                
@@ -961,13 +1124,13 @@ namespace USB_as_VCP_Namespace
             public void LoadByte(byte byte_in)
             {
                 ReceivedCount += 1;
-                
+
                 // Address from which to receive bytes
                 if (ReceivedCount == 1)
                 {
                     ReceivedBytes[ReceivedCount - 1] = byte_in;
                     if (byte_in != FromAddress)
-                    {                        
+                    {
                         ReceivedCount = 0;
                     }
                     return;
@@ -977,11 +1140,18 @@ namespace USB_as_VCP_Namespace
                 if (ReceivedCount == 2)
                 {
                     ReceivedBytes[ReceivedCount - 1] = byte_in;
-                    if (byte_in != FunctionCode)
+                    if ((byte_in != FunctionCode) &&
+                        (byte_in != ErrorCode))
                     {
                         ReceivedCount = 0;
                     }
-                    return ;
+
+                    if (byte_in == ErrorCode)
+                    {
+                        IsErrorAnswer = true;
+                    }
+
+                    return;
                 }
 
                 // Number of bytes.
@@ -989,6 +1159,13 @@ namespace USB_as_VCP_Namespace
                 {
                     ReceivedBytes[ReceivedCount - 1] = byte_in;
                     NumberOfBytes = byte_in;
+
+                    if (IsErrorAnswer == true)
+                    {
+                        NumberOfBytes = 0;
+                    }
+
+
                     if (CreatePacket() != true)
                     {
                         ReceivedCount = 0;
@@ -996,63 +1173,142 @@ namespace USB_as_VCP_Namespace
                     return;
                 }
 
-                // Number of bytes.
-                if ((ReceivedCount > 3) &&
-                    (ReceivedCount <= (3 + NumberOfBytes)))
+
+                if (IsErrorAnswer == false)
                 {
-                    ReceivedBytes[ReceivedCount - 1] = byte_in;
-                    return ;
+
+                    // Number of bytes.
+                    if ((ReceivedCount > 3) &&
+                        (ReceivedCount <= (3 + NumberOfBytes)))
+                    {
+                        ReceivedBytes[ReceivedCount - 1] = byte_in;
+                        return;
+                    }
+
+                    // Checksum CRC16
+                    if ((ReceivedCount > (3 + NumberOfBytes)) &&
+                        (ReceivedCount <= (3 + NumberOfBytes + 2)))
+                    {
+                        ReceivedBytes[ReceivedCount - 1] = byte_in;
+                        return;
+                    }
+                    else
+                    {
+                        CRC16 = ReceivedBytes[ReceivedBytes.Length - 2];
+                        CRC16 |= ReceivedBytes[ReceivedBytes.Length - 1];
+                        IsPacketReceived = true;
+                        return;
+                    }
                 }
 
-                // Checksum CRC16
-                if ((ReceivedCount > (3 + NumberOfBytes)) &&
-                    (ReceivedCount <= (3 + NumberOfBytes + 2)))
+                if (IsErrorAnswer == true)
                 {
-                    ReceivedBytes[ReceivedCount - 1] = byte_in;
-                    return;
+                    // Number of bytes.
+                    if ((ReceivedCount > 3) &&
+                        (ReceivedCount <= (3 + 2)))
+                    {
+                        ReceivedBytes[ReceivedCount - 1] = byte_in;
+
+                        if (ReceivedCount == (3 + 2))
+                        {
+                            CRC16 = ReceivedBytes[ReceivedBytes.Length - 2];
+                            CRC16 |= ReceivedBytes[ReceivedBytes.Length - 1];
+                            IsPacketReceived = true;
+                        }
+                        return;
+                    }
                 }
-                else
-                {
-                    CRC16 = ReceivedBytes[ReceivedBytes.Length - 2];
-                    CRC16 |= ReceivedBytes[ReceivedBytes.Length - 1];
-                    IsPacketReceived = true;
-                }
-            }            
+            }
         }
 
 
+
+        public bool MODBUS_TX_RX_message = true;
         // Added. 2024.03.23 17:04. Moscow. Hostel.
         public delegate void ReceiveMODBUSDelegate(byte[] arr_in);
-        public ReceiveMODBUSDelegate ReceiveMODBUSCallback = null;
-        MODBUS_RTU_CMD_Data MODBUS_CMD_Data = null;
+        public ReceiveMODBUSDelegate MODBUS_RTU_Callback = null;
+        public ReceiveMODBUSDelegate MODBUS_RTU_Error_Callback = null;
+        MODBUS_RTU_RX_CMD_Class MODBUS_RTU_CMD_RX = null;
         public CRC16Class CRC16Calculation = new CRC16Class(CRC16Class.DefaultPolynomial);
         byte[] MODBUS_Callback_bytes = null;
         private bool MODBUS_CMD_CRC16Check()
         {
-            byte[] arr_with_bytes = new byte[MODBUS_CMD_Data.NumberOfBytes + 3];
-            Array.Copy(MODBUS_CMD_Data.ReceivedBytes, arr_with_bytes, arr_with_bytes.Length);
+            byte[] arr_with_bytes = new byte[MODBUS_RTU_CMD_RX.NumberOfBytes + 3];
+            Array.Copy(MODBUS_RTU_CMD_RX.ReceivedBytes, arr_with_bytes, arr_with_bytes.Length);
             ushort crc16_of_received_bytes = CRC16Calculation.ComputeChecksum(arr_with_bytes);
             bool check_result_out = false;
-            if (crc16_of_received_bytes == MODBUS_CMD_Data.CRC16)
+            if (crc16_of_received_bytes == MODBUS_RTU_CMD_RX.CRC16)
             {
                 check_result_out = true;
             }
             return check_result_out;
         }
+
+
+        /// <summary>
+        /// It wil take the required value for proper reception of answer. <br></br>
+        /// Written. 2024.03.25 13:19. Moscow. Workplace.
+        /// </summary>
+        /// <param name="tx_cmd"></param>
+        public void MODBUS_RTU_Receive(MODBUS_RTU_TX_CMD_Class tx_cmd)
+        {
+            MODBUS_RTU_Receive(tx_cmd.ToAddress, tx_cmd.FunctionCode, tx_cmd.ErrorCode);
+        }
+
+
         /// <summary>
         /// Written. 2024.03.22 10:51. Moscow. Workplace.
         /// </summary>
         /// <param name="from_address"></param>
         /// <param name="bytes_amount"></param>
         /// <param name="delay_last_byte">1st byte is the trigger to count the delay. Each byte resets the counter</param>
-        public void Receive_MODBUS_RTU(byte from_address, byte function_code, Int32 delay_last_byte = 500)
+        public void MODBUS_RTU_Receive(byte from_address, byte function_code, byte error_code = 0x86, Int32 delay_last_byte = 500)
         {
             USB_Reception_Type = USB_Receive_Methods_List.Recieve_MODBUS_RTU;
-            MODBUS_CMD_Data = new MODBUS_RTU_CMD_Data();
-            MODBUS_CMD_Data.FromAddress = from_address;
-            MODBUS_CMD_Data.FunctionCode = function_code;
+            MODBUS_RTU_CMD_RX = new MODBUS_RTU_RX_CMD_Class();
+            MODBUS_RTU_CMD_RX.FromAddress = from_address;
+            MODBUS_RTU_CMD_RX.FunctionCode = function_code;
+            MODBUS_RTU_CMD_RX.ErrorCode = error_code;
         }
 
+
+        /// <summary>
+        /// Creates packet and sends the bytes. <br></br>
+        /// Written. 2024.03.25 13:16. Moscow. Workplace.
+        /// </summary>
+        /// <param name="modbus_rtu_cmd"></param>
+        public void MODBUS_RTU_Send(MODBUS_RTU_TX_CMD_Class modbus_rtu_cmd)
+        {
+            MODBUS_RTU_TX_CMD = new MODBUS_RTU_TX_CMD_Class();
+            MODBUS_RTU_TX_CMD.ToAddress = modbus_rtu_cmd.ToAddress;
+            MODBUS_RTU_TX_CMD.FunctionCode = modbus_rtu_cmd.FunctionCode;
+            MODBUS_RTU_TX_CMD.RegisterAddress = modbus_rtu_cmd.RegisterAddress;
+            MODBUS_RTU_TX_CMD.NumberOfRegisters = modbus_rtu_cmd.NumberOfRegisters;
+            MODBUS_RTU_TX_CMD.ErrorCode = modbus_rtu_cmd.ErrorCode;
+            ushort crc16_for_cmd = CRC16Calculation.ComputeChecksum(MODBUS_RTU_TX_CMD.GetBytesForCRC16());
+            MODBUS_RTU_TX_CMD.CRC16 = crc16_for_cmd;
+            MODBUS_RTU_TX_CMD.CreatePacket();
+            Send(MODBUS_RTU_TX_CMD.TransmitBytes, MODBUS_TX_RX_message);
+        }
+        /// <summary>
+        /// Written. 2024.03.25 13:12. Moscow. Workplace.
+        /// </summary>
+        /// <param name="to_address"></param>
+        /// <param name="function_code"></param>
+        /// <param name="reg_address"></param>
+        /// <param name="reg_count"></param>
+        public void MODBUS_RTU_Send(byte to_address, byte function_code, byte error_code, ushort reg_address, ushort reg_count)
+        {            
+            MODBUS_RTU_TX_CMD = new MODBUS_RTU_TX_CMD_Class();
+            MODBUS_RTU_TX_CMD.ToAddress = to_address;
+            MODBUS_RTU_TX_CMD.FunctionCode = function_code;
+            MODBUS_RTU_TX_CMD.RegisterAddress = reg_address;
+            MODBUS_RTU_TX_CMD.NumberOfRegisters = reg_count;
+            MODBUS_RTU_TX_CMD.ErrorCode = error_code;
+            ushort crc16_for_cmd = CRC16Calculation.ComputeChecksum(MODBUS_RTU_TX_CMD.GetBytesForCRC16());
+            MODBUS_RTU_TX_CMD.CRC16 = crc16_for_cmd;
+            Send(MODBUS_RTU_TX_CMD.TransmitBytes, true);
+        }
 
         /// <summary>
         /// Calculates CRC16 of byte[].

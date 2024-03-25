@@ -238,6 +238,7 @@ public static class Crc8
 
     /// <summary>
     /// Written. 2024.03.22 15:43. Moscow. Workplace. <br></br>
+    /// Tested. Works. <br></br>
     /// - Shows in console CRC32 reflected table. <br></br>
     /// - Shows in console CRC32 checksum of provided byte[]. <br></br>
     /// </summary>
