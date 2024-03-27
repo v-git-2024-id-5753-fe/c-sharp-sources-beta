@@ -178,7 +178,8 @@ namespace USB_as_VCP_Namespace
                             {
                                 MODBUS_Callback_bytes = new byte[1];
                                 Array.Copy(MODBUS_RTU_CMD_RX.ReceivedBytes, 2, MODBUS_Callback_bytes, 0, 1);
-                                MODBUS_RTU_Error_Callback(MODBUS_Callback_bytes);
+                                Form_In_Use.Invoke(MODBUS_RTU_Error_Callback, MODBUS_Callback_bytes);
+                                
                                 break;
                             }
 
@@ -186,13 +187,13 @@ namespace USB_as_VCP_Namespace
                             {
                                 MODBUS_Callback_bytes = new byte[4];
                                 Array.Copy(MODBUS_RTU_CMD_RX.ReceivedBytes, 2, MODBUS_Callback_bytes, 0, MODBUS_Callback_bytes.Length);
-                                MODBUS_RTU_Single_Register_Callback(MODBUS_Callback_bytes);
+                                Form_In_Use.Invoke(MODBUS_RTU_Single_Register_Callback, MODBUS_Callback_bytes);
                                 break;
                             }
 
                             MODBUS_Callback_bytes = new byte[MODBUS_RTU_CMD_RX.NumberOfBytes];
                             Array.Copy(MODBUS_RTU_CMD_RX.ReceivedBytes, 3, MODBUS_Callback_bytes, 0, MODBUS_Callback_bytes.Length);
-                            MODBUS_RTU_Callback(MODBUS_Callback_bytes);
+                            Form_In_Use.Invoke(MODBUS_RTU_Callback, MODBUS_Callback_bytes);
                             break;
 
                         }
@@ -433,7 +434,12 @@ namespace USB_as_VCP_Namespace
 
         }
 
-        
+        private void MODBUS_RTU_Error_Callback123(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         /// <summary>
         /// Written. 2023.11.30 17:52. Moscow. Workplace. 
