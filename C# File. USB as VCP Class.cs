@@ -1255,7 +1255,8 @@ namespace USB_as_VCP_Namespace
         }
 
 
-
+        Timer TimerMODBUSNoByte = new Timer();
+       
         public bool MODBUS_TX_RX_message = true;
         // Added. 2024.03.23 17:04. Moscow. Hostel.
         public delegate void ReceiveMODBUSDelegate(byte[] arr_in);
@@ -1284,9 +1285,9 @@ namespace USB_as_VCP_Namespace
         /// Written. 2024.03.25 13:19. Moscow. Workplace.
         /// </summary>
         /// <param name="tx_cmd"></param>
-        public void MODBUS_RTU_Receive(MODBUS_RTU_TX_CMD_Class tx_cmd)
+        public void MODBUS_RTU_Receive(MODBUS_RTU_TX_CMD_Class tx_cmd, int delay_no_byte = 2000)
         {
-            MODBUS_RTU_Receive(tx_cmd.ToAddress, tx_cmd.FunctionCode, tx_cmd.ErrorCode);
+            MODBUS_RTU_Receive(tx_cmd.ToAddress, tx_cmd.FunctionCode, tx_cmd.ErrorCode, delay_no_byte);
         }
 
 
@@ -1296,13 +1297,21 @@ namespace USB_as_VCP_Namespace
         /// <param name="from_address"></param>
         /// <param name="bytes_amount"></param>
         /// <param name="delay_last_byte">1st byte is the trigger to count the delay. Each byte resets the counter</param>
-        public void MODBUS_RTU_Receive(byte from_address, byte function_code, byte error_code = 0x86, Int32 delay_last_byte = 500)
+        public void MODBUS_RTU_Receive(byte from_address, byte function_code, byte error_code = 0x86, int delay_no_byte = 2000)
         {
             USB_Reception_Type = USB_Receive_Methods_List.Recieve_MODBUS_RTU;
             MODBUS_RTU_CMD_RX = new MODBUS_RTU_RX_CMD_Class();
             MODBUS_RTU_CMD_RX.FromAddress = from_address;
             MODBUS_RTU_CMD_RX.FunctionCode = function_code;
             MODBUS_RTU_CMD_RX.ErrorCode = error_code;
+            TimerMODBUSNoByte.Interval = delay_no_byte;
+            TimerMODBUSNoByte.Tick += TimerMODBUSNoByte_Tick;
+        }
+
+        private void TimerMODBUSNoByte_Tick(object sender, EventArgs e)
+        {
+            TimerMODBUSNoByte.Stop();
+            USB_Reception_Type = USB_Receive_Methods_List.NoReception;
         }
 
 

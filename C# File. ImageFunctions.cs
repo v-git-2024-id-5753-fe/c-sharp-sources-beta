@@ -894,7 +894,7 @@ namespace ImageFunctionsNameSpace
                         bool object_found = false;
                         for (Int32 i = 0; i < bitmap_in.Width; i++)
                         {
-                            int[] column = ArrayFunctions.Column.Take(bitmap_int32, i);
+                            int[] column = ArrayFunctions.Column.Take.ByIndex.OneColumn(bitmap_int32, i);
                             if (ArrayFunctions.Int32Array.Math.ElementsTheSame(column) == true)
                             {
                                 Int32 bitmap_pixel = bitmap_in.GetPixel(i, 0).ToArgb();
@@ -1029,7 +1029,7 @@ namespace ImageFunctionsNameSpace
                     Int32 length_out = 0;
                     for (Int32 i = columns_count - 1; i >= 0; i--)
                     {
-                        int[] row_int32 = ArrayFunctions.Column.Take(ImageInt32Array, i);
+                        int[] row_int32 = ArrayFunctions.Column.Take.ByIndex.OneColumn(ImageInt32Array, i);
                         if (ArrayFunctions.Int32Array.Math.ElementsTheSame(row_int32) == true)
                         {
                             length_out += 1;
@@ -1056,7 +1056,7 @@ namespace ImageFunctionsNameSpace
                     Int32 length_out = 0;
                     for (Int32 i = 0; i < columns_count; i++)
                     {
-                        int[] row_int32 = ArrayFunctions.Column.Take(ImageInt32Array, i);
+                        int[] row_int32 = ArrayFunctions.Column.Take.ByIndex.OneColumn(ImageInt32Array, i);
                         if (ArrayFunctions.Int32Array.Math.ElementsTheSame(row_int32) == true)
                         {
                             length_out += 1;
@@ -1320,7 +1320,7 @@ namespace ImageFunctionsNameSpace
                 */
                 for (Int32 i = 0; i < bitmap_int32.Length; i++)
                 {
-                    int[] column_int32 = ArrayFunctions.Column.Take(bitmap_int32, i);
+                    int[] column_int32 = ArrayFunctions.Column.Take.ByIndex.OneColumn(bitmap_int32, i);
                     if (column_int32.Contains(mark_color.ToArgb()) == true)
                     {
                         mark_values.Add(i);

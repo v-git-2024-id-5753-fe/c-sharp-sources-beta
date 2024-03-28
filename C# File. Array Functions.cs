@@ -9,6 +9,8 @@ using System.Diagnostics;
 using AudioFileFunctions;
 using NetworkFunctionsNamespace;
 using FileFunctionsNamespace;
+using System.ComponentModel;
+using static ArrayFunctionsNamespace.ArrayFunctions;
 
 // Commercial use (license)
 // Please study about commercial use of the code that is publicly available 
@@ -120,35 +122,336 @@ namespace ArrayFunctionsNamespace
 
 
             /// <summary>
-            /// Takes from array[][] column and returns array[] <br></br>
-            /// Written. 2023.12.26 13:05. Moscow. Workplace. <br></br>
-            /// Note. 1st dimension is column count <br></br>
-            /// Tested. Works. 2023.12.26 13:12. Moscow. Workplace.
+            /// Written. 2024.03.28 15:22. Moscow. Workplace.
             /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="arr_in"></param>
-            /// <param name="column_num"></param>
-            /// <returns></returns>
-            public static T[] Take<T>(T[][] arr_in, Int32 column_num)
+            public static class Add
             {
-                if (arr_in.Length == 0)
+
+
+                /// <summary>
+                /// Written. 2024.03.28 17:01. Moscow. Workplace.
+                /// </summary>
+                public static class ByIndex
                 {
-                    ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
-                    return new T[0];
+                    public static T[][] Columns<T>(T[][] arr_in, T[][] columns, uint index_to_insert)
+                    {
+                        T[][] arr_out = new T[arr_in.Length + 1][];
+                        int arr_index = 0;
+                        for (int i = 0; i < arr_in.Length; i++)
+                        {
+                            if (i == index_to_insert)
+                            {
+                                for (int j = 0; j < columns.Length; j++)
+                                {
+                                    arr_out[i + j] = Copy<T>(columns[j]);
+                                }
+                                i += columns.Length;
+                                continue;
+                            }
+                            arr_out[i] = Copy<T>(arr_in[arr_index]);
+                            arr_index += 1;
+                        }
+                        return arr_out;
+                    }
+
+
+                    public static T[][] OneColumn<T>(T[][] arr_in, T[] column, uint index_to_insert)
+                    {
+                        T[][] arr_out = new T[arr_in.Length + 1][];
+                        int arr_index = 0;
+                        for (int i = 0; i < arr_in.Length; i++)
+                        {
+                            if (i == index_to_insert)
+                            {
+                                arr_out[i] = Copy<T>(column);
+                                continue;
+                            }
+                            arr_out[i] = Copy<T>(arr_in[arr_index]);
+                            arr_index += 1;
+                        }                        
+                        return arr_out;
+                    }
                 }
-                if (column_num < 0)
+
+
+                    /// <summary>
+                    /// Written. 2024.03.28 15:22. Moscow. Workplace.
+                    /// </summary>
+                    public static class ToEnd
                 {
-                    ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Index_is_wrong);
-                    return new T[0];
+
+                    /// <summary>
+                    /// Adds 1 column to the end of array[][]. <br></br>
+                    /// Written. 2024.03.28 15:22. Moscow. Workplace. <br></br>
+                    /// Tested. Works. 2024.03.28 16:48. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <param name="column"></param>
+                    /// <returns></returns>
+                    public static T[][] OneColumn<T>(T[][] arr_in, T[] column)
+                    {
+                        T[][] arr_out = new T[arr_in.Length + 1][];
+                        for (int i = 0; i < arr_in.Length; i++)
+                        {
+                            arr_out[i] = Copy<T>(arr_in[i]);
+                        }
+                        arr_out[arr_out.Length - 1] = Copy<T>(column);
+                        return arr_out;
+                    }
+
+                    /// <summary>
+                    /// Adds certain amount of columns to the ebd of array[][]. <br></br>
+                    /// Written. 2024.03.28 15:25. Moscow. Workplace. <br></br>
+                    /// Tested. Works. 2024.03.28 16:50. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <param name="columns"></param>
+                    /// <returns></returns>
+                    public static T[][] Columns<T>(T[][] arr_in, T[][] columns)
+                    {
+                        T[][] arr_out = new T[arr_in.Length + columns.Length][];
+                        for (int i = 0; i < arr_in.Length; i++)
+                        {
+                            arr_out[i] = Copy<T>(arr_in[i]);
+                        }
+
+                        for (int i = 0; i < columns.Length; i++)
+                        {
+                            arr_out[arr_in.Length - 1 + 1 + i] = Copy<T>(columns[i]);
+                        }
+                        return arr_out;
+                    }
+
                 }
-                // 2023.12.26 13:08. Moscow. Workplace. Check if it is reference or copied array.
-                // 2023.12.26 13:12. Moscow. Workplace. Checked it is reference. Code was updated.  
-
-                // T[] arr_out = arr_in[column_num];                
-                T[] arr_out = ArrayFunctions.Copy(arr_in[column_num]);
 
 
-                return arr_out;
+                public static class ToStart
+                {
+
+                    /// <summary>
+                    /// Adds 1 column to start of array[][]. <br></br>
+                    /// Written. 2024.03.28 15:28. Moscow. Workplace. <br></br>
+                    /// Tested. Works. 2024.03.28 16:45. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <param name="column"></param>
+                    /// <returns></returns>
+                    public static T[][] OneColumn<T>(T[][] arr_in, T[] column)
+                    {
+                        T[][] arr_out = new T[arr_in.Length + 1][];
+                        for (int i = 1; i < arr_out.Length; i++)
+                        {
+                            arr_out[i] = Copy<T>(arr_in[i - 1]);
+                        }
+                        arr_out[0] = Copy<T>(column);
+                        return arr_out;
+                    }
+
+                    /// <summary>
+                    /// Adds certain amount of columns to start of array[][]. <br></br>
+                    /// Written. 2024.03.28 15:28. Moscow. Workplace. <br></br>
+                    /// Tested. Works. 2024.03.28 16:44. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <param name="columns"></param>
+                    /// <returns></returns>
+                    public static T[][] Columns<T>(T[][] arr_in, T[][] columns)
+                    {
+                        T[][] arr_out = new T[arr_in.Length + columns.Length][];
+                        int arr_index = 0;
+                        for (int i = columns.Length - 1 + 1; i < arr_out.Length; i++)
+                        {
+                            arr_out[i] = Copy<T>(arr_in[arr_index]);
+                            arr_index += 1;
+                        }
+
+                        for (int i = 0; i < columns.Length; i++)
+                        {
+                            arr_out[i] = Copy<T>(columns[i]);
+                        }
+                        return arr_out;
+                    }
+
+                }
+
+
+
+            }
+
+
+
+
+            /// <summary>
+            /// Written. 2024.03.28 15:35. Moscow. Workplace.
+            /// </summary>
+            public static class Take
+            {
+
+
+                /// <summary>
+                /// Written. 2024.03.28 15:43. Moscow. Workplace.
+                /// </summary>
+                public static class FromEnd
+                {
+
+                    /// <summary>
+                    /// Takes 1 column from end of array[][] <br></br>
+                    /// Written. 2024.03.28 15:45. Moscow. Workplace. <br></br>
+                    /// Tested. Works. 2024.03.28 16:35. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <returns></returns>
+                    public static T[] OneColumn<T>(T[][] arr_in)
+                    {
+                        return ByIndex.OneColumn(arr_in, arr_in.Length - 1);
+                    }
+
+                    /// <summary>
+                    /// Takes certain amount of columns from end of array[][]<br></br>
+                    /// Written. 2024.03.28 15:44. Moscow. Workplace. <br></br>
+                    /// Tested. Works. 2024.03.28 16:35. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <param name="amount_of_columns"></param>
+                    /// <returns></returns>
+                    public static T[][] Columns<T>(T[][] arr_in, uint amount_of_columns)
+                    {
+                        return ByIndex.Columns(arr_in, (uint)arr_in.Length - 1 - (amount_of_columns - 1), amount_of_columns);
+                    }
+
+
+                }
+
+
+
+
+
+                /// <summary>
+                /// Written. 2024.03.28 15:43. Moscow. Workplace.
+                /// </summary>
+                public static class FromStart
+                {
+
+                    /// <summary>
+                    /// Takes 1 column from start of array[][]<br></br>
+                    /// Written. 2024.03.28 16:04. Moscow. Workplace. <br></br>
+                    /// Tested. Works. 2024.03.28 16:05. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <returns></returns>
+                    public static T[] OneColumn<T>(T[][] arr_in)
+                    {
+                        return ByIndex.OneColumn(arr_in, 0);
+                    }
+
+                    /// <summary>
+                    /// Takes certain amount of columns from start of array[][]<br></br>
+                    /// Written. 2024.03.28 15:44. Moscow. Workplace. <br></br>
+                    /// Tested. Works. 2024.03.28 15:58. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <param name="amount_of_columns"></param>
+                    /// <returns></returns>
+                    public static T[][] Columns<T>(T[][] arr_in, uint amount_of_columns)
+                    {
+                        return ByIndex.Columns(arr_in, 0, amount_of_columns);
+                    }
+
+
+                }
+                
+                /// <summary>
+                /// Written. 2024.03.28 15:35. Moscow. Workplace.
+                /// </summary>
+                public static class ByIndex
+                {
+
+                    /// <summary>
+                    /// Moved. 2024.03.28 15:36. Moscow. Workplace.
+                    /// Tested. Works. 2024.03.28 15:56. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <param name="column_num"></param>
+                    /// <returns></returns>
+                    public static T[] OneColumn<T>(T[][] arr_in, Int32 column_num)
+                    {
+                        if (arr_in.Length == 0)
+                        {
+                            ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
+                            return new T[0];
+                        }
+                        if (column_num < 0)
+                        {
+                            ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Index_is_wrong);
+                            return new T[0];
+                        }
+                        // 2023.12.26 13:08. Moscow. Workplace. Check if it is reference or copied array.
+                        // 2023.12.26 13:12. Moscow. Workplace. Checked it is reference. Code was updated.  
+
+                        // T[] arr_out = arr_in[column_num];                
+                        T[] arr_out = ArrayFunctions.Copy(arr_in[column_num]);
+
+
+                        return arr_out;
+                    }
+
+
+
+                    /// <summary>
+                    /// Takes certain amount of columns from array[][] starting from index. <br></br>
+                    /// Written. 2024.03.28 15:41. Moscow. Workplace. <br></br>
+                    /// Tested. Works. 2024.03.28 15:57. Moscow. Workplace.
+                    /// </summary>
+                    /// <typeparam name="T"></typeparam>
+                    /// <param name="arr_in"></param>
+                    /// <param name="column_num"></param>
+                    /// <returns></returns>
+                    public static T[][] Columns<T>(T[][] arr_in, uint column_index, uint amount_of_columns)
+                    {
+                        if (arr_in.Length == 0)
+                        {
+                            ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
+                            return new T[0][];
+                        }
+                        if (amount_of_columns == 0)
+                        {
+                            ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.NumberIsZero);
+                            return new T[0][];
+                        }
+                        // 2024.03.28 15:37. Moscow. Workplace
+                        // Using uint allows not to use that.
+                        /*
+                        if (column_num < 0)
+                        {
+                            ReportFunctions.ReportError(ReportFunctions.ErrorMessage.Index_is_wrong);
+                            return new T[0];
+                        }
+                        */
+
+
+
+                        T[][] arr_out = new T[amount_of_columns][];                
+                        int arr_index = (int)column_index;
+                        for (int i = 0; i < amount_of_columns; i++)
+                        {
+                            arr_out[i] = Copy<T>(arr_in[arr_index]);
+                            arr_index++;
+                        }
+                        
+
+
+                        return arr_out;
+                    }
+                }
             }
 
 
@@ -3283,6 +3586,55 @@ namespace ArrayFunctionsNamespace
         }
         public static class StringArray
         {
+
+            /// <summary>
+            /// Written. 2024.03.28 17:38. Moscow. Workplace.
+            /// </summary>
+            public static class Find
+            {
+                
+                /// <summary>
+                /// Written. 2024.03.28 17:39. Moscow. Workplace.
+                /// </summary>
+                /// <param name="arr_in"></param>
+                /// <param name="id_column"></param>
+                /// <param name="id_find"></param>
+                /// <param name="is_found"></param>
+                /// <returns></returns>
+                public static string[] OneRowById(string[][] arr_in, uint id_column, string id_find, out bool is_found)
+                {
+                    if (arr_in.Length == 0)
+                    {
+                        ReportFunctions.ReportAttention(ReportFunctions.AttentionMessage.ArrayZeroLength);
+                        is_found = false;
+                        return new string[0];
+                    }
+
+
+                    // 2024.03.28 17:36. Moscow. Workplace
+                    // the same length columns are supported.
+                    string[] str_out = new string[arr_in[0].Length];
+                    string[] id_arr = arr_in[(int)id_column];
+                    if (id_arr.Contains(id_find) == true)
+                    {
+                        int index_found = Array.IndexOf(id_arr, id_find);
+                        
+                        for (int i = 0; i < str_out.Length; i++)
+                        {
+                            str_out[i] = arr_in[i][index_found];
+                        }
+
+                        is_found = true;
+                        return str_out;
+                    }
+                    else
+                    {
+                        is_found = false;
+                        return new string[0];
+                    }
+                }
+            }
+
 
             /// <summary>
             /// Written. 2024.02.06 12:20. Moscow. Workplace. 
